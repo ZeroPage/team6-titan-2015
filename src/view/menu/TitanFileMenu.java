@@ -1,4 +1,4 @@
-package view.menubar.menu;
+package view.menu;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;

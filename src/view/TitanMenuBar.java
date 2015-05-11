@@ -1,6 +1,9 @@
-package view.menubar;
+package view;
 
-import view.menubar.menu.*;
+import view.menu.TitanFileMenu;
+import view.menu.TitanHelpMenu;
+import view.menu.TitanMetricsMenu;
+import view.menu.TitanViewMenu;
 
 import javax.swing.*;
 

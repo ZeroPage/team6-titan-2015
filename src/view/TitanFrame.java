@@ -1,7 +1,5 @@
 package view;
 
-import view.menubar.TitanMenuBar;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -22,5 +20,8 @@ public class TitanFrame extends JFrame {
 
         // Init MenuBar
         add(new TitanMenuBar(), BorderLayout.NORTH);
+
+        // Init MainPanel
+        add(new TitanMainPanel(), BorderLayout.CENTER);
     }
 }
