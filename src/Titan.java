@@ -1,5 +1,5 @@
 class Titan {
     public static void main(String[] args) {
-        System.out.println("Hello, Titan!");
+        new view.TitanFrame().setVisible(true);
     }
 }
