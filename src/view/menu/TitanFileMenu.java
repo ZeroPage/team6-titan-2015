@@ -76,7 +76,6 @@ public class TitanFileMenu extends JMenu {
             setMnemonic(KeyEvent.VK_E);
 
             add(new DSMMenuItem());
-            add(new ExcelMenuItem());
         }
 
         private class DSMMenuItem extends JMenuItem {
@@ -84,14 +83,6 @@ public class TitanFileMenu extends JMenu {
                 super("DSM...");
 
                 setMnemonic(KeyEvent.VK_D);
-            }
-        }
-
-        private class ExcelMenuItem extends JMenuItem {
-            public ExcelMenuItem() {
-                super("Excel...");
-
-                setMnemonic(KeyEvent.VK_X);
             }
         }
     }
