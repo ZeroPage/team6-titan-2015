@@ -22,14 +22,27 @@ public class ClusterData {
 	public ClusterData() {
 		System.out.println("I need a directory of the .clsx file!");
 	}
+	
 //initializing with directory
 	public ClusterData(String fileDir) throws ParserConfigurationException, SAXException, IOException {
 		sourceFile = new File(fileDir);
 		initData();
 	}
+	
 //initializing with File instance	
 	public ClusterData(File file) throws ParserConfigurationException, SAXException, IOException {
 		sourceFile = file;
+		initData();
+	}
+	
+//load new .clsx file
+	public void loadClusterData(File file) throws ParserConfigurationException, SAXException, IOException {
+		this.sourceFile = file;
+		initData();
+	}
+	
+	public void loadClusterData(String fileName) throws ParserConfigurationException, SAXException, IOException {
+		this.sourceFile = new File(fileName);
 		initData();
 	}
 
@@ -42,7 +55,6 @@ public class ClusterData {
 		//get root
 		Element recentNode = doc.getDocumentElement();
 		recentNode.normalize();
-		System.out.println("Root element :" + recentNode.getNodeName() + " - " + recentNode.getAttribute("xmlns"));
 		
 		NodeList nodeList = recentNode.getChildNodes();
 		for(int i = 0; i < nodeList.getLength(); i++) {
@@ -58,23 +70,12 @@ public class ClusterData {
 					
 					if(groupNode.getNodeType()==groupNode.ELEMENT_NODE) {
 						Element gElem = (Element) groupNode;
-						System.out.println(gElem.getAttribute("name"));
 						this.groupList.add(gElem);
 					}
 					
 				}
 			}
 		}
-	}
-	
-	public void loadClusterData(File file) throws ParserConfigurationException, SAXException, IOException {
-		this.sourceFile = file;
-		initData();
-	}
-	
-	public void loadClusterData(String fileName) throws ParserConfigurationException, SAXException, IOException {
-		this.sourceFile = new File(fileName);
-		initData();
 	}
 	
 	public void saveClusterData() {
@@ -96,12 +97,7 @@ public class ClusterData {
 		return null;
 	}
 	
-	public void showTree() {
-		NodeList list = doc.getChildNodes();
-		
-		for(int i=0;i<list.getLength();i++) {
-			if(list.item(i).getNodeType()==Node.ELEMENT_NODE)
-				System.out.println(((Element) list.item(i)).getAttribute("Name"));
-		}
+	public ArrayList<Element> getAllGroup() {
+		return groupList;
 	}
 }
