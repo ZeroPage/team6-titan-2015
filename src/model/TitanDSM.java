@@ -14,7 +14,7 @@ public class TitanDSM {
     }
 
     public TitanDSM(File file) throws IOException {
-        loadFile(file);
+        loadFromFile(file);
     }
 
     public int getSize() {
@@ -41,13 +41,16 @@ public class TitanDSM {
         nameOfClass = names;
     }
 
-    public void loadFile(File dsm) throws IOException {
+    public void loadFromFile(File dsm) throws IOException {
         BufferedReader fileReader = new BufferedReader(new FileReader(dsm));
         String read;
         String[] temp;
 
         read = fileReader.readLine();
         sizeOfMatrix = Integer.parseInt(read);
+
+        dataMatrix = new int[sizeOfMatrix][sizeOfMatrix];
+        nameOfClass = new String[sizeOfMatrix];
 
         for (int i = 0; i < sizeOfMatrix; i++) {
             read = fileReader.readLine();
@@ -61,6 +64,24 @@ public class TitanDSM {
             read = fileReader.readLine();
             nameOfClass[i] = read;
         }
+    }
+    public void saveToFile(String fileName) throws IOException{
+        BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
+
+        out.write(String.valueOf(sizeOfMatrix));
+        out.newLine();
+        for(int i = 0; i < sizeOfMatrix; i++) {
+            for(int j = 0; j < sizeOfMatrix; j++) {
+                out.write(dataMatrix[i][j] + " ");
+            }
+            out.newLine();
+        }
+        for(int idx = 0; idx < sizeOfMatrix; idx++) {
+            out.write(nameOfClass[idx]);
+            out.newLine();
+        }
+
+        out.close();
     }
 
 }
