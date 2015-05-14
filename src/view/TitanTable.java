@@ -1,16 +1,24 @@
 package view;
 
+import controller.TitanMainController;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class TitanTable extends JTable {
-    public TitanTable() {
+    private TitanMainController controller;
+
+    public TitanTable(TitanMainController controller) {
         super();
 
+        // Init fields
+        this.controller = controller;
+
+        // Init data
         setSampleData();
     }
 
-    private void setSampleData() { // FIXME - remove after full implementation
+    private void setSampleData() { // TODO: remove after full implementation
         DefaultTableModel tableModel = new DefaultTableModel();
         tableModel.addColumn("");
         tableModel.addColumn("1");

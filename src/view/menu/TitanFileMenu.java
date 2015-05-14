@@ -1,16 +1,21 @@
 package view.menu;
 
+import controller.TitanMainController;
+
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 
 public class TitanFileMenu extends JMenu {
-    public static final int SHORTCUT_KEY = KeyEvent.VK_F;
+    private TitanMainController controller;
 
-    public TitanFileMenu() {
+    public TitanFileMenu(TitanMainController controller) {
         super("File");
 
+        // Init fields
+        this.controller = controller;
+
         // Init Menu
-        setMnemonic(SHORTCUT_KEY);
+        setMnemonic(KeyEvent.VK_F);
 
         // Init Contents
         add(new OpenMenuItem());

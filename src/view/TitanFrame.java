@@ -1,5 +1,7 @@
 package view;
 
+import controller.TitanMainController;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,8 +11,13 @@ public class TitanFrame extends JFrame {
     public static final int INIT_FRAME_HEIGHT = 500;
     public static final int INIT_FRAME_WIDTH = 600;
 
-    public TitanFrame() {
+    private TitanMainController controller;
+
+    public TitanFrame(TitanMainController controller) {
         super();
+
+        // Init fields
+        this.controller = controller;
 
         // Init Frame
         setLayout(new BorderLayout());
@@ -19,9 +26,10 @@ public class TitanFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // Init MenuBar
-        add(new TitanMenuBar(), BorderLayout.NORTH);
+        add(new TitanMenuBar(controller), BorderLayout.NORTH);
 
         // Init MainPanel
-        add(new TitanMainPanel(), BorderLayout.CENTER);
+        add(new TitanMainPanel(controller), BorderLayout.CENTER);
+
     }
 }

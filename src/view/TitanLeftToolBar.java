@@ -1,12 +1,21 @@
 package view;
 
+import controller.TitanMainController;
+
 import javax.swing.*;
 
 public class TitanLeftToolBar extends JToolBar{
-    public TitanLeftToolBar() {
-        super();
+    private TitanMainController controller;
+
+    public TitanLeftToolBar(TitanMainController controller) {
+        // Init ToolBar
+        super(JToolBar.HORIZONTAL);
         setFloatable(false);
 
+        // Init fields
+        this.controller = controller;
+
+        // Add components
         add(new ExpandButton());
     }
 
@@ -18,4 +27,6 @@ public class TitanLeftToolBar extends JToolBar{
             setToolTipText("Expand All");
         }
     }
+
+    // TODO: Add components
 }

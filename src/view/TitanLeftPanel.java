@@ -1,15 +1,23 @@
 package view;
 
+import controller.TitanMainController;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class TitanLeftPanel extends JPanel {
-    public TitanLeftPanel() {
+    private TitanMainController controller;
+
+    public TitanLeftPanel(TitanMainController controller) {
+        // Init Panel
         super(new BorderLayout());
 
-        JScrollPane scrollPane = new JScrollPane(new TitanTree(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        // Init fields
+        this.controller = controller;
 
-        add(new TitanLeftToolBar(), BorderLayout.NORTH);
+        // Add components
+        JScrollPane scrollPane = new JScrollPane(new TitanTree(controller), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        add(new TitanLeftToolBar(controller), BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
     }
 }

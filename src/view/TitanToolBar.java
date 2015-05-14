@@ -1,11 +1,19 @@
 package view;
 
+import controller.TitanMainController;
+
 import javax.swing.*;
 
 public class TitanToolBar extends JToolBar{
-    public TitanToolBar() {
+    private TitanMainController controller;
+
+    public TitanToolBar(TitanMainController controller) {
         super();
 
+        // Init fields
+        this.controller = controller;
+
+        // Add components
         add(new OpenButton());
     }
 
@@ -17,4 +25,6 @@ public class TitanToolBar extends JToolBar{
 
         }
     }
+
+    // TODO: Add Buttons
 }
