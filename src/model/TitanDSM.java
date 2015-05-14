@@ -5,6 +5,11 @@ public class TitanDSM{
     private int[][] dataMatrix;
     private String [] nameOfClass;
 
+    public TitanDSM(int sizeOfMatrix) {
+        this.sizeOfMatrix = sizeOfMatrix;
+        dataMatrix = new int[sizeOfMatrix][sizeOfMatrix];
+        nameOfClass =  new String[sizeOfMatrix];
+    }
     public int getSize(){
         return sizeOfMatrix;
     }
