@@ -16,6 +16,7 @@ public class TitanDSM {
     }
 
     public TitanDSM(File file) throws IOException {
+        nameOfClass = new ArrayList<>();
         loadFromFile(file);
     }
 
