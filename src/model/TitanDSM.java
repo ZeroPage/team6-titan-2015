@@ -21,7 +21,7 @@ public class TitanDSM {
     }
 
     private void initNameOfClass() {
-        for(int i = 0; i < sizeOfMatrix; i++) {
+        for(int i = 1; i <= sizeOfMatrix; i++) {
             nameOfClass.add("entity_" + i);
         }
     }
@@ -48,7 +48,7 @@ public class TitanDSM {
     }
 
     public void setName(String newName, int location) {
-        nameOfClass.set(location,newName);
+        nameOfClass.set(location, newName);
     }
 
     public void loadFromFile(File dsm) throws IOException {
@@ -71,6 +71,7 @@ public class TitanDSM {
 
         for (int i = 0; i < sizeOfMatrix; i++) {
             read = fileReader.readLine();
+            System.out.println(read);
             nameOfClass.add(read);
         }
 
