@@ -4,12 +4,12 @@ import java.io.*;
 
 public class TitanDSM {
     private int sizeOfMatrix;
-    private int[][] dataMatrix;
+    private boolean[][] dataMatrix;
     private String[] nameOfClass;
 
     public TitanDSM(int sizeOfMatrix) {
         this.sizeOfMatrix = sizeOfMatrix;
-        dataMatrix = new int[sizeOfMatrix][sizeOfMatrix];
+        dataMatrix = new boolean[sizeOfMatrix][sizeOfMatrix];
         nameOfClass = new String[sizeOfMatrix];
     }
 
@@ -25,11 +25,11 @@ public class TitanDSM {
         sizeOfMatrix = size;
     }
 
-    public int[][] getDataMatrix() {
+    public boolean[][] getDataMatrix() {
         return dataMatrix;
     }
 
-    public void setData(int data, int row, int col) {
+    public void setData(boolean data, int row, int col) {
         dataMatrix[row][col] = data;
     }
 
@@ -45,14 +45,14 @@ public class TitanDSM {
         read = fileReader.readLine();
         sizeOfMatrix = Integer.parseInt(read);
 
-        dataMatrix = new int[sizeOfMatrix][sizeOfMatrix];
+        dataMatrix = new boolean[sizeOfMatrix][sizeOfMatrix];
         nameOfClass = new String[sizeOfMatrix];
 
         for (int i = 0; i < sizeOfMatrix; i++) {
             read = fileReader.readLine();
             temp = read.split(" ");
             for (int j = 0; j < sizeOfMatrix; j++) {
-                dataMatrix[i][j] = Integer.parseInt(temp[j]);
+                dataMatrix[i][j] = Integer.parseInt(temp[j]) == 1;
             }
         }
 
@@ -60,6 +60,8 @@ public class TitanDSM {
             read = fileReader.readLine();
             nameOfClass[i] = read;
         }
+
+        fileReader.close();
     }
 
     public void saveToFile(String fileName) throws IOException{
