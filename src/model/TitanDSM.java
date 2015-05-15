@@ -28,8 +28,9 @@ public class TitanDSM {
         return sizeOfMatrix;
     }
 
-    public void setSize(int size) {
-        sizeOfMatrix = size;
+    public void addEntity() {
+        sizeOfMatrix++;
+        nameOfClass[sizeOfMatrix] = "entity_" + sizeOfMatrix;
     }
 
     public boolean[][] getDataMatrix() {
