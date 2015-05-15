@@ -1,16 +1,17 @@
 package model;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class TitanDSM {
     private int sizeOfMatrix;
     private boolean[][] dataMatrix;
-    private String[] nameOfClass;
+    private ArrayList<String> nameOfClass;
 
     public TitanDSM(int sizeOfMatrix) {
         this.sizeOfMatrix = sizeOfMatrix;
         dataMatrix = new boolean[sizeOfMatrix][sizeOfMatrix];
-        nameOfClass = new String[sizeOfMatrix];
+        nameOfClass = new ArrayList<>();
         initNameOfClass();
     }
 
@@ -20,7 +21,7 @@ public class TitanDSM {
 
     private void initNameOfClass() {
         for(int i = 0; i < sizeOfMatrix; i++) {
-            nameOfClass[i] = "entity_" + i;
+            nameOfClass.add("entity_" + i);
         }
     }
 
@@ -30,7 +31,7 @@ public class TitanDSM {
 
     public void addEntity() {
         sizeOfMatrix++;
-        nameOfClass[sizeOfMatrix] = "entity_" + sizeOfMatrix;
+        nameOfClass.add("entity_" + sizeOfMatrix);
     }
 
     public boolean[][] getDataMatrix() {
@@ -41,12 +42,12 @@ public class TitanDSM {
         dataMatrix[row][col] = data;
     }
 
-    public String[] getNames() {
+    public ArrayList<String> getNames() {
         return nameOfClass;
     }
 
     public void setName(String newName, int location) {
-        nameOfClass[location] = newName;
+        nameOfClass.set(location,newName);
     }
 
     public void loadFromFile(File dsm) throws IOException {
@@ -58,7 +59,6 @@ public class TitanDSM {
         sizeOfMatrix = Integer.parseInt(read);
 
         dataMatrix = new boolean[sizeOfMatrix][sizeOfMatrix];
-        nameOfClass = new String[sizeOfMatrix];
 
         for (int i = 0; i < sizeOfMatrix; i++) {
             read = fileReader.readLine();
@@ -70,7 +70,7 @@ public class TitanDSM {
 
         for (int i = 0; i < sizeOfMatrix; i++) {
             read = fileReader.readLine();
-            nameOfClass[i] = read;
+            nameOfClass.add(read);
         }
 
         fileReader.close();
@@ -90,7 +90,7 @@ public class TitanDSM {
         }
 
         for(int i = 0; i < sizeOfMatrix; i++) {
-            out.write(nameOfClass[i]);
+            out.write(nameOfClass.get(i));
             out.newLine();
         }
 
