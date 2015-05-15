@@ -11,10 +11,17 @@ public class TitanDSM {
         this.sizeOfMatrix = sizeOfMatrix;
         dataMatrix = new boolean[sizeOfMatrix][sizeOfMatrix];
         nameOfClass = new String[sizeOfMatrix];
+        initNameOfClass();
     }
 
     public TitanDSM(File file) throws IOException {
         loadFromFile(file);
+    }
+
+    private void initNameOfClass() {
+        for(int i = 0; i < sizeOfMatrix; i++) {
+            nameOfClass[i] = "entity_" + i;
+        }
     }
 
     public int getSize() {
