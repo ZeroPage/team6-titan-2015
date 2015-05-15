@@ -37,6 +37,10 @@ public class TitanDSM {
         return nameOfClass;
     }
 
+    public void setName(String newName, int location) {
+        nameOfClass[location] = newName;
+    }
+
     public void loadFromFile(File dsm) throws IOException {
         BufferedReader fileReader = new BufferedReader(new FileReader(dsm));
         String read;
