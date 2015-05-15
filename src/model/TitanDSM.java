@@ -25,12 +25,12 @@ public class TitanDSM {
         sizeOfMatrix = size;
     }
 
-    public int[][] getData() {
+    public int[][] getDataMatrix() {
         return dataMatrix;
     }
 
-    public void setData(int[][] data) {
-        dataMatrix = data;
+    public void setData(int data, int row, int col) {
+        dataMatrix[row][col] = data;
     }
 
     public String[] getNames() {
