@@ -23,21 +23,22 @@ public class TitanFileMenu extends JMenu {
         setMnemonic(KeyEvent.VK_F);
 
         // Init Contents
-        add(new OpenMenuItem());
+        add(new OpenDSMMenuItem());
         addSeparator();
-        add(new NewMenuItem());
-        add(new LoadMenuItem());
+        add(new NewClusterMenuItem());
+        add(new LoadClusterMenuItem());
         addSeparator();
-        add(new SaveMenuItem());
-        add(new SaveAsMenuItem());
+        add(new SaveClusterMenuItem());
+        add(new SaveAsClusterMenuItem());
         addSeparator();
         add(new ExportAsMenu());
         addSeparator();
         add(new ExitMenuItem());
     }
 
-    private class OpenMenuItem extends JMenuItem {
-        public OpenMenuItem() {
+
+    private class OpenDSMMenuItem extends JMenuItem {
+        public OpenDSMMenuItem() {
             super("Open DSM...");
 
             setMnemonic(KeyEvent.VK_O);
@@ -53,13 +54,13 @@ public class TitanFileMenu extends JMenu {
                     fileChooser.setFileFilter(new FileNameExtensionFilter("DSM File (*.dsm)", "dsm"));
 
                     // Show FileChooser
-                    int result = fileChooser.showOpenDialog(OpenMenuItem.this);
+                    int result = fileChooser.showOpenDialog(OpenDSMMenuItem.this);
 
                     if (result == JFileChooser.APPROVE_OPTION) {
                         try {
                             controller.openDSM(fileChooser.getSelectedFile());
                         } catch (IOException exception) {
-                            JOptionPane.showMessageDialog(OpenMenuItem.this, "Filed to open file.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(OpenDSMMenuItem.this, "Filed to open file.", "ERROR", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 }
@@ -67,16 +68,16 @@ public class TitanFileMenu extends JMenu {
         }
     }
 
-    private class NewMenuItem extends JMenuItem {
-        public NewMenuItem() {
+    private class NewClusterMenuItem extends JMenuItem {
+        public NewClusterMenuItem() {
             super("New Clustering");
 
             setMnemonic(KeyEvent.VK_N);
         }
     }
 
-    private class LoadMenuItem extends JMenuItem {
-        public LoadMenuItem() {
+    private class LoadClusterMenuItem extends JMenuItem {
+        public LoadClusterMenuItem() {
             super("Load Clustering...");
 
             setMnemonic(KeyEvent.VK_L);
@@ -84,8 +85,8 @@ public class TitanFileMenu extends JMenu {
         }
     }
 
-    private class SaveMenuItem extends JMenuItem {
-        public SaveMenuItem() {
+    private class SaveClusterMenuItem extends JMenuItem {
+        public SaveClusterMenuItem() {
             super("Save Clustering");
 
             setMnemonic(KeyEvent.VK_S);
@@ -93,8 +94,8 @@ public class TitanFileMenu extends JMenu {
         }
     }
 
-    private class SaveAsMenuItem extends JMenuItem {
-        public SaveAsMenuItem() {
+    private class SaveAsClusterMenuItem extends JMenuItem {
+        public SaveAsClusterMenuItem() {
             super("Save Clustering As...");
 
             setMnemonic(KeyEvent.VK_A);
@@ -107,11 +108,11 @@ public class TitanFileMenu extends JMenu {
 
             setMnemonic(KeyEvent.VK_E);
 
-            add(new DSMMenuItem());
+            add(new ExportDSMMenuItem());
         }
 
-        private class DSMMenuItem extends JMenuItem {
-            public DSMMenuItem() {
+        private class ExportDSMMenuItem extends JMenuItem {
+            public ExportDSMMenuItem() {
                 super("DSM...");
 
                 setMnemonic(KeyEvent.VK_D);
