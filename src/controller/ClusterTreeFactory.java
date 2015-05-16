@@ -10,7 +10,7 @@ public class ClusterTreeFactory {
 	public static ClusterTreeFactory getInstance() {
 		return factoryInstance;
 	}
-
+/*
 //RKTP's part from this line
 	public Document buildDocInstance() {
 		//devoted to RKTP
@@ -20,4 +20,5 @@ public class ClusterTreeFactory {
 	public DefaultMutableTreeNode buildNodeInstance() {
 		//devoted to Yongho
 	}
+	*/
 }

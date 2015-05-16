@@ -5,13 +5,14 @@ import java.util.ArrayList;
 
 public class TitanDSM {
     private int sizeOfMatrix;
-    private boolean[][] dataMatrix;
+    private ArrayList<ArrayList<Boolean>> dataMatrix;
     private ArrayList<String> nameOfClass;
 
     public TitanDSM(int sizeOfMatrix) {
         this.sizeOfMatrix = sizeOfMatrix;
-        dataMatrix = new boolean[sizeOfMatrix][sizeOfMatrix];
+        dataMatrix = new ArrayList<>();
         nameOfClass = new ArrayList<>();
+        initDataMatrix();
         initNameOfClass();
     }
 
@@ -26,21 +27,25 @@ public class TitanDSM {
         }
     }
 
+    private void initDataMatrix() {
+        for(int i = 0; i < sizeOfMatrix; i++){
+            dataMatrix.add(new ArrayList<>());
+            for(int j = 0; j < sizeOfMatrix; j++)
+                dataMatrix.get(i).add(false);
+        }
+    }
+
     public int getSize() {
         return sizeOfMatrix;
     }
 
-    public void addEntity() {
-        sizeOfMatrix++;
-        nameOfClass.add("entity_" + sizeOfMatrix);
-    }
 
-    public boolean[][] getDataMatrix() {
+    public  ArrayList<ArrayList<Boolean>> getDataMatrix() {
         return dataMatrix;
     }
 
     public void setData(boolean data, int row, int col) {
-        dataMatrix[row][col] = data;
+        dataMatrix.get(row).set(col,data);
     }
 
     public ArrayList<String> getNames() {
@@ -51,6 +56,17 @@ public class TitanDSM {
         nameOfClass.set(location, newName);
     }
 
+    public void addEntity(){
+        sizeOfMatrix++;
+        nameOfClass.add("entity" + sizeOfMatrix);
+        dataMatrix.add(new ArrayList<>());
+        for(int i = 0;i < sizeOfMatrix; i++){
+            dataMatrix.get(i).add(false);
+            dataMatrix.get(sizeOfMatrix-1).add(false);
+        }
+        dataMatrix.get(sizeOfMatrix-1).remove(sizeOfMatrix);
+    }
+
     public void loadFromFile(File dsm) throws IOException {
         BufferedReader fileReader = new BufferedReader(new FileReader(dsm));
         String read;
@@ -59,13 +75,14 @@ public class TitanDSM {
         read = fileReader.readLine();
         sizeOfMatrix = Integer.parseInt(read);
 
-        dataMatrix = new boolean[sizeOfMatrix][sizeOfMatrix];
+        dataMatrix = new ArrayList<>();
 
         for (int i = 0; i < sizeOfMatrix; i++) {
             read = fileReader.readLine();
             temp = read.split(" ");
+            dataMatrix.add(new ArrayList<>());
             for (int j = 0; j < sizeOfMatrix; j++) {
-                dataMatrix[i][j] = Integer.parseInt(temp[j]) == 1;
+                dataMatrix.get(i).add(Integer.parseInt(temp[j]) == 1);
             }
         }
 
@@ -86,7 +103,7 @@ public class TitanDSM {
 
         for(int i = 0; i < sizeOfMatrix; i++) {
             for(int j = 0; j < sizeOfMatrix; j++) {
-                out.write(dataMatrix[i][j] + " ");
+                out.write(dataMatrix.get(i).get(j) + " ");
             }
             out.newLine();
         }
