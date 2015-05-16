@@ -103,7 +103,11 @@ public class TitanDSM {
 
         for(int i = 0; i < sizeOfMatrix; i++) {
             for(int j = 0; j < sizeOfMatrix; j++) {
-                out.write(dataMatrix.get(i).get(j) + " ");
+                if(dataMatrix.get(i).get(j) == Boolean.TRUE) {
+                    out.write("1 ");
+                } else {
+                    out.write("0 ");
+                }
             }
             out.newLine();
         }
