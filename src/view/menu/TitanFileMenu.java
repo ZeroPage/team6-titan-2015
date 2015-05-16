@@ -3,7 +3,12 @@ package view.menu;
 import controller.TitanMainController;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 
 public class TitanFileMenu extends JMenu {
     private TitanMainController controller;
@@ -37,6 +42,28 @@ public class TitanFileMenu extends JMenu {
 
             setMnemonic(KeyEvent.VK_O);
             setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK));
+
+            addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Init fileChooser
+                    JFileChooser fileChooser = new JFileChooser(new File("."));
+                    fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+                    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                    fileChooser.setFileFilter(new FileNameExtensionFilter("DSM File (*.dsm)", "dsm"));
+
+                    // Show FileChooser
+                    int result = fileChooser.showOpenDialog(OpenMenuItem.this);
+
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        try {
+                            controller.openDSM(fileChooser.getSelectedFile());
+                        } catch (IOException exception) {
+                            JOptionPane.showMessageDialog(OpenMenuItem.this, "Filed to open file.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+            });
         }
     }
 

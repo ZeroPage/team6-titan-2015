@@ -1,17 +1,18 @@
 package controller;
 
+import model.TitanDSM;
+
+import java.io.File;
+import java.io.IOException;
+
 public class TitanMainController {
-    private TitanDSMController dsmController;
-    private TitanClusterController clusterController;
+    private TitanDSM dsm;
 
     public TitanMainController() {
-        dsmController = new TitanDSMController();
-        clusterController = new TitanClusterController();
+
     }
 
-    public TitanDSMController getDSMController() {
-        return dsmController;
+    public void openDSM(File file) throws IOException {
+        dsm = new TitanDSM(file);
     }
-
-    public TitanClusterController getClusterController() { return clusterController; }
 }
