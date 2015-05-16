@@ -4,13 +4,21 @@ import model.TitanDSM;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class TitanMainController {
+    // Models
     private TitanDSM dsm;
+
+    // Views
+    private JTree jTree;
+
     private ArrayList<Component> boundedComponents;
     private boolean componentsEnabled;
 
@@ -30,7 +38,7 @@ public class TitanMainController {
             try {
                 int size = Integer.valueOf(userInput);
                 dsm = new TitanDSM(size);
-                enableComponents();
+                setDSM(dsm);
             } catch (NumberFormatException exception) {
                 JOptionPane.showMessageDialog(parent, "Invalid Input", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
@@ -50,7 +58,7 @@ public class TitanMainController {
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
                 dsm = new TitanDSM(fileChooser.getSelectedFile());
-                enableComponents();
+                setDSM(dsm);
             } catch (IOException exception) {
                 JOptionPane.showMessageDialog(parent, "Filed to open file.", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
@@ -60,6 +68,30 @@ public class TitanMainController {
     public void boundComponent(Component component) {
         component.setEnabled(componentsEnabled);
         boundedComponents.add(component);
+    }
+
+    public void setJTree(JTree jTree) {
+        this.jTree = jTree;
+    }
+
+    private void setDSM(TitanDSM dsm) {
+        this.dsm = dsm;
+
+        if (dsm == null) {
+            disableComponents();
+            return;
+        }
+
+        if (jTree != null) {
+            // TODO: Temporary implementation. Should be done in Model.
+            DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
+
+            for (String name : dsm.getNames()) {
+                root.add(new DefaultMutableTreeNode(name));
+            }
+
+            jTree.setModel(new DefaultTreeModel(root));
+        }
     }
 
     private void enableComponents() {
