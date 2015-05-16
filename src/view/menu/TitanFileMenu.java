@@ -68,12 +68,14 @@ public class TitanFileMenu extends JMenu {
     private class SaveDSMMenuItem extends JMenuItem {
         public SaveDSMMenuItem() {
             super("Save DSM...");
+            controller.boundComponent(this);
         }
     }
 
     private class NewClusterMenuItem extends JMenuItem {
         public NewClusterMenuItem() {
             super("New Clustering");
+            controller.boundComponent(this);
 
             setMnemonic(KeyEvent.VK_N);
         }
@@ -82,6 +84,7 @@ public class TitanFileMenu extends JMenu {
     private class LoadClusterMenuItem extends JMenuItem {
         public LoadClusterMenuItem() {
             super("Load Clustering...");
+            controller.boundComponent(this);
 
             setMnemonic(KeyEvent.VK_L);
             setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
@@ -91,6 +94,7 @@ public class TitanFileMenu extends JMenu {
     private class SaveClusterMenuItem extends JMenuItem {
         public SaveClusterMenuItem() {
             super("Save Clustering");
+            controller.boundComponent(this);
 
             setMnemonic(KeyEvent.VK_S);
             setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK));
@@ -100,6 +104,7 @@ public class TitanFileMenu extends JMenu {
     private class SaveAsClusterMenuItem extends JMenuItem {
         public SaveAsClusterMenuItem() {
             super("Save Clustering As...");
+            controller.boundComponent(this);
 
             setMnemonic(KeyEvent.VK_A);
         }
@@ -117,6 +122,7 @@ public class TitanFileMenu extends JMenu {
         private class ExportDSMMenuItem extends JMenuItem {
             public ExportDSMMenuItem() {
                 super("DSM...");
+                controller.boundComponent(this);
 
                 setMnemonic(KeyEvent.VK_D);
             }

@@ -7,12 +7,16 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class TitanMainController {
     private TitanDSM dsm;
+    private ArrayList<Component> boundedComponents;
+    private boolean componentsEnabled;
 
     public TitanMainController() {
-
+        boundedComponents = new ArrayList<>();
+        componentsEnabled = false;
     }
 
     public TitanDSM getDSM(){
@@ -26,6 +30,7 @@ public class TitanMainController {
             try {
                 int size = Integer.valueOf(userInput);
                 dsm = new TitanDSM(size);
+                enableComponents();
             } catch (NumberFormatException exception) {
                 JOptionPane.showMessageDialog(parent, "Invalid Input", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
@@ -45,9 +50,31 @@ public class TitanMainController {
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
                 dsm = new TitanDSM(fileChooser.getSelectedFile());
+                enableComponents();
             } catch (IOException exception) {
                 JOptionPane.showMessageDialog(parent, "Filed to open file.", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
+        }
+    }
+
+    public void boundComponent(Component component) {
+        component.setEnabled(componentsEnabled);
+        boundedComponents.add(component);
+    }
+
+    private void enableComponents() {
+        componentsEnabled = true;
+
+        for (Component component : boundedComponents) {
+            component.setEnabled(componentsEnabled);
+        }
+    }
+
+    private void disableComponents() {
+        componentsEnabled = false;
+
+        for (Component component : boundedComponents) {
+            component.setEnabled(componentsEnabled);
         }
     }
 }
