@@ -15,6 +15,7 @@ public class TitanTree extends JTree {
     public TitanTree(TitanMainController controller) {
         // Init Tree
         super();
+        controller.setJTree(this);
 
         // Init fields
         this.controller = controller;
