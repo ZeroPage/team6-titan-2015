@@ -12,6 +12,10 @@ public class TitanMainController {
 
     }
 
+    public void newDSM(int size) {
+        dsm = new TitanDSM(size);
+    }
+
     public void openDSM(File file) throws IOException {
         dsm = new TitanDSM(file);
     }

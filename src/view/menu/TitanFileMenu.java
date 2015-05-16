@@ -23,7 +23,10 @@ public class TitanFileMenu extends JMenu {
         setMnemonic(KeyEvent.VK_F);
 
         // Init Contents
+        add(new NewDSMMenuItem());
         add(new OpenDSMMenuItem());
+        addSeparator();
+        add(new SaveDSMMenuItem());
         addSeparator();
         add(new NewClusterMenuItem());
         add(new LoadClusterMenuItem());
@@ -36,6 +39,26 @@ public class TitanFileMenu extends JMenu {
         add(new ExitMenuItem());
     }
 
+    private class NewDSMMenuItem extends JMenuItem {
+        public NewDSMMenuItem() {
+            super("New DSM");
+            addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String userInput = JOptionPane.showInputDialog(NewDSMMenuItem.this, "Input Size: ", 10);
+
+                    if (userInput != null) {
+                        try {
+                            int size = Integer.valueOf(userInput);
+                            controller.newDSM(size);
+                        } catch (NumberFormatException exception) {
+                            JOptionPane.showMessageDialog(NewDSMMenuItem.this, "Invalid Input", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+            });
+        }
+    }
 
     private class OpenDSMMenuItem extends JMenuItem {
         public OpenDSMMenuItem() {
@@ -65,6 +88,12 @@ public class TitanFileMenu extends JMenu {
                     }
                 }
             });
+        }
+    }
+
+    private class SaveDSMMenuItem extends JMenuItem {
+        public SaveDSMMenuItem() {
+            super("Save DSM...");
         }
     }
 
@@ -125,6 +154,13 @@ public class TitanFileMenu extends JMenu {
             super("Exit");
 
             setMnemonic(KeyEvent.VK_X);
+
+            addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.exit(0);
+                }
+            });
         }
     }
 }
