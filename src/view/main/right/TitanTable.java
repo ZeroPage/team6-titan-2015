@@ -1,4 +1,4 @@
-package view;
+package view.main.right;
 
 import controller.TitanMainController;
 

@@ -1,7 +1,8 @@
-package view;
+package view.main;
 
 import controller.TitanMainController;
-import view.left.TitanLeftPanel;
+import view.main.left.TitanLeftPanel;
+import view.main.right.TitanTable;
 
 import javax.swing.*;
 

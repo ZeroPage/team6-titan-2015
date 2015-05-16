@@ -1,4 +1,4 @@
-package view;
+package view.menu;
 
 import controller.TitanMainController;
 import view.menu.TitanFileMenu;

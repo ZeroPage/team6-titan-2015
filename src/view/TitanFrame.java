@@ -1,6 +1,8 @@
 package view;
 
 import controller.TitanMainController;
+import view.main.TitanMainPanel;
+import view.menu.TitanMenuBar;
 
 import javax.swing.*;
 import java.awt.*;
