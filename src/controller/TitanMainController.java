@@ -1,5 +1,6 @@
 package controller;
 
+import model.NotPositiveException;
 import model.TitanDSM;
 
 import javax.swing.*;
@@ -38,7 +39,7 @@ public class TitanMainController {
                 int size = Integer.valueOf(userInput);
                 dsm = new TitanDSM(size);
                 setDSM(dsm);
-            } catch (NumberFormatException exception) {
+            } catch (NumberFormatException | NotPositiveException exception) {
                 JOptionPane.showMessageDialog(parent, "Invalid Input", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         }

@@ -8,7 +8,7 @@ public class TitanDSM {
     private ArrayList<ArrayList<Boolean>> dataMatrix;
     private ArrayList<String> nameOfClass;
 
-    public TitanDSM(int sizeOfMatrix) throws Exception {
+    public TitanDSM(int sizeOfMatrix) throws NotPositiveException {
         if (sizeOfMatrix <= 0) {
             throw new NotPositiveException();
         }
