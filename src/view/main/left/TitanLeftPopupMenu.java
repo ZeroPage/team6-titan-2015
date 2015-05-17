@@ -13,6 +13,10 @@ public class TitanLeftPopupMenu extends JPopupMenu {
 
         // Init PopupMenu
         add(new RenameMenuItem());
+        add(new SortMenuItem());
+        addSeparator();
+        add(new DuplicateMenuItem());
+        add(new ForkMenuItem());
     }
 
     private class RenameMenuItem extends JMenuItem {
@@ -21,5 +25,21 @@ public class TitanLeftPopupMenu extends JPopupMenu {
         }
     }
 
-    // TODO: Add menus
+    private class SortMenuItem extends JMenuItem {
+        public SortMenuItem() {
+            super("Sort");
+        }
+    }
+
+    private class DuplicateMenuItem extends JMenuItem {
+        public DuplicateMenuItem() {
+            super("Duplicate");
+        }
+    }
+
+    private class ForkMenuItem extends JMenuItem {
+        public ForkMenuItem() {
+            super("Fork");
+        }
+    }
 }

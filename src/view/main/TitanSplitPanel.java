@@ -7,8 +7,6 @@ import view.main.right.TitanTable;
 import javax.swing.*;
 
 public class TitanSplitPanel extends JSplitPane {
-    public static final int INIT_DIVIDER_LOCATION = 200;
-
     private TitanMainController controller;
 
     public TitanSplitPanel(TitanMainController controller) {
@@ -19,7 +17,6 @@ public class TitanSplitPanel extends JSplitPane {
 
         // Init SplitPanel
         setOneTouchExpandable(true);
-        setDividerLocation(INIT_DIVIDER_LOCATION);
 
         // Add components
         JScrollPane scrollPane = new JScrollPane(new TitanTable(controller), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

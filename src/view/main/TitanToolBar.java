@@ -14,17 +14,62 @@ public class TitanToolBar extends JToolBar{
         this.controller = controller;
 
         // Add components
-        add(new OpenButton());
+        add(new OpenDSMButton());
+        add(new RedrawButton());
+        addSeparator();
+        add(new NewClusterButton());
+        add(new OpenClusterButton());
+        add(new SaveClusterButton());
+        add(new SaveAsClusterButton());
     }
 
-    private class OpenButton extends JButton {
-        public OpenButton() {
+    private class OpenDSMButton extends JButton {
+        public OpenDSMButton() {
             super();
-            setIcon(new ImageIcon("res/temp.jpg"));
+            setIcon(new ImageIcon("res/open-dsm.png"));
             setToolTipText("Open DSM");
 
         }
     }
 
-    // TODO: Add Buttons
+    private class RedrawButton extends JButton {
+        public RedrawButton() {
+            super();
+            setIcon(new ImageIcon("res/redraw.png"));
+            setToolTipText("Redraw");
+
+        }
+    }
+
+    private class NewClusterButton extends JButton {
+        public NewClusterButton() {
+            super();
+            setIcon(new ImageIcon("res/new-clsx.png"));
+            setToolTipText("New Clustering");
+        }
+    }
+
+    private class OpenClusterButton extends JButton {
+        public OpenClusterButton() {
+            super();
+            setIcon(new ImageIcon("res/open-clsx.png"));
+            setToolTipText("Open Clustering");
+        }
+    }
+
+    private class SaveClusterButton extends JButton {
+        public SaveClusterButton() {
+            super();
+            setIcon(new ImageIcon("res/save-clsx.png"));
+            setToolTipText("Save Clustering");
+        }
+    }
+
+    private class SaveAsClusterButton extends JButton {
+        public SaveAsClusterButton() {
+            super();
+            setIcon(new ImageIcon("res/save-clsx-as.png"));
+            setToolTipText("Save Clustering As");
+        }
+    }
 }
