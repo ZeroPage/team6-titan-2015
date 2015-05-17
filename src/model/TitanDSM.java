@@ -8,7 +8,10 @@ public class TitanDSM {
     private ArrayList<ArrayList<Boolean>> dataMatrix;
     private ArrayList<String> nameOfClass;
 
-    public TitanDSM(int sizeOfMatrix) {
+    public TitanDSM(int sizeOfMatrix) throws Exception {
+        if (sizeOfMatrix <= 0) {
+            throw new NotPositiveException();
+        }
         this.sizeOfMatrix = sizeOfMatrix;
         dataMatrix = new ArrayList<>();
         nameOfClass = new ArrayList<>();
@@ -101,11 +104,7 @@ public class TitanDSM {
 
         for(int i = 0; i < sizeOfMatrix; i++) {
             for(int j = 0; j < sizeOfMatrix; j++) {
-                if(dataMatrix.get(i).get(j) == Boolean.TRUE) {
-                    out.write("1 ");
-                } else {
-                    out.write("0 ");
-                }
+                out.write(dataMatrix.get(i).get(j) + " ");
             }
             out.newLine();
         }
@@ -119,3 +118,4 @@ public class TitanDSM {
     }
 
 }
+

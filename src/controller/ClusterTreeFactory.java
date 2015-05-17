@@ -20,17 +20,17 @@ public class ClusterTreeFactory {
 	public static ClusterTreeFactory getInstance() {
 		return factoryInstance;
 	}
-/*
+
 //RKTP's part from this line
 	public Document buildDocInstance() {
 		//devoted to RKTP
 		return null;
 	}
 	
-//Yong-ho's part from this line	
+//Yong-ho's part from this line
 	public DefaultMutableTreeNode buildNodeInstance() {
 		//devoted to Yongho
 		return null;
 	}
-	*/
+
 }
