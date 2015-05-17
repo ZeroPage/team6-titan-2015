@@ -6,7 +6,6 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -81,6 +80,8 @@ public class TitanMainController {
             disableComponents();
             return;
         }
+
+        enableComponents();
 
         if (jTree != null) {
             // TODO: Temporary implementation. Should be done in Model.
