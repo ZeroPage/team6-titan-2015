@@ -87,9 +87,10 @@ public class TitanMainController {
         if (jTree != null) {
             // TODO: Temporary implementation. Should be done in Model.
             DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
+            int size = dsm.getSize();
 
-            for (String name : dsm.getNames()) { //FIXME: getNames fixed to getName
-                root.add(new DefaultMutableTreeNode(name));
+            for (int i = 0; i < size; i++) {
+                root.add(new DefaultMutableTreeNode(dsm.getName(i)));
             }
 
             jTree.setModel(new DefaultTreeModel(root));
