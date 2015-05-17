@@ -17,6 +17,7 @@ public class TitanDSM {
     }
 
     public TitanDSM(File file) throws IOException {
+        dataMatrix = new ArrayList<>();
         nameOfClass = new ArrayList<>();
         loadFromFile(file);
     }
@@ -39,8 +40,7 @@ public class TitanDSM {
         return sizeOfMatrix;
     }
 
-
-    public  ArrayList<ArrayList<Boolean>> getDataMatrix() {
+    public ArrayList<ArrayList<Boolean>> getDataMatrix() {
         return dataMatrix;
     }
 
@@ -74,8 +74,6 @@ public class TitanDSM {
 
         read = fileReader.readLine();
         sizeOfMatrix = Integer.parseInt(read);
-
-        dataMatrix = new ArrayList<>();
 
         for (int i = 0; i < sizeOfMatrix; i++) {
             read = fileReader.readLine();
