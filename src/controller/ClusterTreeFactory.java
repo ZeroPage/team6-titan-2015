@@ -26,7 +26,7 @@ public class ClusterTreeFactory {
 		//devoted to RKTP
 		return null;
 	}
-	
+
 //Yong-ho's part from this line
 	public DefaultMutableTreeNode buildNodeInstance() {
 		//devoted to Yongho

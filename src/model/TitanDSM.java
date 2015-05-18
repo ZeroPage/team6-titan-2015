@@ -8,7 +8,7 @@ public class TitanDSM {
     private ArrayList<ArrayList<Boolean>> dataMatrix;
     private ArrayList<String> nameOfClass;
 
-    public TitanDSM(int sizeOfMatrix) throws Exception {
+    public TitanDSM(int sizeOfMatrix) throws NotPositiveException {
         if (sizeOfMatrix <= 0) {
             throw new NotPositiveException();
         }
@@ -43,20 +43,20 @@ public class TitanDSM {
         return sizeOfMatrix;
     }
 
-    public ArrayList<ArrayList<Boolean>> getDataMatrix() {
-        return dataMatrix;
+    public Boolean getData(int row, int col) {
+        return dataMatrix.get(row).get(col);
     }
 
     public void setData(boolean data, int row, int col) {
         dataMatrix.get(row).set(col,data);
     }
 
-    public ArrayList<String> getNames() {
-        return nameOfClass;
+    public  String getName(int index) {
+        return nameOfClass.get(index);
     }
 
-    public void setName(String newName, int location) {
-        nameOfClass.set(location, newName);
+    public void setName(String newName, int index) {
+        nameOfClass.set(index, newName);
     }
 
     public void addEntity(){
