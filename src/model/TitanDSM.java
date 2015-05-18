@@ -32,10 +32,11 @@ public class TitanDSM {
     }
 
     private void initDataMatrix() {
-        for(int i = 0; i < sizeOfMatrix; i++){
+        for(int i = 0; i < sizeOfMatrix; i++) {
             dataMatrix.add(new ArrayList<>());
-            for(int j = 0; j < sizeOfMatrix; j++)
+            for(int j = 0; j < sizeOfMatrix; j++) {
                 dataMatrix.get(i).add(false);
+            }
         }
     }
 
@@ -48,10 +49,10 @@ public class TitanDSM {
     }
 
     public void setData(boolean data, int row, int col) {
-        dataMatrix.get(row).set(col,data);
+        dataMatrix.get(row).set(col, data);
     }
 
-    public  String getName(int index) {
+    public String getName(int index) {
         return nameOfClass.get(index);
     }
 
@@ -69,9 +70,9 @@ public class TitanDSM {
         dataMatrix.add(new ArrayList<>());
         for(int i = 0;i < sizeOfMatrix; i++){
             dataMatrix.get(i).add(false);
-            dataMatrix.get(sizeOfMatrix-1).add(false);
+            dataMatrix.get(sizeOfMatrix - 1).add(false);
         }
-        dataMatrix.get(sizeOfMatrix-1).remove(sizeOfMatrix);
+        dataMatrix.get(sizeOfMatrix - 1).remove(sizeOfMatrix);
     }
 
     public void loadFromFile(File dsm) throws IOException {
