@@ -56,8 +56,12 @@ public class TitanDSM {
         return nameOfClass.get(index);
     }
 
-    public void setName(String newName, int index) {
-        nameOfClass.set(index, newName);
+    public void setName(String newName, int index) throws ItemAlreadyExistException {
+        if(nameOfClass.contains(newName)) {
+            throw new ItemAlreadyExistException();
+        } else {
+            nameOfClass.set(index, newName);
+        }
     }
 
     public int getIndexByName(String name) {
