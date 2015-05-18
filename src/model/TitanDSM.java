@@ -59,6 +59,10 @@ public class TitanDSM {
         nameOfClass.set(index, newName);
     }
 
+    public int getIndexByName(String name) {
+        return nameOfClass.indexOf(name);
+    }
+
     public void addEntity(){
         sizeOfMatrix++;
         nameOfClass.add("entity" + sizeOfMatrix);
@@ -89,7 +93,6 @@ public class TitanDSM {
 
         for (int i = 0; i < sizeOfMatrix; i++) {
             read = fileReader.readLine();
-            System.out.println(read);
             nameOfClass.add(read);
         }
 
