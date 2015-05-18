@@ -88,7 +88,7 @@ public class TitanMainController {
             // TODO: Temporary implementation. Should be done in Model.
             DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
 
-            for (String name : dsm.getNames()) {
+            for (String name : dsm.getNames()) { //FIXME: getNames fixed to getName
                 root.add(new DefaultMutableTreeNode(name));
             }
 
