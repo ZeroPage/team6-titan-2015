@@ -18,43 +18,55 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.swing.tree.*;
+
 public class ClusterData {
 	private Document doc;
 	private File sourceFile;
 	private ArrayList<Element> groupList = new ArrayList<Element>();
+	private DefaultMutableTreeNode treeRoot;
 	
 	public ClusterData() {
 		System.out.println("I need a directory of the .clsx file!");
 	}
 	
-//initializing with directory
-	public ClusterData(String fileDir) throws ParserConfigurationException, SAXException, IOException {
+//initializing with directory(seems not needed)
+	public ClusterData(String fileDir) throws IOException {
 		sourceFile = new File(fileDir);
 		initData();
 	}
 	
 //initializing with File instance	
-	public ClusterData(File file) throws ParserConfigurationException, SAXException, IOException {
+	public ClusterData(File file) throws IOException {
 		sourceFile = file;
 		initData();
 	}
 	
 //load new .clsx file
-	public void loadClusterData(File file) throws ParserConfigurationException, SAXException, IOException {
+	public void loadClusterData(File file) throws IOException {
 		this.sourceFile = file;
 		initData();
 	}
 	
-	public void loadClusterData(String fileName) throws ParserConfigurationException, SAXException, IOException {
+	public void loadClusterData(String fileName) throws IOException {
 		this.sourceFile = new File(fileName);
 		initData();
 	}
 
 //Parse XML data from .clsx file into tree
-	private void initData() throws ParserConfigurationException, SAXException, IOException {
+	private void initData() throws  IOException {
 		DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder xmlBuilder = xmlFactory.newDocumentBuilder();
-		this.doc = xmlBuilder.parse(this.sourceFile);
+		DocumentBuilder xmlBuilder=null;
+		try {
+			xmlBuilder = xmlFactory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			// To be implemented...
+		}
+		try {
+			this.doc = xmlBuilder.parse(this.sourceFile);
+		} catch (SAXException e) {
+			// To be implemented...
+		}
 		
 		//get root
 		Element recentNode = doc.getDocumentElement();
@@ -80,7 +92,23 @@ public class ClusterData {
 		}
 	}
 	
-	public void saveClusterData() throws TransformerException {
+	private void DOMtoTree() {
+		
+	}
+	
+	private void refresh() {
+		
+	}
+	
+	public TreeNode getTree() {
+		return this.treeRoot;
+	}
+	
+	public void setTree(TreeNode newTree) {
+		//To be implemented...
+	}
+	
+	public void saveClusterData() throws TransformerException {//Will be Modified
 		TransformerFactory tFac = TransformerFactory.newInstance();
 		Transformer transformer = tFac.newTransformer();
 		DOMSource source = new DOMSource(this.doc);
@@ -88,40 +116,5 @@ public class ClusterData {
 		
 		this.sourceFile.delete();
 		transformer.transform(source, output);
-	}
-
-//give whole tree
-	public Element getRoot() {
-		return doc.getDocumentElement();
-	}
-
-//give group node with given name(if there's no node with the name, return null)
-	public Element getGroup(String groupName) {
-		for(int i=0;i<this.groupList.size();i++) {
-			Element group = groupList.get(i);
-			if(group.getAttribute("name").equals(groupName)) {
-				return group;
-			}
-		}
-		return null;
-	}
-
-//get specific item recognized with groupName and itemName
-	public Element getItem(String groupName, String itemName) {
-		Element groupLevel = getGroup(groupName);
-		NodeList inGroup = groupLevel.getChildNodes();
-		for(int i=0;i<inGroup.getLength();i++) {
-			Node item=inGroup.item(i);
-			if(item.getNodeType()==Node.ELEMENT_NODE) {
-				Element elemItem = (Element) item;
-				if(elemItem.getAttribute("name").equals(itemName))
-					return elemItem;
-			}
-		}
-		return null;
-	}
-	
-	public ArrayList<Element> getAllGroup() {
-		return groupList;
 	}
 }
