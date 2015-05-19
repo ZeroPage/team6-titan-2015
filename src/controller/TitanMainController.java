@@ -2,30 +2,31 @@ package controller;
 
 import model.NotPositiveException;
 import model.TitanDSM;
-import view.main.left.TitanLeftToolBar;
-import view.main.left.TitanTree;
+import view.TitanMainView;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.*;
 
 public class TitanMainController {
     // Models
     private TitanDSM dsm;
-
-    // SubController
-    private TitanLeftController leftController;
+    private TreeModel treeModel;
 
     // Views
-    private ArrayList<Component> boundedComponents;
-    private boolean componentsEnabled;
+    private TitanMainView view;
 
     public TitanMainController() {
-        boundedComponents = new ArrayList<>();
-        componentsEnabled = false;
+        this.view = new TitanMainView(this);
+        this.view.setMenuBarEnabled(false);
+        this.view.setToolBarEnabled(false);
+        this.view.setLeftToolBarEnabled(false);
+    }
+
+    public void openDialog() {
+        view.showFrame();
     }
 
     public TitanDSM getDSM(){
@@ -66,40 +67,68 @@ public class TitanMainController {
         }
     }
 
-    public void boundComponent(Component component) {
-        component.setEnabled(componentsEnabled);
-        boundedComponents.add(component);
-    }
+    public void checkSelection(TreePath[] paths) {
+        if (paths == null) {
+            return;
+        }
 
-    public void setLeftComponents(TitanTree titanTree, TitanLeftToolBar toolBar) {
-        this.leftController = new TitanLeftController(titanTree, toolBar);
+        boolean canGroup = true;
+        boolean canMoveUp = true;
+        boolean canMoveDown = true;
+        boolean canDelete = true;
+
+        DefaultMutableTreeNode lastParent = null;
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
+
+        for (TreePath path : paths) {
+            DefaultMutableTreeNode self = (DefaultMutableTreeNode) path.getLastPathComponent();
+
+            if (root == self) {
+                canGroup = false;
+                canMoveDown = false;
+                canMoveUp = false;
+                canDelete = false;
+
+                continue;
+            }
+
+            DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getParentPath().getLastPathComponent();
+            int childIndex = treeModel.getIndexOfChild(parent, self);
+            int parentSize = treeModel.getChildCount(parent);
+
+            canMoveUp &= childIndex != 0;
+            canMoveDown &= childIndex != parentSize - 1;
+
+            if (lastParent != null) {
+                canGroup &= lastParent == parent;
+            }
+
+            lastParent = parent;
+        }
+
+        view.setLeftToolBarPartialEnabled(canGroup, false, canMoveUp, canMoveDown, canDelete);
     }
 
     private void setDSM(TitanDSM dsm) {
         this.dsm = dsm;
 
         if (dsm == null) {
-            disableComponents();
             return;
         }
 
-        enableComponents();
-        leftController.setDSM(dsm);
-    }
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
+        int size = dsm.getSize();
 
-    private void enableComponents() {
-        componentsEnabled = true;
-
-        for (Component component : boundedComponents) {
-            component.setEnabled(componentsEnabled);
+        for (int i = 0; i < size; i++) {
+            root.add(new DefaultMutableTreeNode(dsm.getName(i)));
         }
-    }
 
-    private void disableComponents() {
-        componentsEnabled = false;
+        this.treeModel = new DefaultTreeModel(root);
 
-        for (Component component : boundedComponents) {
-            component.setEnabled(componentsEnabled);
-        }
+        view.setTreeModel(this.treeModel);
+        view.setMenuBarEnabled(true);
+        view.setToolBarEnabled(true);
+        view.setLeftToolBarEnabled(true);
+        view.setLeftToolBarPartialEnabled(false, false, false, false, false);
     }
 }

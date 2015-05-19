@@ -1,28 +1,29 @@
-package view.main.left;
+package components.main.left;
 
 import controller.TitanMainController;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
 
-public class TitanLeftToolBar extends JToolBar{
-    private TitanMainController controller;
+public class TitanLeftToolBar extends JToolBar {
+    private ExpandButton expandButton;
+    private CollapseButton collapseButton;
+    private GroupButton groupButton;
+    private UngroupButton ungroupButton;
+    private MoveUpButton moveUpButton;
+    private MoveDownButton moveDownButton;
+    private NewButton newButton;
+    private DeleteButton deleteButton;
+    
+    private ArrayList<Component> components;
 
-    private JButton expandButton;
-    private JButton collapseButton;
-    private JButton groupButton;
-    private JButton ungroupButton;
-    private JButton moveUpButton;
-    private JButton moveDownButton;
-    private JButton newButton;
-    private JButton deleteButton;
-
-    public TitanLeftToolBar(TitanMainController controller) {
+    public TitanLeftToolBar() {
         // Init ToolBar
         super(JToolBar.HORIZONTAL);
         setFloatable(false);
 
         // Init fields
-        this.controller = controller;
         this.expandButton = new ExpandButton();
         this.collapseButton = new CollapseButton();
         this.groupButton = new GroupButton();
@@ -31,6 +32,16 @@ public class TitanLeftToolBar extends JToolBar{
         this.moveDownButton = new MoveDownButton();
         this.newButton = new NewButton();
         this.deleteButton = new DeleteButton();
+        
+        this.components = new ArrayList<>();
+        this.components.add(expandButton);
+        this.components.add(collapseButton);
+        this.components.add(groupButton);
+        this.components.add(ungroupButton);
+        this.components.add(moveUpButton);
+        this.components.add(moveDownButton);
+        this.components.add(newButton);
+        this.components.add(deleteButton);
 
         // Add components
         add(expandButton);
@@ -46,39 +57,45 @@ public class TitanLeftToolBar extends JToolBar{
         add(deleteButton);
     }
 
-    public JButton getExpandButton() {
+    public ExpandButton getExpandButton() {
         return expandButton;
     }
 
-    public JButton getCollapseButton() {
+    public CollapseButton getCollapseButton() {
         return collapseButton;
     }
 
-    public JButton getGroupButton() {
+    public GroupButton getGroupButton() {
         return groupButton;
     }
 
-    public JButton getUngroupButton() {
+    public UngroupButton getUngroupButton() {
         return ungroupButton;
     }
 
-    public JButton getMoveUpButton() {
+    public MoveUpButton getMoveUpButton() {
         return moveUpButton;
     }
 
-    public JButton getMoveDownButton() {
+    public MoveDownButton getMoveDownButton() {
         return moveDownButton;
     }
 
-    public JButton getNewButton() {
+    public NewButton getNewButton() {
         return newButton;
     }
 
-    public JButton getDeleteButton() {
+    public DeleteButton getDeleteButton() {
         return deleteButton;
     }
+    
+    public void setEnabledAll(boolean enabled) {
+        for (Component component : components) {
+            component.setEnabled(enabled);
+        }
+    }
 
-    private class ExpandButton extends JButton {
+    public class ExpandButton extends JButton {
         public ExpandButton() {
             super();
 
@@ -87,7 +104,7 @@ public class TitanLeftToolBar extends JToolBar{
         }
     }
 
-    private class CollapseButton extends JButton {
+    public class CollapseButton extends JButton {
         public CollapseButton() {
             super();
 
@@ -96,7 +113,7 @@ public class TitanLeftToolBar extends JToolBar{
         }
     }
 
-    private class GroupButton extends JButton {
+    public class GroupButton extends JButton {
         public GroupButton() {
             super();
 
@@ -105,7 +122,7 @@ public class TitanLeftToolBar extends JToolBar{
         }
     }
 
-    private class UngroupButton extends JButton {
+    public class UngroupButton extends JButton {
         public UngroupButton() {
             super();
 
@@ -114,7 +131,7 @@ public class TitanLeftToolBar extends JToolBar{
         }
     }
 
-    private class MoveUpButton extends JButton {
+    public class MoveUpButton extends JButton {
         public MoveUpButton() {
             super();
 
@@ -123,7 +140,7 @@ public class TitanLeftToolBar extends JToolBar{
         }
     }
 
-    private class MoveDownButton extends JButton {
+    public class MoveDownButton extends JButton {
         public MoveDownButton() {
             super();
 
@@ -132,7 +149,7 @@ public class TitanLeftToolBar extends JToolBar{
         }
     }
 
-    private class NewButton extends JButton {
+    public class NewButton extends JButton {
         public NewButton() {
             super();
 
@@ -141,7 +158,7 @@ public class TitanLeftToolBar extends JToolBar{
         }
     }
 
-    private class DeleteButton extends JButton {
+    public class DeleteButton extends JButton {
         public DeleteButton() {
             super();
 
