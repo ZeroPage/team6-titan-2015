@@ -2,11 +2,11 @@ package controller;
 
 import model.NotPositiveException;
 import model.TitanDSM;
+import view.main.left.TitanLeftToolBar;
+import view.main.left.TitanTree;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -16,9 +16,10 @@ public class TitanMainController {
     // Models
     private TitanDSM dsm;
 
-    // Views
-    private JTree jTree;
+    // SubController
+    private TitanLeftController leftController;
 
+    // Views
     private ArrayList<Component> boundedComponents;
     private boolean componentsEnabled;
 
@@ -70,8 +71,8 @@ public class TitanMainController {
         boundedComponents.add(component);
     }
 
-    public void setJTree(JTree jTree) {
-        this.jTree = jTree;
+    public void setLeftComponents(TitanTree titanTree, TitanLeftToolBar toolBar) {
+        this.leftController = new TitanLeftController(titanTree, toolBar);
     }
 
     private void setDSM(TitanDSM dsm) {
@@ -83,18 +84,7 @@ public class TitanMainController {
         }
 
         enableComponents();
-
-        if (jTree != null) {
-            // TODO: Temporary implementation. Should be done in Model.
-            DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
-            int size = dsm.getSize();
-
-            for (int i = 0; i < size; i++) {
-                root.add(new DefaultMutableTreeNode(dsm.getName(i)));
-            }
-
-            jTree.setModel(new DefaultTreeModel(root));
-        }
+        leftController.setDSM(dsm);
     }
 
     private void enableComponents() {

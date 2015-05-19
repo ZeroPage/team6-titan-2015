@@ -17,7 +17,7 @@ public class TitanTable extends JTable {
         this.controller = controller;
 
         // Init data
-        setSampleData();
+        // setSampleData();
     }
 
     private void setSampleData() { // TODO: remove after full implementation

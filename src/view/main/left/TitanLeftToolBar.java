@@ -7,6 +7,15 @@ import javax.swing.*;
 public class TitanLeftToolBar extends JToolBar{
     private TitanMainController controller;
 
+    private JButton expandButton;
+    private JButton collapseButton;
+    private JButton groupButton;
+    private JButton ungroupButton;
+    private JButton moveUpButton;
+    private JButton moveDownButton;
+    private JButton newButton;
+    private JButton deleteButton;
+
     public TitanLeftToolBar(TitanMainController controller) {
         // Init ToolBar
         super(JToolBar.HORIZONTAL);
@@ -14,19 +23,59 @@ public class TitanLeftToolBar extends JToolBar{
 
         // Init fields
         this.controller = controller;
+        this.expandButton = new ExpandButton();
+        this.collapseButton = new CollapseButton();
+        this.groupButton = new GroupButton();
+        this.ungroupButton = new UngroupButton();
+        this.moveUpButton = new MoveUpButton();
+        this.moveDownButton = new MoveDownButton();
+        this.newButton = new NewButton();
+        this.deleteButton = new DeleteButton();
 
         // Add components
-        add(new ExpandButton());
-        add(new CollapseButton());
+        add(expandButton);
+        add(collapseButton);
         addSeparator();
-        add(new GroupButton());
-        add(new UngroupButton());
+        add(groupButton);
+        add(ungroupButton);
         addSeparator();
-        add(new MoveUpButton());
-        add(new MoveDownButton());
+        add(moveUpButton);
+        add(moveDownButton);
         addSeparator();
-        add(new NewButton());
-        add(new DeleteButton());
+        add(newButton);
+        add(deleteButton);
+    }
+
+    public JButton getExpandButton() {
+        return expandButton;
+    }
+
+    public JButton getCollapseButton() {
+        return collapseButton;
+    }
+
+    public JButton getGroupButton() {
+        return groupButton;
+    }
+
+    public JButton getUngroupButton() {
+        return ungroupButton;
+    }
+
+    public JButton getMoveUpButton() {
+        return moveUpButton;
+    }
+
+    public JButton getMoveDownButton() {
+        return moveDownButton;
+    }
+
+    public JButton getNewButton() {
+        return newButton;
+    }
+
+    public JButton getDeleteButton() {
+        return deleteButton;
     }
 
     private class ExpandButton extends JButton {
