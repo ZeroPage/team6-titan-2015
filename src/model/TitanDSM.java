@@ -107,15 +107,12 @@ public class TitanDSM {
         }
 
         for (int i = 0; i < sizeOfMatrix; i++) {
-            temp = read.split(" ");
-            if(temp.length != 1){
+            read = fileReader.readLine();
+            if(read == null){
                 throw new WrongDSMFormatException();
             }
-
-            try {
-                read = fileReader.readLine();
-            }
-            catch(IOException e){
+            temp = read.split(" ");
+            if(temp.length != 1){
                 throw new WrongDSMFormatException();
             }
             nameOfClass.add(read);
