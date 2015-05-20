@@ -19,7 +19,7 @@ public class TitanDSM {
         initNameOfClass();
     }
 
-    public TitanDSM(File file) throws IOException {
+    public TitanDSM(File file) throws IOException, WrongDSMFormatException {
         dataMatrix = new ArrayList<>();
         nameOfClass = new ArrayList<>();
         loadFromFile(file);
@@ -79,7 +79,7 @@ public class TitanDSM {
         dataMatrix.get(sizeOfMatrix - 1).remove(sizeOfMatrix);
     }
 
-    public void loadFromFile(File dsm) throws IOException {
+    public void loadFromFile(File dsm) throws IOException, WrongDSMFormatException {
         BufferedReader fileReader = new BufferedReader(new FileReader(dsm));
         String read;
         String[] temp;
@@ -114,7 +114,7 @@ public class TitanDSM {
             for(int j = 0; j < sizeOfMatrix; j++) {
                 if(dataMatrix.get(i).get(j) == Boolean.TRUE) {
                     out.write("1 ");
-                } else {
+                        } else {
                     out.write("0 ");
                 }
             }
@@ -130,4 +130,3 @@ public class TitanDSM {
     }
 
 }
-
