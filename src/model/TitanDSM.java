@@ -85,20 +85,44 @@ public class TitanDSM {
         String[] temp;
 
         read = fileReader.readLine();
+        if(isNum(read) == false){
+            throw new WrongDSMFormatException();
+        }
         sizeOfMatrix = Integer.parseInt(read);
+
 
         for (int i = 0; i < sizeOfMatrix; i++) {
             read = fileReader.readLine();
             temp = read.split(" ");
+            if(temp.length != sizeOfMatrix){
+                throw new WrongDSMFormatException();
+            }
             dataMatrix.add(new ArrayList<>());
             for (int j = 0; j < sizeOfMatrix; j++) {
+                if(temp[j].equals("0") == false && temp[j].equals("1") == false){
+                    throw new WrongDSMFormatException();
+                }
                 dataMatrix.get(i).add(Integer.parseInt(temp[j]) == 1);
             }
         }
 
         for (int i = 0; i < sizeOfMatrix; i++) {
-            read = fileReader.readLine();
+            temp = read.split(" ");
+            if(temp.length != 1){
+                throw new WrongDSMFormatException();
+            }
+
+            try {
+                read = fileReader.readLine();
+            }
+            catch(IOException e){
+                throw new WrongDSMFormatException();
+            }
             nameOfClass.add(read);
+        }
+
+        if(fileReader.read() != -1){
+            throw new WrongDSMFormatException();
         }
 
         fileReader.close();
@@ -114,7 +138,8 @@ public class TitanDSM {
             for(int j = 0; j < sizeOfMatrix; j++) {
                 if(dataMatrix.get(i).get(j) == Boolean.TRUE) {
                     out.write("1 ");
-                        } else {
+                        }
+                else {
                     out.write("0 ");
                 }
             }
@@ -129,4 +154,7 @@ public class TitanDSM {
         out.close();
     }
 
+    private Boolean isNum(String toCheck){
+        return toCheck.matches("[1-9]\\d*");
+    }
 }
