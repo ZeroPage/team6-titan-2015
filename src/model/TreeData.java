@@ -1,10 +1,11 @@
 package model;
 
+import java.util.*;
+
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
+import javax.swing.tree.*;
 
 public class TreeData {
 	private TitanDSM dsmData;
@@ -17,7 +18,7 @@ public class TreeData {
 		treeRoot = null;
 	}
 	
-	public void loadClusterData(File clsxFile) throws IOException, WrongXMLNamespaceException {
+	public void loadClusterData(File clsxFile) throws IOException {
 		cluster = new ClusterData(clsxFile);
 		buildTree(cluster.getTree());
 	}

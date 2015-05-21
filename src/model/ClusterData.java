@@ -1,8 +1,6 @@
 package model;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.xml.parsers.*;
@@ -18,26 +16,36 @@ import javax.swing.tree.*;
 public class ClusterData {
 	private File sourceFile;
 	private DefaultMutableTreeNode treeRoot;
-	private final String namespace = "http://rise.cs.drexel.edu/minos/clsx";
 	
 	public ClusterData() {
 		System.out.println("I need a directory of the .clsx file!");
 	}
 	
+//initializing with directory(seems not needed)
+	public ClusterData(String fileDir) throws IOException {
+		sourceFile = new File(fileDir);
+		initData();
+	}
+	
 //initializing with File instance	
-	public ClusterData(File file) throws IOException, WrongXMLNamespaceException {
-		this.sourceFile = file;
+	public ClusterData(File file) throws IOException {
+		sourceFile = file;
 		initData();
 	}
 	
 //load new .clsx file
-	public void loadClusterData(File file) throws IOException, WrongXMLNamespaceException {
+	public void loadClusterData(File file) throws IOException {
 		this.sourceFile = file;
+		initData();
+	}
+	
+	public void loadClusterData(String fileName) throws IOException {
+		this.sourceFile = new File(fileName);
 		initData();
 	}
 
 //Parse XML data from .clsx file into tree
-	private void initData() throws  IOException, WrongXMLNamespaceException {
+	private void initData() throws  IOException {
 		DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder xmlBuilder=null;
 		Document doc=null;
@@ -52,14 +60,9 @@ public class ClusterData {
 			// To be implemented...
 		}
 		doc.getDocumentElement().normalize();
-		Element tempclsx = (Element) doc.getChildNodes().item(0);
-		if(!tempclsx.getAttribute("xmlns").equals(namespace)) {
-			throw new WrongXMLNamespaceException();
-		}
 		
 		this.treeRoot = new DefaultMutableTreeNode(true);
 		buildTree(doc.getDocumentElement(),treeRoot);
-		this.treeRoot = (DefaultMutableTreeNode) this.treeRoot.getChildAt(0);
 	}
 	
 //Build tree recursively
@@ -72,63 +75,33 @@ public class ClusterData {
 			if(node.getNodeType()==Node.ELEMENT_NODE) {
 				elem = (Element) node;
 			}
-			if(elem.hasAttribute("xmlns"))
 			newNode = new DefaultMutableTreeNode(elem.getAttribute("name"),elem.hasChildNodes());
-			if(newNode.getAllowsChildren())
+			if(elem.hasChildNodes())
 				buildTree(elem,newNode);
 			treeNode.add(newNode);
 		}
 	}
-
-//gives root of the Node(<cluster> level)	
-	public DefaultMutableTreeNode getTree() {
+	
+	private void refresh() {
+		//FRRRRRRRRRRRRESH!
+	}
+	
+	public TreeNode getTree() {
 		return this.treeRoot;
 	}
-
-//I suppose this method should be changed...	
-	public void setTree(DefaultMutableTreeNode newTree) {
-		this.treeRoot = newTree;
+	
+	public void setTree(TreeNode newTree) {
+		//To be implemented...
+		refresh();
 	}
-
-//Call this method to save tree in XML format	
-	public void saveClusterData() throws IOException {
-		BufferedWriter out = new BufferedWriter(new FileWriter(this.sourceFile,false));
-		out.write("<cluster xmlns=\"http://rise.cs.drexel.edu/minos/clsx\">");
-		out.newLine();
-		for(int i=0;i<this.treeRoot.getChildCount();i++) {
-			writeGroup(out,(DefaultMutableTreeNode)this.treeRoot.getChildAt(0));
-		}
-		out.append("</cluster>");
-		out.close();
-	}
-//saving with new Dir. of the file	
-	public void saveClusterData(String newDir) throws IOException {
-		this.sourceFile = new File(newDir);
-		BufferedWriter out = new BufferedWriter(new FileWriter(this.sourceFile,false));
-		out.write("<cluster xmlns=\"http://rise.cs.drexel.edu/minos/clsx\">");
-		out.newLine();
-		for(int i=0;i<this.treeRoot.getChildCount();i++) {
-			writeGroup(out,(DefaultMutableTreeNode)this.treeRoot.getChildAt(0));
-		}
-		out.append("</cluster>");
-		out.close();
-	}
-
-//recursively write group/item into file	
-	private void writeGroup(BufferedWriter out, DefaultMutableTreeNode node) throws IOException {
-		String attributeName = node.getUserObject().toString();
-		if(node.getAllowsChildren()) {
-			out.append("<group name=\"" + attributeName + "\">");
-			out.newLine();
-			for(int i=0;i<node.getChildCount();i++) {
-				writeGroup(out,(DefaultMutableTreeNode)node.getChildAt(0));
-			}
-			out.append("</group>");
-			out.newLine();
-		} else {
-			out.append("<item name=" + attributeName + "\" />");
-			out.newLine();
-		}
+	
+	public void saveClusterData() {//Will be Modified
+/*		TransformerFactory tFac = TransformerFactory.newInstance();
+		Transformer transformer = tFac.newTransformer();
+		DOMSource source = new DOMSource(this.doc);
+		Result output = new StreamResult(this.sourceFile);
 		
+		this.sourceFile.delete();
+		transformer.transform(source, output);*/
 	}
 }
