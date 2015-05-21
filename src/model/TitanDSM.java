@@ -85,7 +85,7 @@ public class TitanDSM {
         String[] temp;
 
         read = fileReader.readLine();
-        if(isNum(read) == false){
+        if(!isNum(read)){
             throw new WrongDSMFormatException();
         }
         sizeOfMatrix = Integer.parseInt(read);
@@ -99,7 +99,7 @@ public class TitanDSM {
             }
             dataMatrix.add(new ArrayList<>());
             for (int j = 0; j < sizeOfMatrix; j++) {
-                if(temp[j].equals("0") == false && temp[j].equals("1") == false){
+                if(!temp[j].equals("0") && !temp[j].equals("1")){
                     throw new WrongDSMFormatException();
                 }
                 dataMatrix.get(i).add(Integer.parseInt(temp[j]) == 1);
