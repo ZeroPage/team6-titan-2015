@@ -28,7 +28,7 @@ public class TitanMainView {
     private TitanTable titanTable;
 
     public TitanMainView(TitanMainController controller) {
-        controller = controller;
+        this.controller = controller;
 
         titanFrame = new TitanFrame();
         titanMenuBar = titanFrame.getTitanMenuBar();
