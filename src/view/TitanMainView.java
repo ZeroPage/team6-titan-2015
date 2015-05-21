@@ -38,6 +38,7 @@ public class TitanMainView {
         fileMenu.setEnabledAll(enabled);
         fileMenu.getNewDSMMenuItem().setEnabled(true);
         fileMenu.getOpenDSMMenuItem().setEnabled(true);
+        fileMenu.getExitMenuItem().setEnabled(true);
 
         TitanViewMenu viewMenu = frame.getTitanMenuBar().getTitanViewMenu();
         viewMenu.getRedrawMenuItem().setEnabled(enabled);
@@ -82,6 +83,13 @@ public class TitanMainView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.openDSM(frame);
+            }
+        });
+
+        fileMenu.getExitMenuItem().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
             }
         });
 
