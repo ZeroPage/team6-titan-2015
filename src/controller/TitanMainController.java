@@ -10,6 +10,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.io.*;
+import java.util.ArrayList;
 
 public class TitanMainController {
     // Models
@@ -134,13 +135,16 @@ public class TitanMainController {
         root.add(new DefaultMutableTreeNode("test.group.2", true));
 
         int size = dsm.getSize();
+        ArrayList<String> names = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             root.add(new DefaultMutableTreeNode(dsm.getName(i), false));
+            names.add(dsm.getName(i));
         }
 
         this.treeModel = new DefaultTreeModel(root, true);
 
         view.setTreeModel(this.treeModel);
+        view.setTableContents(names.toArray(new String[] {""}), new boolean[names.size()][names.size()]); // TODO: Temporary Code.
         view.setMenuBarEnabled(true);
         view.setToolBarEnabled(true);
         view.setLeftToolBarEnabled(true);

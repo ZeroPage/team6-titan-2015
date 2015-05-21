@@ -10,5 +10,6 @@ public class TitanTable extends JTable {
         // Init Table
         super(null);
         setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        setTableHeader(null);
     }
 }

@@ -39,7 +39,7 @@ public class TitanFrame extends JFrame {
         Container contentPane = getContentPane();
         JPanel panel = new JPanel(new BorderLayout());
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, titanLeftPanel, titanTable);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, titanLeftPanel, new JScrollPane(titanTable));
         splitPane.setOneTouchExpandable(true);
 
         panel.add(titanToolBar, BorderLayout.NORTH);
