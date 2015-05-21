@@ -70,11 +70,11 @@ public class ClusterData {
 			Node node = nodeList.item(i);
 			if(node.getNodeType()==Node.ELEMENT_NODE) {
 				elem = (Element) node;
+				newNode = new DefaultMutableTreeNode(elem.getAttribute("name"),elem.hasChildNodes());
+				if(newNode.getAllowsChildren())
+					buildTree(elem,newNode);
+				treeNode.add(newNode);
 			}
-			newNode = new DefaultMutableTreeNode(elem.getAttribute("name"),elem.hasChildNodes());
-			if(newNode.getAllowsChildren())
-				buildTree(elem,newNode);
-			treeNode.add(newNode);
 		}
 	}
 
@@ -119,12 +119,12 @@ public class ClusterData {
 			out.append("<group name=\"" + attributeName + "\">");
 			out.newLine();
 			for(int i=0;i<node.getChildCount();i++) {
-				writeGroup(out,(DefaultMutableTreeNode)node.getChildAt(0));
+				writeGroup(out,(DefaultMutableTreeNode)node.getChildAt(i));
 			}
 			out.append("</group>");
 			out.newLine();
 		} else {
-			out.append("<item name=" + attributeName + "\" />");
+			out.append("<item name=\"" + attributeName + "\" />");
 			out.newLine();
 		}
 		
