@@ -117,14 +117,21 @@ public class TitanMainController {
             return;
         }
 
+        // FIXME: Temporary implementation
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
-        int size = dsm.getSize();
 
+        DefaultMutableTreeNode tempGroup = new DefaultMutableTreeNode("test.group", true);
+        tempGroup.add(new DefaultMutableTreeNode("test_1", false));
+        tempGroup.add(new DefaultMutableTreeNode("test_2", false));
+        root.add(tempGroup);
+        root.add(new DefaultMutableTreeNode("test.group.2", true));
+
+        int size = dsm.getSize();
         for (int i = 0; i < size; i++) {
-            root.add(new DefaultMutableTreeNode(dsm.getName(i)));
+            root.add(new DefaultMutableTreeNode(dsm.getName(i), false));
         }
 
-        this.treeModel = new DefaultTreeModel(root);
+        this.treeModel = new DefaultTreeModel(root, true);
 
         view.setTreeModel(this.treeModel);
         view.setMenuBarEnabled(true);
