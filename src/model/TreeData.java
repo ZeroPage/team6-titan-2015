@@ -12,7 +12,7 @@ public class TreeData {
 	private ClusterData cluster;
 	private DefaultMutableTreeNode treeRoot;
 	
-	public TreeData(File dsmFile) throws IOException {
+	public TreeData(File dsmFile) throws IOException, WrongDSMFormatException {
 		dsmData = new TitanDSM(dsmFile);
 		cluster = null;
 		treeRoot = null;

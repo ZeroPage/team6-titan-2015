@@ -2,6 +2,7 @@ package controller;
 
 import model.NotPositiveException;
 import model.TitanDSM;
+import model.WrongDSMFormatException;
 import view.TitanMainView;
 
 import javax.swing.*;
@@ -61,7 +62,7 @@ public class TitanMainController {
             try {
                 dsm = new TitanDSM(fileChooser.getSelectedFile());
                 setDSM(dsm);
-            } catch (IOException exception) {
+            } catch (IOException | WrongDSMFormatException exception) {
                 JOptionPane.showMessageDialog(parent, "Filed to open file.", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         }
