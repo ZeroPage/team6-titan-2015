@@ -59,7 +59,6 @@ public class ClusterData {
 		
 		this.treeRoot = new DefaultMutableTreeNode(true);
 		buildTree(doc.getDocumentElement(),treeRoot);
-		this.treeRoot = (DefaultMutableTreeNode) this.treeRoot.getChildAt(0);
 	}
 	
 //Build tree recursively
@@ -72,7 +71,6 @@ public class ClusterData {
 			if(node.getNodeType()==Node.ELEMENT_NODE) {
 				elem = (Element) node;
 			}
-			if(elem.hasAttribute("xmlns"))
 			newNode = new DefaultMutableTreeNode(elem.getAttribute("name"),elem.hasChildNodes());
 			if(newNode.getAllowsChildren())
 				buildTree(elem,newNode);
