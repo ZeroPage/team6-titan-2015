@@ -4,8 +4,8 @@ import components.TitanFrame;
 import components.main.TitanToolBar;
 import components.main.left.TitanLeftToolBar;
 import components.main.left.TitanTree;
+import components.main.right.TitanTable;
 import components.menu.TitanFileMenu;
-import components.menu.TitanHelpMenu;
 import components.menu.TitanMenuBar;
 import components.menu.TitanViewMenu;
 import controller.TitanMainController;
@@ -20,57 +20,66 @@ import java.awt.event.ActionListener;
 public class TitanMainView {
     private TitanMainController controller;
 
-    private TitanFrame frame;
+    private TitanFrame titanFrame;
+    private TitanMenuBar titanMenuBar;
+    private TitanToolBar titanToolBar;
+    private TitanLeftToolBar titanLeftToolBar;
+    private TitanTree titanTree;
+    private TitanTable titanTable;
 
     public TitanMainView(TitanMainController controller) {
-        this.controller = controller;
-        this.frame = new TitanFrame();
+        controller = controller;
 
-        initListeners(this.frame);
+        titanFrame = new TitanFrame();
+        titanMenuBar = titanFrame.getTitanMenuBar();
+        titanToolBar = titanFrame.getTitanToolBar();
+        titanLeftToolBar = titanFrame.getTitanLeftPanel().getToolBar();
+        titanTree = titanFrame.getTitanLeftPanel().getTree();
+        titanTable = titanFrame.getTitanTable();
+
+        initListeners(this.titanFrame);
     }
 
     public void showFrame() {
-        this.frame.setVisible(true);
+        this.titanFrame.setVisible(true);
     }
 
     public void setMenuBarEnabled(boolean enabled) {
-        TitanFileMenu fileMenu = frame.getTitanMenuBar().getTitanFileMenu();
+        TitanFileMenu fileMenu = titanMenuBar.getTitanFileMenu();
         fileMenu.setEnabledAll(enabled);
         fileMenu.getNewDSMMenuItem().setEnabled(true);
         fileMenu.getOpenDSMMenuItem().setEnabled(true);
         fileMenu.getExitMenuItem().setEnabled(true);
 
-        TitanViewMenu viewMenu = frame.getTitanMenuBar().getTitanViewMenu();
+        TitanViewMenu viewMenu = titanMenuBar.getTitanViewMenu();
         viewMenu.getRedrawMenuItem().setEnabled(enabled);
         viewMenu.getShowRowLabelMenuItem().setEnabled(enabled);
     }
 
     public void setToolBarEnabled(boolean enabled) {
-        frame.getTitanToolBar().setEnabledAll(enabled);
-        frame.getTitanToolBar().getOpenDSMButton().setEnabled(true);
+        titanToolBar.setEnabledAll(enabled);
+        titanToolBar.getOpenDSMButton().setEnabled(true);
     }
 
     public void setLeftToolBarEnabled(boolean enabled) {
-        frame.getTitanLeftPanel().getToolBar().setEnabledAll(enabled);
+        titanLeftToolBar.setEnabledAll(enabled);
     }
 
     public void setLeftToolBarPartialEnabled(boolean group, boolean ungroup, boolean up, boolean down, boolean delete) {
-        TitanLeftToolBar leftToolBar = frame.getTitanLeftPanel().getToolBar();
-
-        leftToolBar.getGroupButton().setEnabled(group);
-        leftToolBar.getUngroupButton().setEnabled(ungroup);
-        leftToolBar.getMoveUpButton().setEnabled(up);
-        leftToolBar.getMoveDownButton().setEnabled(down);
-        leftToolBar.getDeleteButton().setEnabled(delete);
+        titanLeftToolBar.getGroupButton().setEnabled(group);
+        titanLeftToolBar.getUngroupButton().setEnabled(ungroup);
+        titanLeftToolBar.getMoveUpButton().setEnabled(up);
+        titanLeftToolBar.getMoveDownButton().setEnabled(down);
+        titanLeftToolBar.getDeleteButton().setEnabled(delete);
     }
 
     public void setTreeModel(TreeModel treeModel) {
-        frame.getTitanLeftPanel().getTree().setModel(treeModel);
+        titanFrame.getTitanLeftPanel().getTree().setModel(treeModel);
     }
 
     private void initListeners(TitanFrame frame) {
         // FileMenu
-        TitanFileMenu fileMenu = frame.getTitanMenuBar().getTitanFileMenu();
+        TitanFileMenu fileMenu = titanMenuBar.getTitanFileMenu();
 
         fileMenu.getNewDSMMenuItem().addActionListener(new ActionListener() {
             @Override
@@ -94,7 +103,7 @@ public class TitanMainView {
         });
 
         // Help
-        frame.getTitanMenuBar().getTitanHelpMenu().getAboutMenuItem().addActionListener(new ActionListener() {
+        titanMenuBar.getTitanHelpMenu().getAboutMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(frame, "About"); // TODO: Fill contents
@@ -102,8 +111,7 @@ public class TitanMainView {
         });
 
         // ToolBar
-        TitanToolBar toolBar = frame.getTitanToolBar();
-        toolBar.getOpenDSMButton().addActionListener(new ActionListener() {
+        titanToolBar.getOpenDSMButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.openDSM(frame);
@@ -111,11 +119,10 @@ public class TitanMainView {
         });
 
         // Tree
-        TitanTree tree = frame.getTitanLeftPanel().getTree();
-        tree.addTreeSelectionListener(new TreeSelectionListener() {
+        titanTree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
             public void valueChanged(TreeSelectionEvent e) {
-                controller.checkSelection(tree.getSelectionPaths());
+                controller.checkSelection(titanTree.getSelectionPaths());
             }
         });
 
