@@ -26,6 +26,8 @@ public class TitanFrame extends JFrame {
         setTitle(FRAME_TITLE);
         setSize(INIT_FRAME_WIDTH, INIT_FRAME_HEIGHT);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((int) screen.getWidth() / 5, (int) screen.getHeight() / 5);
 
         // Init fields
         titanMenuBar = new TitanMenuBar();
