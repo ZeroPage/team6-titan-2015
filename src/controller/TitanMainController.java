@@ -69,45 +69,52 @@ public class TitanMainController {
     }
 
     public void checkSelection(TreePath[] paths) {
-        if (paths == null) {
-            return;
-        }
-
         boolean canGroup = true;
+        boolean canUngroup = true;
         boolean canMoveUp = true;
         boolean canMoveDown = true;
         boolean canDelete = true;
 
-        DefaultMutableTreeNode lastParent = null;
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
+        if (paths == null || paths.length == 0) {
+            canGroup = false;
+            canUngroup = false;
+            canMoveUp = false;
+            canMoveDown = false;
+            canDelete = false;
+        } else {
+            DefaultMutableTreeNode lastParent = null;
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
 
-        for (TreePath path : paths) {
-            DefaultMutableTreeNode self = (DefaultMutableTreeNode) path.getLastPathComponent();
+            for (TreePath path : paths) {
+                DefaultMutableTreeNode self = (DefaultMutableTreeNode) path.getLastPathComponent();
 
-            if (root == self) {
-                canGroup = false;
-                canMoveDown = false;
-                canMoveUp = false;
-                canDelete = false;
+                if (root == self) {
+                    canGroup = false;
+                    canMoveDown = false;
+                    canMoveUp = false;
+                    canDelete = false;
+                    canUngroup = false;
 
-                continue;
+                    continue;
+                }
+
+                DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getParentPath().getLastPathComponent();
+                int childIndex = treeModel.getIndexOfChild(parent, self);
+                int parentSize = treeModel.getChildCount(parent);
+
+                canMoveUp &= childIndex != 0;
+                canMoveDown &= childIndex != parentSize - 1;
+                canUngroup &= self.getAllowsChildren();
+
+                if (lastParent != null) {
+                    canGroup &= lastParent == parent;
+                }
+
+                lastParent = parent;
             }
-
-            DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getParentPath().getLastPathComponent();
-            int childIndex = treeModel.getIndexOfChild(parent, self);
-            int parentSize = treeModel.getChildCount(parent);
-
-            canMoveUp &= childIndex != 0;
-            canMoveDown &= childIndex != parentSize - 1;
-
-            if (lastParent != null) {
-                canGroup &= lastParent == parent;
-            }
-
-            lastParent = parent;
         }
 
-        view.setLeftToolBarPartialEnabled(canGroup, false, canMoveUp, canMoveDown, canDelete);
+        view.setLeftToolBarPartialEnabled(canGroup, canUngroup, canMoveUp, canMoveDown, canDelete);
     }
 
     private void setDSM(TitanDSM dsm) {
