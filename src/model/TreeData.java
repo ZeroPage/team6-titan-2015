@@ -23,11 +23,16 @@ public class TreeData {
 	}
 	
 	private DefaultMutableTreeNode buildTree() {
-		DefaultMutableTreeNode node=null;//This is temporary implementation.
-		
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode (" root ");
+		Vector<DefaultMutableTreeNode>vec = new Vector<DefaultMutableTreeNode>();//백터객체생성
+		String []data ={"A", "B","C","D","E",};//dsm string 가정
+		for(int i=0;i<data.length;i++){
+			vec.add(new DefaultMutableTreeNode(data[i]));
+			root.add(vec.get(i));
+		}
 		//IMPLEMENT REQUIRED
 		
-		return node;
+		return root;
 	}
 	
 	private void buildTree(TreeNode clsxTree) {
