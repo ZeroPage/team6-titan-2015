@@ -1,7 +1,6 @@
 package model;
 
 import java.util.*;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -26,11 +25,12 @@ public class TreeData {
 	
 	private DefaultMutableTreeNode buildTree() {
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode (" root ");
-		Vector<DefaultMutableTreeNode>vec = new Vector<DefaultMutableTreeNode>();//ë°±í„°ê°ì²´ìƒì„±
-		String []data ={"A", "B","C","D","E",};//dsm string ê°€ì •
-		for(int i=0;i<data.length;i++){
-			vec.add(new DefaultMutableTreeNode(data[i]));
-			root.add(vec.get(i));
+		Vector<DefaultMutableTreeNode>vec = new Vector<DefaultMutableTreeNode>();//°´Ã¼»ı¼º
+		int count = dsmData.getSize();//¼öÁ¤ È®ÀÎ¹Ù¶÷
+		for(int j=0;j<count ;j++){
+		String word = dsmData.getName(j);
+		vec.add(new DefaultMutableTreeNode(word));
+		root.add(vec.get(j));
 		}
 		//IMPLEMENT REQUIRED
 		
@@ -43,5 +43,24 @@ public class TreeData {
 		
 	}
 	
+   public void get(){
+		
+		
+	}
+	
+	public void set(){
+		
+		
+	}
+	
+	public void save(){
+		
+	
+	}
+	
+	public void load(){
+		
+	
+	}
 	//get,set,save,load to be implemented. Plz get on work.
 }
