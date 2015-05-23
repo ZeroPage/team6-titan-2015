@@ -33,7 +33,7 @@ public class TitanViewMenu extends JMenu {
 
     public class RedrawMenuItem extends JMenuItem {
         public RedrawMenuItem() {
-            super("Redraw");
+            super("Redraw", new ImageIcon("res/redraw.png"));
 
             setMnemonic(KeyEvent.VK_R);
             setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));

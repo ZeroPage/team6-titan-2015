@@ -118,7 +118,7 @@ public class TitanFileMenu extends JMenu {
 
     public class OpenDSMMenuItem extends JMenuItem {
         public OpenDSMMenuItem() {
-            super("Open DSM...");
+            super("Open DSM...", new ImageIcon("res/open-dsm.png"));
 
             setMnemonic(KeyEvent.VK_O);
             setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK));
@@ -133,7 +133,7 @@ public class TitanFileMenu extends JMenu {
 
     public class NewClusterMenuItem extends JMenuItem {
         public NewClusterMenuItem() {
-            super("New Clustering");
+            super("New Clustering", new ImageIcon("res/new-clsx.png"));
 
             setMnemonic(KeyEvent.VK_N);
         }
@@ -141,7 +141,7 @@ public class TitanFileMenu extends JMenu {
 
     public class LoadClusterMenuItem extends JMenuItem {
         public LoadClusterMenuItem() {
-            super("Load Clustering...");
+            super("Load Clustering...", new ImageIcon("res/open-clsx.png"));
 
             setMnemonic(KeyEvent.VK_L);
             setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
@@ -150,7 +150,7 @@ public class TitanFileMenu extends JMenu {
 
     public class SaveClusterMenuItem extends JMenuItem {
         public SaveClusterMenuItem() {
-            super("Save Clustering");
+            super("Save Clustering", new ImageIcon("res/save-clsx.png"));
 
             setMnemonic(KeyEvent.VK_S);
             setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK));
@@ -159,7 +159,7 @@ public class TitanFileMenu extends JMenu {
 
     public class SaveAsClusterMenuItem extends JMenuItem {
         public SaveAsClusterMenuItem() {
-            super("Save Clustering As...");
+            super("Save Clustering As...", new ImageIcon("res/save-clsx-as.png"));
 
             setMnemonic(KeyEvent.VK_A);
         }
@@ -180,7 +180,7 @@ public class TitanFileMenu extends JMenu {
 
         public class ExportDSMMenuItem extends JMenuItem {
             public ExportDSMMenuItem() {
-                super("DSM...");
+                super("DSM...", new ImageIcon("res/dsm.png"));
 
                 setMnemonic(KeyEvent.VK_D);
             }
