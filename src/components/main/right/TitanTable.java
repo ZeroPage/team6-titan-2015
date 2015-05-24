@@ -11,7 +11,7 @@ public class TitanTable extends JTable {
     private ArrayList<IntPair> squares;
 
     // TODO: Define colors
-    private static final Color[] colors = {new Color(150, 200, 200), new Color(200, 150, 200), new Color(200, 200, 150)};
+    private static final Color[] colors = {new Color(0, 152, 207), new Color(255, 233, 0), new Color(255, 115, 119), new Color(239, 44, 193)};
 
     public TitanTable() {
         // Super Constructor
