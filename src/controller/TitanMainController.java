@@ -144,10 +144,15 @@ public class TitanMainController {
         this.treeModel = new DefaultTreeModel(root, true);
 
         view.setTreeModel(this.treeModel);
-        view.setTableContents(names.toArray(new String[] {""}), new boolean[names.size()][names.size()]); // TODO: Temporary Code.
         view.setMenuBarEnabled(true);
         view.setToolBarEnabled(true);
         view.setLeftToolBarEnabled(true);
         view.setLeftToolBarPartialEnabled(false, false, false, false, false);
+
+        // TODO: Temporary Code.
+        view.setTableContents(names.toArray(new String[]{""}), new boolean[names.size()][names.size()]);
+        view.addSquare(1, 3);
+        view.addSquare(2, 3);
+        view.addSquare(3, 3);
     }
 }

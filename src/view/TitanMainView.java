@@ -13,10 +13,8 @@ import controller.TitanMainController;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.table.*;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -102,55 +100,12 @@ public class TitanMainView {
         titanFrame.getTitanLeftPanel().getTree().setModel(treeModel);
     }
 
-    // TODO: needs coloring.
     public void setTableContents(String[] names, boolean[][] data) {
-        // Init variables
-        int dataSize = names.length;
-        int tableSize = names.length + 1;
-        DefaultTableModel tableModel = new DefaultTableModel(0, tableSize);
-        titanTable.setModel(tableModel);
-        TableColumnModel columnModel = titanTable.getColumnModel();
+        titanTable.setTableContents(names, data);
+    }
 
-        // Add Header
-        String[] columnNames = new String[tableSize];
-        columnNames[0] = "";
-
-        for (int i = 1; i < tableSize; i++) {
-            columnNames[i] = String.valueOf(i);
-            columnModel.getColumn(i).setMaxWidth(10);
-        }
-
-        tableModel.addRow(columnNames);
-
-        // Add Rows
-        for (int i = 0; i < dataSize; i++) {
-            String[] tempRow = new String[tableSize];
-            tempRow[0] = names[i];
-
-            for (int j = 0; j < dataSize; j++) {
-                String stringData;
-                if (i == j) {
-                    stringData = ".";
-                } else if (data[i][j]) {
-                    stringData = "x";
-                } else {
-                    stringData = " ";
-                }
-                tempRow[j + 1] = stringData;
-            }
-            tableModel.addRow(tempRow);
-        }
-
-        // Set first column size
-        int maxSize = 0;
-        for (int i = 0; i < tableSize; i++) {
-            TableCellRenderer renderer = titanTable.getCellRenderer(i, 0);
-            Component component = titanTable.prepareRenderer(renderer, i, 0);
-            maxSize = Math.max(maxSize, component.getPreferredSize().width);
-        }
-
-        columnModel.getColumn(0).setMinWidth(maxSize + 10);
-
+    public void addSquare(int from, int to) {
+        titanTable.addSquare(from, to);
     }
 
     private void initListeners(TitanFrame frame) {
