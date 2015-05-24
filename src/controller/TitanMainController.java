@@ -129,10 +129,16 @@ public class TitanMainController {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
 
         DefaultMutableTreeNode tempGroup = new DefaultMutableTreeNode("test.group", true);
+        DefaultMutableTreeNode tempGroup2 = new DefaultMutableTreeNode("test.group.2", true);
         tempGroup.add(new DefaultMutableTreeNode("test_1", false));
         tempGroup.add(new DefaultMutableTreeNode("test_2", false));
+        tempGroup.add(new DefaultMutableTreeNode("test_3", false));
+
+        tempGroup2.add(new DefaultMutableTreeNode("test_4", false));
+        tempGroup2.add(new DefaultMutableTreeNode("test_5", false));
+
+        tempGroup.add(tempGroup2);
         root.add(tempGroup);
-        root.add(new DefaultMutableTreeNode("test.group.2", true));
 
         int size = dsm.getSize();
         ArrayList<String> names = new ArrayList<>();
@@ -148,11 +154,6 @@ public class TitanMainController {
         view.setToolBarEnabled(true);
         view.setLeftToolBarEnabled(true);
         view.setLeftToolBarPartialEnabled(false, false, false, false, false);
-
-        // TODO: Temporary Code.
-        view.setTableContents(names.toArray(new String[]{""}), new boolean[names.size()][names.size()]);
-        view.addSquare(1, 3);
-        view.addSquare(2, 3);
-        view.addSquare(3, 3);
+        view.redrawTable();
     }
 }

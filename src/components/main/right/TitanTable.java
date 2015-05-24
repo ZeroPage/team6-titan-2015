@@ -10,8 +10,10 @@ import java.util.ArrayList;
 public class TitanTable extends JTable {
     private ArrayList<IntPair> squares;
 
-    // TODO: Define colors
-    private static final Color[] colors = {new Color(0, 152, 207), new Color(255, 233, 0), new Color(255, 115, 119), new Color(239, 44, 193)};
+    private static final Color[] colors = {
+            new Color(0, 152, 207), new Color(255, 233, 0),
+            new Color(255, 115, 119), new Color(239, 44, 193)
+    };
 
     public TitanTable() {
         // Super Constructor
@@ -33,9 +35,6 @@ public class TitanTable extends JTable {
         DefaultTableModel tableModel = new DefaultTableModel(0, tableSize);
         setModel(tableModel);
         TableColumnModel columnModel = getColumnModel();
-
-        // Reset Square
-        removeAllSquare();
 
         // Add Header
         String[] columnNames = new String[tableSize];
@@ -85,7 +84,7 @@ public class TitanTable extends JTable {
 
         if (row > 0 && column > 0) {
             IntPair current = new IntPair(row - 1, column - 1);
-            int colorNumber = 0;
+            int colorNumber = -1;
 
             for (IntPair pair : squares) {
                 if (pair.contains(current)) {
@@ -93,7 +92,7 @@ public class TitanTable extends JTable {
                 }
             }
 
-            if (colorNumber != 0) {
+            if (colorNumber >= 0) {
                 component.setBackground(colors[colorNumber % colors.length]);
             }
         }

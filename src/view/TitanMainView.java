@@ -13,11 +13,13 @@ import controller.TitanMainController;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 public class TitanMainView {
     private TitanMainController controller;
@@ -46,25 +48,18 @@ public class TitanMainView {
         this.titanFrame.setVisible(true);
     }
 
-    public String[] getSelectedRows() {
-        ArrayList<String> rows = new ArrayList<>();
+    public DefaultMutableTreeNode[] getSelectedRows() {
+        ArrayList<DefaultMutableTreeNode> rows = new ArrayList<>();
 
         TreePath[] paths = titanTree.getSelectionPaths();
 
         if (paths != null) {
             for (TreePath path : paths) {
-                rows.add(path.getLastPathComponent().toString());
+                rows.add((DefaultMutableTreeNode) path.getLastPathComponent());
             }
         }
 
-        return rows.toArray(new String[] {""});
-    }
-
-    // TODO
-    public String[] getVisibleRows() {
-        ArrayList<String> rows = new ArrayList<>();
-
-        return rows.toArray(new String[] {""});
+        return rows.toArray(new DefaultMutableTreeNode[rows.size()]);
     }
 
     public void setMenuBarEnabled(boolean enabled) {
@@ -100,12 +95,48 @@ public class TitanMainView {
         titanFrame.getTitanLeftPanel().getTree().setModel(treeModel);
     }
 
-    public void setTableContents(String[] names, boolean[][] data) {
-        titanTable.setTableContents(names, data);
+    public void redrawTable() {
+        // FIXME: Temporary Implementation
+        DefaultMutableTreeNode[] rows = getVisibleRows((DefaultMutableTreeNode) titanTree.getModel().getRoot(), false);
+        ArrayList<String> names = new ArrayList<>();
+
+        titanTable.removeAllSquare();
+
+        int currentRow = 0;
+        for (DefaultMutableTreeNode row : rows) {
+            if (row.getAllowsChildren()) {
+                if (titanTree.isExpanded(new TreePath(row.getPath()))) {
+                    // exclude from table but still affect coloring
+                    titanTable.addSquare(currentRow, currentRow + getVisibleRows(row, true).length - 1);
+                    continue;
+                } else {
+                    titanTable.addSquare(currentRow, currentRow);
+                }
+            }
+            names.add(row.toString());
+            currentRow++;
+        }
+
+        titanTable.setTableContents(names.toArray(new String[names.size()]), new boolean[names.size()][names.size()]);
     }
 
-    public void addSquare(int from, int to) {
-        titanTable.addSquare(from, to);
+    private DefaultMutableTreeNode[] getVisibleRows(DefaultMutableTreeNode root, boolean excludeExpanded) {
+        ArrayList<DefaultMutableTreeNode> rows = new ArrayList<>();
+
+        Enumeration<DefaultMutableTreeNode> nodes = root.preorderEnumeration();
+        nodes.nextElement(); // exclude root
+
+        while (nodes.hasMoreElements()) {
+            DefaultMutableTreeNode node = nodes.nextElement();
+
+            TreePath path = new TreePath(node.getPath());
+
+            if (titanTree.isVisible(path) && !(excludeExpanded && titanTree.isExpanded(path))) {
+                rows.add(node);
+            }
+        }
+
+        return rows.toArray(new DefaultMutableTreeNode[rows.size()]);
     }
 
     private void initListeners(TitanFrame frame) {
@@ -130,6 +161,14 @@ public class TitanMainView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
+            }
+        });
+
+        // View
+        titanMenuBar.getTitanViewMenu().getRedrawMenuItem().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                redrawTable();
             }
         });
 
