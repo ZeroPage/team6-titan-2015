@@ -1,8 +1,9 @@
 package model;
 
-import java.util.*;
 import java.io.File;
 import java.io.IOException;
+
+import java.util.ArrayList;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -26,6 +27,52 @@ public class TreeData {
 		treeRoot = cluster.getTree();
 	}
 	
+	
+	public void loadDSM(String dsmFileName) throws IOException, WrongDSMFormatException{
+		this.dsmData = new TitanDSM(new File(dsmFileName));
+		if(cluster == null) {
+			buildDefaultTree();
+		} else {
+			cluster.refresh(this.dsmData);
+		}
+	}
+
+//rename the element(Group, Item both)
+	public void renameElem(String currentName, String newName) throws ItemAlreadyExistException, NodeNotFoundException {
+		cluster.renameNode(currentName, newName);
+		if(!cluster.getAllowsChildren(newName)) {
+			dsmData.setName(newName, dsmData.getIndexByName(currentName));
+		}
+	}
+	
+	public void repositionElem(String elemName,int newIndex) throws NodeNotFoundException {
+		cluster.moveNode(elemName, newIndex);
+		//Does DSM has something to do with this method?
+	}
+	
+	public void removeElem(String elemName) throws NodeNotFoundException {
+		if(cluster.getAllowsChildren(elemName)) {
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode)cluster.getNode(elemName);
+			//Case 1: the element was group - subtree has to be deleted.
+		} else {
+			//Case 2: the element was item - delete only stated element.
+		}
+		cluster.deleteItem(elemName);
+	}
+	
+	public void addElem(String groupName, String itemName) throws NodeNotFoundException {
+		cluster.addItem(groupName, itemName);
+		//DSM team, Plz add your codes that are needed.
+	}
+	
+	public void groupElem(ArrayList<String> elemList, String groupName) throws NodeNotFoundException {
+		cluster.newGroup(elemList, groupName);
+	}
+	
+	public void freeGroup(String groupName) throws NodeNotFoundException {
+		cluster.freeGroup(groupName);
+	}
+	
 //build temporary cluster with DSM only.
 	private TreeNode buildDefaultTree() {
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("ROOT",true);
@@ -37,12 +84,7 @@ public class TreeData {
 	
    public TreeNode getTree(){
 		return this.treeRoot;
-	}
-	
-	public void set(){
-		
-		
-	}
+	} 
 	
 	public void saveDSMData(String dsmFileName) throws IOException{
 		this.dsmData.saveToFile(dsmFileName);
@@ -56,14 +98,4 @@ public class TreeData {
 		this.dsmData.saveToFile(dsmFileName);
 		this.cluster.saveClusterData(clusterFile);
 	}
-	
-	public void loadDSM(String dsmFileName) throws IOException, WrongDSMFormatException{
-		this.dsmData = new TitanDSM(new File(dsmFileName));
-		if(cluster == null) {
-			buildDefaultTree();
-		} else {
-			cluster.refresh(this.dsmData);
-		}
-	}
-	//get,set,save,load to be implemented. Plz get on work.
 }
