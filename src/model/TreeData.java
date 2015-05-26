@@ -21,6 +21,7 @@ public class TreeData {
 
 //load clsx, and rebuild the data tree structure
 	public void loadClusterData(File clsxFile) throws IOException, WrongXMLNamespaceException {
+		cluster = new ClusterData(clsxFile);
 		cluster.refresh(dsmData);
 		treeRoot = cluster.getTree();
 	}
