@@ -22,7 +22,7 @@ public class TreeData {
 //load clsx, and rebuild the data tree structure
 	public void loadClusterData(File clsxFile) throws IOException, WrongXMLNamespaceException {
 		cluster = new ClusterData(clsxFile);
-		cluster.refresh(dsmData);
+		cluster.refresh(this.dsmData);
 		treeRoot = cluster.getTree();
 	}
 	
@@ -44,14 +44,26 @@ public class TreeData {
 		
 	}
 	
-	public void save(){
-		
-	
+	public void saveDSMData(String dsmFileName) throws IOException{
+		this.dsmData.saveToFile(dsmFileName);
 	}
 	
-	public void load(){
-		
+	public void saveClusterData(File clusterFile) throws IOException{
+		this.cluster.saveClusterData(clusterFile);
+	}
 	
+	public void saveData(String dsmFileName, File clusterFile) throws IOException{
+		this.dsmData.saveToFile(dsmFileName);
+		this.cluster.saveClusterData(clusterFile);
+	}
+	
+	public void loadDSM(String dsmFileName) throws IOException, WrongDSMFormatException{
+		this.dsmData = new TitanDSM(new File(dsmFileName));
+		if(cluster == null) {
+			buildDefaultTree();
+		} else {
+			cluster.refresh(this.dsmData);
+		}
 	}
 	//get,set,save,load to be implemented. Plz get on work.
 }
