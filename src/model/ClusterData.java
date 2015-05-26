@@ -25,9 +25,23 @@ public class ClusterData {
 		this.treeRoot = reader.loadClusterData(source);
 	}
 
-//gives root of the Node(<cluster> level)	
+//gives root of the Node(<cluster> level)
 	public TreeNode getTree() {
 		return this.treeRoot;
+	}
+
+//refactor the tree with dsmData
+	public void refresh(TitanDSM dsmData) {
+		DefaultMutableTreeNode leaf = this.treeRoot.getFirstLeaf();
+		while(leaf!=null) {
+			if(leaf.getAllowsChildren()) {
+				leaf = leaf.getNextLeaf();
+			} else {
+				if(dsmData.getIndexByName(leaf.getUserObject().toString())==-1) {
+					leaf.removeFromParent();
+				}
+			}
+		}
 	}
 	
 //saving clusterData
