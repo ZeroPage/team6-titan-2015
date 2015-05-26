@@ -3,6 +3,7 @@ package controller;
 import model.NotPositiveException;
 import model.TitanDSM;
 import model.WrongDSMFormatException;
+import view.TitanDataView;
 import view.TitanMainView;
 
 import javax.swing.*;
@@ -22,9 +23,10 @@ public class TitanMainController {
 
     public TitanMainController() {
         this.view = new TitanMainView(this);
-        this.view.setMenuBarEnabled(false);
-        this.view.setToolBarEnabled(false);
-        this.view.setLeftToolBarEnabled(false);
+
+        this.view.getMenuView().setEnabled(false);
+        this.view.getToolBarView().setEnabled(false);
+        this.view.getDataView().setToolBarEnabled(false);
     }
 
     public void openDialog() {
@@ -115,7 +117,11 @@ public class TitanMainController {
             }
         }
 
-        view.setLeftToolBarPartialEnabled(canGroup, canUngroup, canMoveUp, canMoveDown, canDelete);
+        view.getDataView().setToolBarPartialEnabled(canGroup, canUngroup, canMoveUp, canMoveDown, canDelete);
+    }
+
+    public void redraw() {
+        view.getDataView().redrawTable();
     }
 
     private void setDSM(TitanDSM dsm) {
@@ -149,11 +155,10 @@ public class TitanMainController {
 
         this.treeModel = new DefaultTreeModel(root, true);
 
-        view.setTreeModel(this.treeModel);
-        view.setMenuBarEnabled(true);
-        view.setToolBarEnabled(true);
-        view.setLeftToolBarEnabled(true);
-        view.setLeftToolBarPartialEnabled(false, false, false, false, false);
-        view.redrawTable();
+        view.getDataView().setTreeModel(this.treeModel);
+        view.getMenuView().setEnabled(true);
+        view.getToolBarView().setEnabled(true);
+        view.getDataView().setToolBarEnabled(true);
+        view.getDataView().setToolBarPartialEnabled(false, false, false, false, false);
     }
 }
