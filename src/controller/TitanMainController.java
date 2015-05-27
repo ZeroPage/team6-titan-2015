@@ -157,6 +157,52 @@ public class TitanMainController {
         view.getDataView().drawTable(names.toArray(new String[finalSize]), data, group);
     }
 
+    // TODO: implements needed
+    public void groupItems(DefaultMutableTreeNode[] items) {
+        System.out.println("GROUP");
+
+        for (DefaultMutableTreeNode item : items) {
+            System.out.println(item);
+        }
+    }
+
+    public void ungroupItems(DefaultMutableTreeNode[] items) {
+        System.out.println("UNGROUP");
+
+        for (DefaultMutableTreeNode item : items) {
+            System.out.println(item);
+        }
+    }
+
+    public void moveUpItems(DefaultMutableTreeNode[] items) {
+        System.out.println("UP");
+
+        for (DefaultMutableTreeNode item : items) {
+            System.out.println(item);
+        }
+    }
+
+    public void moveDownItems(DefaultMutableTreeNode[] items) {
+        System.out.println("DOWN");
+
+        for (DefaultMutableTreeNode item : items) {
+            System.out.println(item);
+        }
+    }
+
+    public void deleteItems(DefaultMutableTreeNode[] items) {
+        System.out.println("DELETE");
+
+        for (DefaultMutableTreeNode item : items) {
+            System.out.println(item);
+        }
+    }
+
+    public void newItem(String name) {
+        System.out.println("NEW");
+        System.out.println(name);
+    }
+
     private void setDSM(TitanDSM dsm) {
         this.dsm = dsm;
 

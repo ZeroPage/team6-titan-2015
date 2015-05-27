@@ -5,6 +5,7 @@ import components.main.left.TitanTree;
 import components.main.right.TitanTable;
 import controller.TitanMainController;
 
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -117,6 +118,13 @@ public class TitanDataView {
             }
         });
 
+        toolBar.getExpandButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                expandAll();
+            }
+        });
+
         toolBar.getCollapseButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -124,10 +132,49 @@ public class TitanDataView {
             }
         });
 
-        toolBar.getExpandButton().addActionListener(new ActionListener() {
+        toolBar.getGroupButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                expandAll();
+                controller.groupItems(getSelectedRows());
+            }
+        });
+
+        toolBar.getUngroupButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.ungroupItems(getSelectedRows());
+            }
+        });
+
+        toolBar.getMoveUpButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.moveUpItems(getSelectedRows());
+            }
+        });
+
+        toolBar.getMoveDownButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.moveDownItems(getSelectedRows());
+            }
+        });
+
+        toolBar.getNewButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = JOptionPane.showInputDialog(parent, "Input new item name:");
+
+                if (name != null) {
+                    controller.newItem(name);
+                }
+            }
+        });
+
+        toolBar.getDeleteButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.deleteItems(getSelectedRows());
             }
         });
     }
