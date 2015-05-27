@@ -52,7 +52,8 @@ public class TitanDSM {
         dataMatrix.get(getIndexByName(row)).set(getIndexByName(col), data);
     }
 
-    public void deleteData(int index){
+    public void deleteData(String deleteName){
+        int index = getIndexByName(deleteName);
         nameOfClass.remove(index);
         for(int i = 0;i<sizeOfMatrix;i++) {
             dataMatrix.get(i).remove(index);
