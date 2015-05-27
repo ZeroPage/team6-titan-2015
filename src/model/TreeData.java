@@ -85,16 +85,16 @@ public class TreeData {
 		return this.treeRoot;
 	} 
 	
-	public void saveDSMData(String dsmFileName) throws IOException{
-		this.dsmData.saveToFile(dsmFileName);
+	public void saveDSMData(File dsmFile) throws IOException{
+		this.dsmData.saveToFile(dsmFile);
 	}
 	
 	public void saveClusterData(File clusterFile) throws IOException{
 		this.cluster.saveClusterData(clusterFile);
 	}
 	
-	public void saveData(String dsmFileName, File clusterFile) throws IOException{
-		this.dsmData.saveToFile(dsmFileName);
+	public void saveData(File dsmFile, File clusterFile) throws IOException{
+		this.dsmData.saveToFile(dsmFile);
 		this.cluster.saveClusterData(clusterFile);
 	}
 }
