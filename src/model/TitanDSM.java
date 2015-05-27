@@ -74,6 +74,9 @@ public class TitanDSM {
         }
     }
 
+    public boolean isExist(String name) {
+        return nameOfClass.contains(name);
+    }
     public void addEntity(){
         sizeOfMatrix++;
         nameOfClass.add("entity" + sizeOfMatrix);
