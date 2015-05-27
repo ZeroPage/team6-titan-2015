@@ -20,7 +20,7 @@ public class ClusterFileIO {
 	private static final String namespace = "http://rise.cs.drexel.edu/minos/clsx";
 	
 	private ClusterFileIO() {
-		//use getInstance!
+		//use getInstance method instead
 	}
 	
 	public static ClusterFileIO getInstance() {

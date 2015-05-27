@@ -3,6 +3,7 @@ package controller;
 import model.NotPositiveException;
 import model.TitanDSM;
 import model.WrongDSMFormatException;
+import view.TitanDataView;
 import view.TitanMainView;
 
 import javax.swing.*;
@@ -14,25 +15,23 @@ import java.util.ArrayList;
 
 public class TitanMainController {
     // Models
-    private TitanDSM dsm;
+    private TitanDSM dsm; // TODO: Should be removed after TreeModel become available
     private TreeModel treeModel;
 
-    // Views
+    // View
     private TitanMainView view;
 
     public TitanMainController() {
+        // Init view
         this.view = new TitanMainView(this);
-        this.view.setMenuBarEnabled(false);
-        this.view.setToolBarEnabled(false);
-        this.view.setLeftToolBarEnabled(false);
+
+        this.view.getMenuView().setEnabled(false);
+        this.view.getToolBarView().setEnabled(false);
+        this.view.getDataView().setToolBarEnabled(false);
     }
 
     public void openDialog() {
         view.showFrame();
-    }
-
-    public TitanDSM getDSM(){
-        return dsm;
     }
 
     public void newDSM(Component parent) {
@@ -115,7 +114,99 @@ public class TitanMainController {
             }
         }
 
-        view.setLeftToolBarPartialEnabled(canGroup, canUngroup, canMoveUp, canMoveDown, canDelete);
+        view.getDataView().setToolBarPartialEnabled(canGroup, canUngroup, canMoveUp, canMoveDown, canDelete);
+    }
+
+    public void drawTable() {
+        TitanDataView dataView = view.getDataView();
+        DefaultMutableTreeNode[] rows = dataView.getVisibleRows((DefaultMutableTreeNode) dataView.getTreeModel().getRoot(), false);
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<int[]> tempGroups = new ArrayList<>();
+
+        // Prepare names
+        int currentRow = 0;
+        for (DefaultMutableTreeNode row : rows) {
+            if (row.getAllowsChildren()) {
+                if (dataView.isExpanded(new TreePath(row.getPath()))) {
+                    // exclude from table but still affect coloring
+                    tempGroups.add(new int[] {currentRow, currentRow + dataView.getVisibleRows(row, true).length - 1});
+                    continue;
+                } else {
+                    tempGroups.add(new int[]{currentRow, currentRow});
+                }
+            }
+
+            names.add(row.toString());
+            currentRow++;
+        }
+
+        int finalSize = names.size();
+        boolean[][] data = new boolean[finalSize][finalSize]; // TODO
+        int[][] group = new int[finalSize][finalSize];
+
+        // Prepare groups
+        for (int[] tempGroup : tempGroups) {
+            for (int i = tempGroup[0]; i <= tempGroup[1]; i++) {
+                for (int j = tempGroup[0]; j <= tempGroup[1]; j++) {
+                    group[i][j]++;
+                }
+            }
+        }
+
+        // Add labels
+        if (view.getMenuView().isShowRowLabelsSelected()) {
+            for (int i = 0; i < finalSize; i++) {
+                names.set(i, (i + 1) + " " + names.get(i));
+            }
+        }
+
+        view.getDataView().drawTable(names.toArray(new String[finalSize]), data, group);
+    }
+
+    // TODO: implements needed
+    public void groupItems(DefaultMutableTreeNode[] items) {
+        System.out.println("GROUP");
+
+        for (DefaultMutableTreeNode item : items) {
+            System.out.println(item);
+        }
+    }
+
+    public void ungroupItems(DefaultMutableTreeNode[] items) {
+        System.out.println("UNGROUP");
+
+        for (DefaultMutableTreeNode item : items) {
+            System.out.println(item);
+        }
+    }
+
+    public void moveUpItems(DefaultMutableTreeNode[] items) {
+        System.out.println("UP");
+
+        for (DefaultMutableTreeNode item : items) {
+            System.out.println(item);
+        }
+    }
+
+    public void moveDownItems(DefaultMutableTreeNode[] items) {
+        System.out.println("DOWN");
+
+        for (DefaultMutableTreeNode item : items) {
+            System.out.println(item);
+        }
+    }
+
+    public void deleteItems(DefaultMutableTreeNode[] items) {
+        System.out.println("DELETE");
+
+        for (DefaultMutableTreeNode item : items) {
+            System.out.println(item);
+        }
+    }
+
+    public void newItem(String name) {
+        System.out.println("NEW");
+        System.out.println(name);
     }
 
     private void setDSM(TitanDSM dsm) {
@@ -126,7 +217,7 @@ public class TitanMainController {
         }
 
         // FIXME: Temporary implementation
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("root", true);
 
         DefaultMutableTreeNode tempGroup = new DefaultMutableTreeNode("test.group", true);
         DefaultMutableTreeNode tempGroup2 = new DefaultMutableTreeNode("test.group.2", true);
@@ -141,19 +232,19 @@ public class TitanMainController {
         root.add(tempGroup);
 
         int size = dsm.getSize();
-        ArrayList<String> names = new ArrayList<>();
+
         for (int i = 0; i < size; i++) {
             root.add(new DefaultMutableTreeNode(dsm.getName(i), false));
-            names.add(dsm.getName(i));
         }
 
         this.treeModel = new DefaultTreeModel(root, true);
 
-        view.setTreeModel(this.treeModel);
-        view.setMenuBarEnabled(true);
-        view.setToolBarEnabled(true);
-        view.setLeftToolBarEnabled(true);
-        view.setLeftToolBarPartialEnabled(false, false, false, false, false);
-        view.redrawTable();
+        view.getDataView().setTreeModel(this.treeModel);
+        view.getMenuView().setEnabled(true);
+        view.getToolBarView().setEnabled(true);
+        view.getDataView().setToolBarEnabled(true);
+        view.getDataView().setToolBarPartialEnabled(false, false, false, false, false);
+
+        drawTable();
     }
 }
