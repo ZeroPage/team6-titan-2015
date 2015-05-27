@@ -76,7 +76,7 @@ public class ClusterFileIO {
 			throw new WrongXMLNamespaceException();
 		}
 		
-		treeRoot = new DefaultMutableTreeNode(true);
+		treeRoot = new DefaultMutableTreeNode("ROOT",true);
 		buildTree(doc.getDocumentElement(),treeRoot);
 		
 		return treeRoot;
