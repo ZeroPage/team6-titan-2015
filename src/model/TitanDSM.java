@@ -85,7 +85,7 @@ public class TitanDSM {
         dataMatrix.get(sizeOfMatrix - 1).remove(sizeOfMatrix);
     }
 
-    private int getIndexByName(String name) {
+    public int getIndexByName(String name) {
         return nameOfClass.indexOf(name);
     }
 

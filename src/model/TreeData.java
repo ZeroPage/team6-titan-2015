@@ -27,6 +27,33 @@ public class TreeData {
 		treeRoot = cluster.getTree();
 	}
 	
+	public boolean getGroupDSM(DefaultMutableTreeNode group, DefaultMutableTreeNode elem) {
+		boolean result = false;
+		if(!elem.getAllowsChildren()) {
+			for(int i=0;i<group.getChildCount();i++) {
+				DefaultMutableTreeNode groupItem = (DefaultMutableTreeNode)group.getChildAt(i);
+				String rowName = groupItem.getUserObject().toString();
+				String colName = elem.getUserObject().toString();
+				if(result = dsmData.getData(rowName,colName)) {
+					return result;
+				}
+			}
+		} else {
+			for(int i=0;i<group.getChildCount();i++) {
+				DefaultMutableTreeNode groupItem = (DefaultMutableTreeNode)group.getChildAt(i);
+				String rowName = groupItem.getUserObject().toString();
+				for(int j=0;j<elem.getChildCount();j++) {
+					DefaultMutableTreeNode elemItem = (DefaultMutableTreeNode)elem.getChildAt(j);
+					String colName = elemItem.getUserObject().toString();
+					if(result = dsmData.getData(rowName, colName)) {
+						return result;
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
 	
 	public void loadDSM(String dsmFileName) throws IOException, WrongDSMFormatException{
 		this.dsmData = new TitanDSM(new File(dsmFileName));
@@ -36,11 +63,17 @@ public class TreeData {
 			cluster.refresh(this.dsmData);
 		}
 	}
+	
+	public boolean getDSMvalue(DefaultMutableTreeNode row, DefaultMutableTreeNode col) {
+		String rowName = row.getUserObject().toString();
+		String colName = col.getUserObject().toString();
+		return dsmData.getData(rowName,colName);
+	}
 
 //rename the element(Group, Item both)
 	public void renameElem(DefaultMutableTreeNode currentNode, String newName) throws ItemAlreadyExistException, NodeNotFoundException {
 		if(!currentNode.getAllowsChildren()) {
-			dsmData.setName(newName, dsmData.getIndexByName(currentNode.getUserObject().toString()));
+			dsmData.setName(newName, currentNode.getUserObject().toString());
 		}
 		cluster.renameNode(currentNode, newName);
 	}
