@@ -15,13 +15,14 @@ import java.util.ArrayList;
 
 public class TitanMainController {
     // Models
-    private TitanDSM dsm;
+    private TitanDSM dsm; // TODO: Should be removed after TreeModel become available
     private TreeModel treeModel;
 
-    // Views
+    // View
     private TitanMainView view;
 
     public TitanMainController() {
+        // Init view
         this.view = new TitanMainView(this);
 
         this.view.getMenuView().setEnabled(false);
@@ -31,10 +32,6 @@ public class TitanMainController {
 
     public void openDialog() {
         view.showFrame();
-    }
-
-    public TitanDSM getDSM(){
-        return dsm;
     }
 
     public void newDSM(Component parent) {
@@ -235,10 +232,9 @@ public class TitanMainController {
         root.add(tempGroup);
 
         int size = dsm.getSize();
-        ArrayList<String> names = new ArrayList<>();
+
         for (int i = 0; i < size; i++) {
             root.add(new DefaultMutableTreeNode(dsm.getName(i), false));
-            names.add(dsm.getName(i));
         }
 
         this.treeModel = new DefaultTreeModel(root, true);
