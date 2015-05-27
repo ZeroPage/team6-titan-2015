@@ -125,8 +125,8 @@ public class TitanDSM {
         fileReader.close();
     }
 
-    public void saveToFile(String fileName) throws IOException{
-        BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
+    public void saveToFile(File file) throws IOException{
+        BufferedWriter out = new BufferedWriter(new FileWriter(file));
 
         out.write(String.valueOf(sizeOfMatrix));
         out.newLine();
