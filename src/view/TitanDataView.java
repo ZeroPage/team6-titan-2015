@@ -11,6 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
@@ -91,11 +93,41 @@ public class TitanDataView {
         table.setTableContents(names, data, color);
     }
 
+    public void collapseAll() {
+        int size = tree.getRowCount();
+
+        for (int i = 0; i < size; i++) {
+            tree.collapseRow(i);
+        }
+    }
+
+    public void expandAll() {
+        int size = tree.getRowCount();
+
+        for (int i = 0; i < size; i++) {
+            tree.expandRow(i);
+        }
+    }
+
     private void initListeners() {
         tree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
             public void valueChanged(TreeSelectionEvent e) {
                 controller.checkSelection(tree.getSelectionPaths());
+            }
+        });
+
+        toolBar.getCollapseButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                collapseAll();
+            }
+        });
+
+        toolBar.getExpandButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                expandAll();
             }
         });
     }
