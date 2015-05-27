@@ -44,12 +44,12 @@ public class TitanDSM {
         return sizeOfMatrix;
     }
 
-    public Boolean getData(int row, int col) {
-        return dataMatrix.get(row).get(col);
+    public Boolean getData(String row, String col) {
+        return dataMatrix.get(getIndexByName(row)).get(getIndexByName(col));
     }
 
-    public void setData(boolean data, int row, int col) {
-        dataMatrix.get(row).set(col, data);
+    public void setData(boolean data, String row, String col) {
+        dataMatrix.get(getIndexByName(row)).set(getIndexByName(col), data);
     }
 
     public void deleteData(int index){
@@ -61,20 +61,16 @@ public class TitanDSM {
         sizeOfMatrix--;
     }
 
-    public String getName(int index) {
-        return nameOfClass.get(index);
+    public String getName(String name) {
+        return nameOfClass.get(getIndexByName(name));
     }
 
-    public void setName(String newName, int index) throws ItemAlreadyExistException {
+    public void setName(String newName, String oldName) throws ItemAlreadyExistException {
         if(nameOfClass.contains(newName)) {
             throw new ItemAlreadyExistException();
         } else {
-            nameOfClass.set(index, newName);
+            nameOfClass.set(getIndexByName(oldName), newName);
         }
-    }
-
-    public int getIndexByName(String name) {
-        return nameOfClass.indexOf(name);
     }
 
     public void addEntity(){
@@ -86,6 +82,10 @@ public class TitanDSM {
             dataMatrix.get(sizeOfMatrix - 1).add(false);
         }
         dataMatrix.get(sizeOfMatrix - 1).remove(sizeOfMatrix);
+    }
+
+    private int getIndexByName(String name) {
+        return nameOfClass.indexOf(name);
     }
 
     public void loadFromFile(File dsm) throws IOException, WrongDSMFormatException {
