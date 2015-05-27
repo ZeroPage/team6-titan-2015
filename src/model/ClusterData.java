@@ -44,6 +44,7 @@ public class ClusterData {
 					leaf.removeFromParent();
 				}
 			}
+			leaf = leaf.getNextLeaf();
 		}
 	}
 	
