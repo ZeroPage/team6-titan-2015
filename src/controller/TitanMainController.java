@@ -120,8 +120,41 @@ public class TitanMainController {
         view.getDataView().setToolBarPartialEnabled(canGroup, canUngroup, canMoveUp, canMoveDown, canDelete);
     }
 
-    public void redraw() {
-        view.getDataView().redrawTable();
+    public void drawTable() {
+        TitanDataView dataView = view.getDataView();
+        DefaultMutableTreeNode[] rows = dataView.getVisibleRows((DefaultMutableTreeNode) dataView.getTreeModel().getRoot(), false);
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<int[]> tempGroups = new ArrayList<>();
+
+        int currentRow = 0;
+        for (DefaultMutableTreeNode row : rows) {
+            if (row.getAllowsChildren()) {
+                if (dataView.isExpanded(new TreePath(row.getPath()))) {
+                    // exclude from table but still affect coloring
+                    tempGroups.add(new int[] {currentRow, currentRow + dataView.getVisibleRows(row, true).length - 1});
+                    continue;
+                } else {
+                    tempGroups.add(new int[]{currentRow, currentRow});
+                }
+            }
+
+            names.add(row.toString());
+            currentRow++;
+        }
+
+        int finalSize = names.size();
+        boolean[][] data = new boolean[finalSize][finalSize]; // TODO
+        int[][] group = new int[finalSize][finalSize];
+
+        for (int[] tempGroup : tempGroups) {
+            for (int i = tempGroup[0]; i <= tempGroup[1]; i++) {
+                for (int j = tempGroup[0]; j <= tempGroup[1]; j++) {
+                    group[i][j]++;
+                }
+            }
+        }
+
+        view.getDataView().drawTable(names.toArray(new String[finalSize]), data, group);
     }
 
     private void setDSM(TitanDSM dsm) {
@@ -132,7 +165,7 @@ public class TitanMainController {
         }
 
         // FIXME: Temporary implementation
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("root", true);
 
         DefaultMutableTreeNode tempGroup = new DefaultMutableTreeNode("test.group", true);
         DefaultMutableTreeNode tempGroup2 = new DefaultMutableTreeNode("test.group.2", true);
@@ -160,5 +193,7 @@ public class TitanMainController {
         view.getToolBarView().setEnabled(true);
         view.getDataView().setToolBarEnabled(true);
         view.getDataView().setToolBarPartialEnabled(false, false, false, false, false);
+
+        drawTable();
     }
 }

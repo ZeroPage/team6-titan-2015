@@ -83,29 +83,12 @@ public class TitanDataView {
         return tree.getModel();
     }
 
-    public void redrawTable() {
-        // FIXME: Temporary Implementation, Maybe should be in the controller...?
-        DefaultMutableTreeNode[] rows = getVisibleRows((DefaultMutableTreeNode) tree.getModel().getRoot(), false);
-        ArrayList<String> names = new ArrayList<>();
+    public boolean isExpanded(TreePath path) {
+        return tree.isExpanded(path);
+    }
 
-        table.removeAllSquare();
-
-        int currentRow = 0;
-        for (DefaultMutableTreeNode row : rows) {
-            if (row.getAllowsChildren()) {
-                if (tree.isExpanded(new TreePath(row.getPath()))) {
-                    // exclude from table but still affect coloring
-                    table.addSquare(currentRow, currentRow + getVisibleRows(row, true).length - 1);
-                    continue;
-                } else {
-                    table.addSquare(currentRow, currentRow);
-                }
-            }
-            names.add(row.toString());
-            currentRow++;
-        }
-
-        table.setTableContents(names.toArray(new String[names.size()]), new boolean[names.size()][names.size()]);
+    public void drawTable(String[] names, boolean[][] data, int[][] color) {
+        table.setTableContents(names, data, color);
     }
 
     private void initListeners() {

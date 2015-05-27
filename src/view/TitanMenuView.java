@@ -64,7 +64,7 @@ public class TitanMenuView {
         menuBar.getTitanViewMenu().getRedrawMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.redraw();
+                controller.drawTable();
             }
         });
 
