@@ -62,8 +62,8 @@ public class TitanDSM {
         sizeOfMatrix--;
     }
 
-    public String getName(String name) {
-        return nameOfClass.get(getIndexByName(name));
+    public String getName(int index) {
+        return nameOfClass.get(index);
     }
 
     public void setName(String newName, String oldName) throws ItemAlreadyExistException {
