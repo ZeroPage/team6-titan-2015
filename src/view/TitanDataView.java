@@ -94,18 +94,18 @@ public class TitanDataView {
     }
 
     public void collapseAll() {
-        int size = tree.getRowCount();
+        Enumeration<DefaultMutableTreeNode> nodes = ((DefaultMutableTreeNode) tree.getModel().getRoot()).postorderEnumeration();
 
-        for (int i = 0; i < size; i++) {
-            tree.collapseRow(i);
+        while (nodes.hasMoreElements()) {
+            tree.collapsePath(new TreePath(nodes.nextElement().getPath()));
         }
     }
 
     public void expandAll() {
-        int size = tree.getRowCount();
+        Enumeration<DefaultMutableTreeNode> nodes = ((DefaultMutableTreeNode) tree.getModel().getRoot()).preorderEnumeration();
 
-        for (int i = 0; i < size; i++) {
-            tree.expandRow(i);
+        while (nodes.hasMoreElements()) {
+            tree.expandPath(new TreePath(nodes.nextElement().getPath()));
         }
     }
 
