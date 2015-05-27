@@ -126,6 +126,7 @@ public class TitanMainController {
         ArrayList<String> names = new ArrayList<>();
         ArrayList<int[]> tempGroups = new ArrayList<>();
 
+        // Prepare names
         int currentRow = 0;
         for (DefaultMutableTreeNode row : rows) {
             if (row.getAllowsChildren()) {
@@ -146,11 +147,19 @@ public class TitanMainController {
         boolean[][] data = new boolean[finalSize][finalSize]; // TODO
         int[][] group = new int[finalSize][finalSize];
 
+        // Prepare groups
         for (int[] tempGroup : tempGroups) {
             for (int i = tempGroup[0]; i <= tempGroup[1]; i++) {
                 for (int j = tempGroup[0]; j <= tempGroup[1]; j++) {
                     group[i][j]++;
                 }
+            }
+        }
+
+        // Add labels
+        if (view.getMenuView().isShowRowLabelsSelected()) {
+            for (int i = 0; i < finalSize; i++) {
+                names.set(i, (i + 1) + " " + names.get(i));
             }
         }
 

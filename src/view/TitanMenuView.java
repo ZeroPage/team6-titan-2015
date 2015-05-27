@@ -35,6 +35,10 @@ public class TitanMenuView {
         viewMenu.getShowRowLabelMenuItem().setEnabled(enabled);
     }
 
+    public boolean isShowRowLabelsSelected() {
+        return menuBar.getTitanViewMenu().getShowRowLabelMenuItem().isSelected();
+    }
+
     private void initListeners() {
         // FileMenu
         TitanFileMenu fileMenu = menuBar.getTitanFileMenu();
