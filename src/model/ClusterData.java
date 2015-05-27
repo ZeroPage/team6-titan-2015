@@ -9,8 +9,11 @@ import javax.swing.tree.*;
 public class ClusterData {
 	private DefaultMutableTreeNode treeRoot;
 	
-	public ClusterData() {
-		System.out.println("I need a directory of the .clsx file!");
+	public ClusterData(TitanDSM dsmData) {
+		this.treeRoot = new DefaultMutableTreeNode("ROOT",true);
+		for(int i=0;i<dsmData.getSize();i++) {
+			treeRoot.add(new DefaultMutableTreeNode(dsmData.getName(i),false));
+		}
 	}
 	
 //initializing with File instance	
