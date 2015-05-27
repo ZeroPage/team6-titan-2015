@@ -26,7 +26,7 @@ public class ClusterData {
 	}
 
 //gives root of the Node(<cluster> level)
-	public TreeNode getTree() {
+	public DefaultMutableTreeNode getTree() {
 		return this.treeRoot;
 	}
 
@@ -37,7 +37,7 @@ public class ClusterData {
 			if(leaf.getAllowsChildren()) {
 				leaf = leaf.getNextLeaf();
 			} else {
-				if(dsmData.getIndexByName(leaf.getUserObject().toString())==-1) {
+				if(!dsmData.isExist(leaf.getUserObject().toString())) {
 					leaf.removeFromParent();
 				}
 			}
