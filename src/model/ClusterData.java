@@ -74,6 +74,11 @@ public class ClusterData {
 		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)node.getParent();
 		parent.insert(node, newIndex);
 	}
+	
+	public void moveNode(DefaultMutableTreeNode node, int newIndex) {
+		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)node.getParent();
+		parent.insert(node, newIndex);
+	}
 
 	
 //Added for DSM search - whether item or not
@@ -90,7 +95,7 @@ public class ClusterData {
 	}
 
 //group multiple nodes(group or item) into new group, and add it as a new child of parental group	
-	public void newGroup(ArrayList<String> nodeName, String newGroupName) throws NodeNotFoundException {
+	public void newGroupbyName(ArrayList<String> nodeName, String newGroupName) throws NodeNotFoundException {
 		DefaultMutableTreeNode firstElem = findNode(this.treeRoot,nodeName.get(0));
 		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)firstElem.getParent();
 		int groupIndex = parent.getIndex(firstElem);
@@ -100,6 +105,18 @@ public class ClusterData {
 			if(child==null||parent.getIndex(child)==-1) {
 				throw new NodeNotFoundException();
 			}
+			newGroup.insert(child,0);
+		}
+		parent.insert(newGroup, groupIndex);
+	}
+	
+	public void newGroupbyNode(ArrayList<DefaultMutableTreeNode> nodeArr,String newGroupName) {
+		DefaultMutableTreeNode firstElem = nodeArr.get(0);
+		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)firstElem.getParent();
+		int groupIndex = parent.getIndex(firstElem);
+		DefaultMutableTreeNode newGroup = new DefaultMutableTreeNode(newGroupName,true);
+		for(int i=nodeArr.size()-1;i>=0;i--) {
+			DefaultMutableTreeNode child = nodeArr.get(i);
 			newGroup.insert(child,0);
 		}
 		parent.insert(newGroup, groupIndex);
@@ -119,6 +136,16 @@ public class ClusterData {
 		}
 		parent.remove(node);
 	}
+	
+	public void freeGroup(DefaultMutableTreeNode node) {
+		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)node.getParent();
+		int cursor = parent.getIndex(node);
+		while(node.getChildCount()!=0) {
+			parent.insert((MutableTreeNode)node.getFirstChild(),cursor);
+			cursor++;
+		}
+		parent.remove(node);
+	}
 
 //rename the particular item or group
 	public void renameNode(String nodeName, String newName) throws NodeNotFoundException {
@@ -129,12 +156,20 @@ public class ClusterData {
 		node.setUserObject(newName);
 	}
 	
+	public void renameNode(DefaultMutableTreeNode node, String newName) {
+		node.setUserObject(newName);
+	}
+	
 	public void addItem(String groupName, String itemName) throws NodeNotFoundException {
 		DefaultMutableTreeNode group = findNode(this.treeRoot,groupName);
 		if(group==null) {
 			throw new NodeNotFoundException();
 		}
-		group.add(new DefaultMutableTreeNode(groupName,false));
+		group.add(new DefaultMutableTreeNode(itemName,false));
+	}
+	
+	public void addItem(DefaultMutableTreeNode groupNode, String itemName) {
+		groupNode.add(new DefaultMutableTreeNode(itemName,false));
 	}
 	
 	public void deleteItem(String itemName) throws NodeNotFoundException {
@@ -142,6 +177,10 @@ public class ClusterData {
 		if(node==null) {
 			throw new NodeNotFoundException();
 		}
+		node.removeFromParent();
+	}
+	
+	public void deleteItem(DefaultMutableTreeNode node) {
 		node.removeFromParent();
 	}
 }

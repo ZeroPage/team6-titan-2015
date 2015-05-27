@@ -38,39 +38,38 @@ public class TreeData {
 	}
 
 //rename the element(Group, Item both)
-	public void renameElem(String currentName, String newName) throws ItemAlreadyExistException, NodeNotFoundException {
-		cluster.renameNode(currentName, newName);
-		if(!cluster.getAllowsChildren(newName)) {
-			dsmData.setName(newName, dsmData.getIndexByName(currentName));
+	public void renameElem(DefaultMutableTreeNode currentNode, String newName) throws ItemAlreadyExistException, NodeNotFoundException {
+		if(!currentNode.getAllowsChildren()) {
+			dsmData.setName(newName, dsmData.getIndexByName(currentNode.getUserObject().toString()));
 		}
+		cluster.renameNode(currentNode, newName);
 	}
 	
-	public void repositionElem(String elemName,int newIndex) throws NodeNotFoundException {
-		cluster.moveNode(elemName, newIndex);
+	public void repositionElem(DefaultMutableTreeNode elemNode,int newIndex) throws NodeNotFoundException {
+		cluster.moveNode(elemNode, newIndex);
 		//Does DSM has something to do with this method?
 	}
 	
-	public void removeElem(String elemName) throws NodeNotFoundException {
-		if(cluster.getAllowsChildren(elemName)) {
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode)cluster.getNode(elemName);
+	public void removeElem(DefaultMutableTreeNode elemNode) throws NodeNotFoundException {
+		if(elemNode.getAllowsChildren()) {
 			//Case 1: the element was group - subtree has to be deleted.
 		} else {
 			//Case 2: the element was item - delete only stated element.
 		}
-		cluster.deleteItem(elemName);
+		cluster.deleteItem(elemNode);
 	}
 	
-	public void addElem(String groupName, String itemName) throws NodeNotFoundException {
-		cluster.addItem(groupName, itemName);
+	public void addElem(DefaultMutableTreeNode groupNode, String itemName) throws NodeNotFoundException {
+		cluster.addItem(groupNode, itemName);
 		//DSM team, Plz add your codes that are needed.
 	}
 	
-	public void groupElem(ArrayList<String> elemList, String groupName) throws NodeNotFoundException {
-		cluster.newGroup(elemList, groupName);
+	public void groupElem(ArrayList<DefaultMutableTreeNode> elemList, String groupName) {
+		cluster.newGroupbyNode(elemList, groupName);
 	}
 	
-	public void freeGroup(String groupName) throws NodeNotFoundException {
-		cluster.freeGroup(groupName);
+	public void freeGroup(DefaultMutableTreeNode groupNode) throws NodeNotFoundException {
+		cluster.freeGroup(groupNode);
 	}
 	
 //build temporary cluster with DSM only.
@@ -86,16 +85,16 @@ public class TreeData {
 		return this.treeRoot;
 	} 
 	
-	public void saveDSMData(String dsmFileName) throws IOException{
-		this.dsmData.saveToFile(dsmFileName);
+	public void saveDSMData(File dsmFile) throws IOException{
+		this.dsmData.saveToFile(dsmFile);
 	}
 	
 	public void saveClusterData(File clusterFile) throws IOException{
 		this.cluster.saveClusterData(clusterFile);
 	}
 	
-	public void saveData(String dsmFileName, File clusterFile) throws IOException{
-		this.dsmData.saveToFile(dsmFileName);
+	public void saveData(File dsmFile, File clusterFile) throws IOException{
+		this.dsmData.saveToFile(dsmFile);
 		this.cluster.saveClusterData(clusterFile);
 	}
 }
