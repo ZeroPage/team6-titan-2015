@@ -44,15 +44,15 @@ public class TitanDSM {
         return sizeOfMatrix;
     }
 
-    public Boolean getData(String row, String col) throws Exception {
+    public Boolean getData(String row, String col) throws ItemNotFoundException {
         return dataMatrix.get(getIndexByName(row)).get(getIndexByName(col));
     }
 
-    public void setData(boolean data, String row, String col) throws Exception {
+    public void setData(boolean data, String row, String col) throws ItemNotFoundException {
         dataMatrix.get(getIndexByName(row)).set(getIndexByName(col), data);
     }
 
-    public void deleteData(String deleteName) throws Exception {
+    public void deleteData(String deleteName) throws ItemNotFoundException {
         int index = getIndexByName(deleteName);
         nameOfClass.remove(index);
         for(int i = 0;i<sizeOfMatrix;i++) {
@@ -66,7 +66,7 @@ public class TitanDSM {
         return nameOfClass.get(index);
     }
 
-    public void setName(String newName, String oldName) throws Exception {
+    public void setName(String newName, String oldName) throws ItemAlreadyExistException, ItemNotFoundException {
         if(nameOfClass.contains(newName)) {
             throw new ItemAlreadyExistException();
         } else {
@@ -88,11 +88,11 @@ public class TitanDSM {
         dataMatrix.get(sizeOfMatrix - 1).remove(sizeOfMatrix);
     }
 
-    private int getIndexByName(String name) throws Exception {
+    private int getIndexByName(String name) throws ItemNotFoundException {
         if(isExist(name)) {
             return nameOfClass.indexOf(name);
         } else {
-            throw new Exception(name + "not found.");
+            throw new ItemNotFoundException(name + "not found.");
         }
     }
 
