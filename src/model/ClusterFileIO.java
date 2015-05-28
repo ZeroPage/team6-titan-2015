@@ -79,6 +79,7 @@ public class ClusterFileIO {
 		treeRoot = new DefaultMutableTreeNode("",true);
 		buildTree(doc.getDocumentElement(),treeRoot);
 		treeRoot = (DefaultMutableTreeNode)treeRoot.getFirstChild();
+		treeRoot.removeFromParent(); // FIXME: hotfix
 		return treeRoot;
 	}
 	
