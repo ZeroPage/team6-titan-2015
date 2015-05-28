@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -150,19 +151,19 @@ public class TreeData {
 	}
 
 //rename the element(Group, Item both)
-	public void renameElement(DefaultMutableTreeNode currentNode, String newName) throws ItemAlreadyExistException, NodeNotFoundException {
+	public void renameElement(DefaultMutableTreeNode currentNode, String newName) throws ItemAlreadyExistException, NoSuchElementException {
 		if(!currentNode.getAllowsChildren()) {
 			dsmData.setName(newName, currentNode.getUserObject().toString());
 		}
 		cluster.renameNode(currentNode, newName);
 	}
 	
-	public void repositionElement(DefaultMutableTreeNode elementNode,int newIndex) throws NodeNotFoundException {
+	public void repositionElement(DefaultMutableTreeNode elementNode,int newIndex) throws NoSuchElementException {
 		cluster.moveNode(elementNode, newIndex);
 		//Does DSM has something to do with this method?
 	}
 	
-	public void removeElement(DefaultMutableTreeNode elementNode) throws NodeNotFoundException {
+	public void removeElement(DefaultMutableTreeNode elementNode) throws NoSuchElementException {
 		if(elementNode.getAllowsChildren()) {
 			//Case 1: the element was group - subtree has to be deleted.
 		} else {
@@ -171,7 +172,7 @@ public class TreeData {
 		cluster.deleteItem(elementNode);
 	}
 	
-	public void addElement(DefaultMutableTreeNode groupNode, String itemName) throws NodeNotFoundException {
+	public void addElement(DefaultMutableTreeNode groupNode, String itemName) throws NoSuchElementException {
 		cluster.addItem(groupNode, itemName);
 		//DSM team, Plz add your codes that are needed.
 	}
@@ -180,7 +181,7 @@ public class TreeData {
 		cluster.newGroupbyNode(elementList, groupName);
 	}
 	
-	public void freeGroup(DefaultMutableTreeNode groupNode) throws NodeNotFoundException {
+	public void freeGroup(DefaultMutableTreeNode groupNode) throws NoSuchElementException {
 		cluster.freeGroup(groupNode);
 	}
 	

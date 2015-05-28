@@ -72,9 +72,9 @@ public class ClusterData {
 	}
 
 //moving a node(group or item) to new index	
-	public void moveNode(String nodeName, int newIndex) throws NodeNotFoundException {
+	public void moveNode(String nodeName, int newIndex) throws NoSuchElementException {
 		DefaultMutableTreeNode node = findNode(this.treeRoot,nodeName);
-		if(node==null) {throw new NodeNotFoundException();}
+		if(node==null) {throw new NoSuchElementException();}
 		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)node.getParent();
 		parent.insert(node, newIndex);
 	}
@@ -86,20 +86,20 @@ public class ClusterData {
 
 	
 //Added for DSM search - whether item or not
-	public boolean getAllowsChildren(String nodeName) throws NodeNotFoundException {
+	public boolean getAllowsChildren(String nodeName) throws NoSuchElementException {
 		DefaultMutableTreeNode node = findNode(this.treeRoot,nodeName);
-		if(node==null) {throw new NodeNotFoundException();}
+		if(node==null) {throw new NoSuchElementException();}
 		return node.getAllowsChildren();
 	}
 	
-	public TreeNode getNode(String nodeName) throws NodeNotFoundException {
+	public TreeNode getNode(String nodeName) throws NoSuchElementException {
 		DefaultMutableTreeNode node = findNode(this.treeRoot,nodeName);
-		if(node==null) {throw new NodeNotFoundException();}
+		if(node==null) {throw new NoSuchElementException();}
 		return node;
 	}
 
 //group multiple nodes(group or item) into new group, and add it as a new child of parental group	
-	public void newGroupbyName(ArrayList<String> nodeName, String newGroupName) throws NodeNotFoundException {
+	public void newGroupbyName(ArrayList<String> nodeName, String newGroupName) throws NoSuchElementException {
 		DefaultMutableTreeNode firstElem = findNode(this.treeRoot,nodeName.get(0));
 		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)firstElem.getParent();
 		int groupIndex = parent.getIndex(firstElem);
@@ -107,7 +107,7 @@ public class ClusterData {
 		for(int i=nodeName.size()-1;i>=0;i--) {
 			DefaultMutableTreeNode child = findNode(parent,nodeName.get(i));
 			if(child==null||parent.getIndex(child)==-1) {
-				throw new NodeNotFoundException();
+				throw new NoSuchElementException();
 			}
 			newGroup.insert(child,0);
 		}
@@ -127,10 +127,10 @@ public class ClusterData {
 	}
 
 //free the group, and add all the children as the child of parent group
-	public void freeGroup(String nodeName) throws NodeNotFoundException {
+	public void freeGroup(String nodeName) throws NoSuchElementException {
 		DefaultMutableTreeNode node = findNode(this.treeRoot,nodeName);
 		if(node==null) {
-			throw new NodeNotFoundException();
+			throw new NoSuchElementException();
 		}
 		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)node.getParent();
 		int cursor = parent.getIndex(node);
@@ -152,10 +152,10 @@ public class ClusterData {
 	}
 
 //rename the particular item or group
-	public void renameNode(String nodeName, String newName) throws NodeNotFoundException {
+	public void renameNode(String nodeName, String newName) throws NoSuchElementException {
 		DefaultMutableTreeNode node = findNode(this.treeRoot,nodeName);
 		if(node==null) {
-			throw new NodeNotFoundException();
+			throw new NoSuchElementException();
 		}
 		node.setUserObject(newName);
 	}
@@ -164,10 +164,10 @@ public class ClusterData {
 		node.setUserObject(newName);
 	}
 	
-	public void addItem(String groupName, String itemName) throws NodeNotFoundException {
+	public void addItem(String groupName, String itemName) throws NoSuchElementException {
 		DefaultMutableTreeNode group = findNode(this.treeRoot,groupName);
 		if(group==null) {
-			throw new NodeNotFoundException();
+			throw new NoSuchElementException();
 		}
 		group.add(new DefaultMutableTreeNode(itemName,false));
 	}
@@ -176,10 +176,10 @@ public class ClusterData {
 		groupNode.add(new DefaultMutableTreeNode(itemName,false));
 	}
 	
-	public void deleteItem(String itemName) throws NodeNotFoundException {
+	public void deleteItem(String itemName) throws NoSuchElementException {
 		DefaultMutableTreeNode node = findNode(this.treeRoot,itemName);
 		if(node==null) {
-			throw new NodeNotFoundException();
+			throw new NoSuchElementException();
 		}
 		node.removeFromParent();
 	}

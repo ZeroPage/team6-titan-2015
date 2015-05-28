@@ -11,6 +11,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 public class TitanMainController {
     // Models
@@ -213,7 +214,7 @@ public class TitanMainController {
             try {
                 treeData.freeGroup(item);
                 drawTree();
-            } catch (NodeNotFoundException e) {
+            } catch (NoSuchElementException e) {
                 e.printStackTrace();
             }
         }
@@ -223,7 +224,7 @@ public class TitanMainController {
         for (DefaultMutableTreeNode item : items) {
             try {
                 treeData.repositionElement(item, item.getParent().getIndex(item) - 1);
-            } catch (NodeNotFoundException e) {
+            } catch (NoSuchElementException e) {
                 e.printStackTrace();
             }
         }
@@ -243,7 +244,7 @@ public class TitanMainController {
         for (DefaultMutableTreeNode item : items) {
             try {
                 treeData.repositionElement(item, item.getParent().getIndex(item) + 1);
-            } catch (NodeNotFoundException e) {
+            } catch (NoSuchElementException e) {
                 e.printStackTrace();
             }
         }
@@ -255,7 +256,7 @@ public class TitanMainController {
         for (DefaultMutableTreeNode item : items) {
             try {
                 treeData.removeElement(item);
-            } catch (NodeNotFoundException e) {
+            } catch (NoSuchElementException e) {
                 e.printStackTrace();
             }
         }
@@ -270,7 +271,7 @@ public class TitanMainController {
             try {
                 treeData.addElement(root, name);
                 drawTree();
-            } catch (NodeNotFoundException e) {
+            } catch (NoSuchElementException e) {
                 JOptionPane.showMessageDialog(parent, "Filed to add new item.", "ERROR", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
