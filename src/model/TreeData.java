@@ -43,9 +43,7 @@ public class TreeData {
 			if(columnElement.getAllowsChildren()) {
 				result = getItemGroupValue(columnElement, rowElement);
 			} else {
-				String row = rowElement.getUserObject().toString();
-				String column = columnElement.getUserObject().toString();
-				result = dsmData.getData(row, column);
+				result = getItemItemValue(rowElement,columnElement);
 			}
 		}
 
@@ -55,13 +53,35 @@ public class TreeData {
 	private boolean getGroupGroupValue(DefaultMutableTreeNode rGroup, DefaultMutableTreeNode cGroup) {
 		boolean result = false;
 		
-		for(int i=0;i<rGroup.getChildCount();i++) {
-			DefaultMutableTreeNode rItem = (DefaultMutableTreeNode)rGroup.getChildAt(i);
-			String row = rItem.getUserObject().toString();
-			for(int j=0;j<cGroup.getChildCount();j++) {
-				DefaultMutableTreeNode cItem = (DefaultMutableTreeNode)cGroup.getChildAt(j);
-				String column = cItem.getUserObject().toString();
-				if(result = dsmData.getData(row, column)) {
+		boolean isR, isC;
+		isR = rGroup.getFirstChild().getAllowsChildren();
+		isC = cGroup.getFirstChild().getAllowsChildren();
+		
+		if(isR&isC) {
+			for(int i=0;i<cGroup.getChildCount();i++) {
+				DefaultMutableTreeNode child = (DefaultMutableTreeNode)cGroup.getChildAt(i);
+				if(result = getGroupGroupValue(rGroup,child)) {
+					return result;
+				}
+			}
+		} else if(isR) {
+			for(int i=0;i<rGroup.getChildCount();i++) {
+				DefaultMutableTreeNode item = (DefaultMutableTreeNode)cGroup.getChildAt(i);
+				if(result = getGroupItemValue(rGroup,item)) {
+					return result;
+				}
+			}
+		} else if(isC) {
+			for(int i=0;i<cGroup.getChildCount();i++) {
+				DefaultMutableTreeNode item = (DefaultMutableTreeNode)rGroup.getChildAt(i);
+				if(result = getItemGroupValue(item,cGroup)) {
+					return result;
+				}
+			}
+		} else {
+			for(int i=0;i<rGroup.getChildCount();i++) {
+				DefaultMutableTreeNode item = (DefaultMutableTreeNode)rGroup.getChildAt(i);
+				if(result = getItemGroupValue(item,cGroup)) {
 					return result;
 				}
 			}
@@ -70,14 +90,20 @@ public class TreeData {
 	}
 	
 	private boolean getGroupItemValue(DefaultMutableTreeNode group, DefaultMutableTreeNode element) {
-		boolean result = false;
+		boolean  result = false;
 		
-		for(int i=0;i<group.getChildCount();i++) {
-			DefaultMutableTreeNode item = (DefaultMutableTreeNode)group.getChildAt(i);
-			String row = item.getUserObject().toString();
-			String column = element.getUserObject().toString();
-			if(result = dsmData.getData(row,column)) {
-				return result;
+		if(group.getFirstChild().getAllowsChildren()) {
+			for(int i=0;i<group.getChildCount();i++) {
+				if(result = getGroupItemValue((DefaultMutableTreeNode)group.getChildAt(i),element)) {
+					return result;
+				}
+			}
+		} else {
+			for(int i=0;i<group.getChildCount();i++) {
+				DefaultMutableTreeNode item = (DefaultMutableTreeNode)group.getChildAt(i);
+				if(result = getItemItemValue(item, element)) {
+					return result;
+				}
 			}
 		}
 		return result;
@@ -86,14 +112,31 @@ public class TreeData {
 	private boolean getItemGroupValue(DefaultMutableTreeNode element, DefaultMutableTreeNode group) {
 		boolean result = false;
 		
-		for(int i=0;i<group.getChildCount();i++) {
-			DefaultMutableTreeNode item = (DefaultMutableTreeNode)group.getChildAt(i);
-			String row = element.getUserObject().toString();
-			String column = item.getUserObject().toString();
-			if(result = dsmData.getData(row,column)) {
-				return result;
+		if(group.getFirstChild().getAllowsChildren()) {
+			for(int i=0;i<group.getChildCount();i++) {
+				if(result = getItemGroupValue(element,(DefaultMutableTreeNode)group.getChildAt(i))) {
+					return result;
+				}
+			}
+		} else {
+			for(int i=0;i<group.getChildCount();i++) {
+				DefaultMutableTreeNode item = (DefaultMutableTreeNode)group.getChildAt(i);
+				if(result = getItemItemValue(element, item)) {
+					return result;
+				}
 			}
 		}
+		return result;
+	}
+	
+	private boolean getItemItemValue(DefaultMutableTreeNode rowElement, DefaultMutableTreeNode columnElement) {
+		boolean result = false;
+		
+		String row = rowElement.getUserObject().toString();
+		String column = columnElement.getUserObject().toString();
+		
+		result = dsmData.getData(row, column);
+			
 		return result;
 	}
 	
