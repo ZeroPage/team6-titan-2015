@@ -2,6 +2,7 @@ package model;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class TitanDSM {
     private int sizeOfMatrix;
@@ -44,15 +45,15 @@ public class TitanDSM {
         return sizeOfMatrix;
     }
 
-    public Boolean getData(String row, String col) throws ItemNotFoundException {
+    public Boolean getData(String row, String col) throws NoSuchElementException {
         return dataMatrix.get(getIndexByName(row)).get(getIndexByName(col));
     }
 
-    public void setData(boolean data, String row, String col) throws ItemNotFoundException {
+    public void setData(boolean data, String row, String col) throws NoSuchElementException {
         dataMatrix.get(getIndexByName(row)).set(getIndexByName(col), data);
     }
 
-    public void deleteData(String deleteName) throws ItemNotFoundException {
+    public void deleteData(String deleteName) throws NoSuchElementException {
         int index = getIndexByName(deleteName);
         nameOfClass.remove(index);
         for(int i = 0;i<sizeOfMatrix;i++) {
@@ -66,7 +67,7 @@ public class TitanDSM {
         return nameOfClass.get(index);
     }
 
-    public void setName(String newName, String oldName) throws ItemAlreadyExistException, ItemNotFoundException {
+    public void setName(String newName, String oldName) throws ItemAlreadyExistException, NoSuchElementException {
         if(nameOfClass.contains(newName)) {
             throw new ItemAlreadyExistException();
         } else {
@@ -88,11 +89,11 @@ public class TitanDSM {
         dataMatrix.get(sizeOfMatrix - 1).remove(sizeOfMatrix);
     }
 
-    private int getIndexByName(String name) throws ItemNotFoundException {
+    private int getIndexByName(String name) throws NoSuchElementException {
         if(isExist(name)) {
             return nameOfClass.indexOf(name);
         } else {
-            throw new ItemNotFoundException(name + "not found.");
+            throw new NoSuchElementException(name + "not found.");
         }
     }
 
