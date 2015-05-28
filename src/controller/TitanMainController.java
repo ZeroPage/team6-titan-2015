@@ -1,8 +1,6 @@
 package controller;
 
-import model.NotPositiveException;
-import model.TitanDSM;
-import model.WrongDSMFormatException;
+import model.*;
 import view.TitanDataView;
 import view.TitanMainView;
 
@@ -12,11 +10,12 @@ import javax.swing.tree.*;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TitanMainController {
     // Models
-    private TitanDSM dsm; // TODO: Should be removed after TreeModel become available
-    private TreeModel treeModel;
+    private TreeData treeData;
+    private DefaultMutableTreeNode root;
 
     // View
     private TitanMainView view;
@@ -40,10 +39,10 @@ public class TitanMainController {
         if (userInput != null) {
             try {
                 int size = Integer.valueOf(userInput);
-                dsm = new TitanDSM(size);
-                setDSM(dsm);
-            } catch (NumberFormatException | NotPositiveException exception) {
+                setTreeData(new TreeData(size));
+            } catch (NumberFormatException | NotPositiveException | WrongDSMFormatException | IOException exception) {
                 JOptionPane.showMessageDialog(parent, "Invalid Input", "ERROR", JOptionPane.ERROR_MESSAGE);
+                exception.printStackTrace();
             }
         }
     }
@@ -60,10 +59,31 @@ public class TitanMainController {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
-                dsm = new TitanDSM(fileChooser.getSelectedFile());
-                setDSM(dsm);
+                setTreeData(new TreeData(fileChooser.getSelectedFile()));
             } catch (IOException | WrongDSMFormatException exception) {
                 JOptionPane.showMessageDialog(parent, "Filed to open file.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                exception.printStackTrace();
+            }
+        }
+    }
+
+    public void openCluster(Component parent) {
+        // Init fileChooser
+        JFileChooser fileChooser = new JFileChooser(new File("."));
+        fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Cluster File (*.clsx)", "clsx"));
+
+        // Show FileChooser
+        int result = fileChooser.showOpenDialog(parent);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            try {
+                treeData.loadClusterData(fileChooser.getSelectedFile());
+                setTreeRoot(treeData.getTree());
+            } catch (IOException | WrongXMLNamespaceException e) {
+                JOptionPane.showMessageDialog(parent, "Filed to open file.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
             }
         }
     }
@@ -83,7 +103,7 @@ public class TitanMainController {
             canDelete = false;
         } else {
             DefaultMutableTreeNode lastParent = null;
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
+            DefaultMutableTreeNode root = view.getDataView().getRoot();
 
             for (TreePath path : paths) {
                 DefaultMutableTreeNode self = (DefaultMutableTreeNode) path.getLastPathComponent();
@@ -99,8 +119,9 @@ public class TitanMainController {
                 }
 
                 DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getParentPath().getLastPathComponent();
-                int childIndex = treeModel.getIndexOfChild(parent, self);
-                int parentSize = treeModel.getChildCount(parent);
+
+                int childIndex = parent.getIndex(self);
+                int parentSize = parent.getChildCount();
 
                 canMoveUp &= childIndex != 0;
                 canMoveDown &= childIndex != parentSize - 1;
@@ -119,8 +140,8 @@ public class TitanMainController {
 
     public void drawTable() {
         TitanDataView dataView = view.getDataView();
-        DefaultMutableTreeNode[] rows = dataView.getVisibleRows((DefaultMutableTreeNode) dataView.getTreeModel().getRoot(), false);
-        ArrayList<String> names = new ArrayList<>();
+        DefaultMutableTreeNode[] rows = dataView.getVisibleRows(view.getDataView().getRoot(), false);
+        ArrayList<DefaultMutableTreeNode> selectedRows = new ArrayList<>();
         ArrayList<int[]> tempGroups = new ArrayList<>();
 
         // Prepare names
@@ -136,13 +157,35 @@ public class TitanMainController {
                 }
             }
 
-            names.add(row.toString());
+            selectedRows.add(row);
             currentRow++;
         }
 
-        int finalSize = names.size();
-        boolean[][] data = new boolean[finalSize][finalSize]; // TODO
+        int finalSize = selectedRows.size();
+        String[] name = new String[finalSize];
+        boolean[][] data = new boolean[finalSize][finalSize];
         int[][] group = new int[finalSize][finalSize];
+
+        // Prepare Name
+        for (int i = 0; i < finalSize; i++) {
+            String prefix = "";
+            if (view.getMenuView().isShowRowLabelsSelected()) {
+                prefix = (i + 1) + " ";
+            }
+
+            name[i] = prefix + selectedRows.get(i);
+        }
+
+        // Prepare Data
+        for (int i = 0; i < finalSize; i++) {
+            for (int j = 0; j < finalSize; j++) {
+                try {
+                    data[i][j] = treeData.getDSMValue(selectedRows.get(i), selectedRows.get(j));
+                } catch (ArrayIndexOutOfBoundsException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }
 
         // Prepare groups
         for (int[] tempGroup : tempGroups) {
@@ -153,98 +196,107 @@ public class TitanMainController {
             }
         }
 
-        // Add labels
-        if (view.getMenuView().isShowRowLabelsSelected()) {
-            for (int i = 0; i < finalSize; i++) {
-                names.set(i, (i + 1) + " " + names.get(i));
-            }
-        }
-
-        view.getDataView().drawTable(names.toArray(new String[finalSize]), data, group);
+        view.getDataView().drawTable(name, data, group);
     }
 
-    // TODO: implements needed
-    public void groupItems(DefaultMutableTreeNode[] items) {
-        System.out.println("GROUP");
+    public void groupItems(Component parent, DefaultMutableTreeNode[] items) {
+        String userInput = JOptionPane.showInputDialog(parent, "New Group name: ", "new_group_name");
 
-        for (DefaultMutableTreeNode item : items) {
-            System.out.println(item);
+        if (userInput != null) {
+            treeData.groupElement(new ArrayList<DefaultMutableTreeNode>(Arrays.asList(items)), userInput);
+            drawTree();
         }
     }
 
     public void ungroupItems(DefaultMutableTreeNode[] items) {
-        System.out.println("UNGROUP");
-
         for (DefaultMutableTreeNode item : items) {
-            System.out.println(item);
+            try {
+                treeData.freeGroup(item);
+                drawTree();
+            } catch (NodeNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void moveUpItems(DefaultMutableTreeNode[] items) {
-        System.out.println("UP");
-
         for (DefaultMutableTreeNode item : items) {
-            System.out.println(item);
+            try {
+                treeData.repositionElement(item, item.getParent().getIndex(item) - 1);
+            } catch (NodeNotFoundException e) {
+                e.printStackTrace();
+            }
         }
+
+        drawTree();
     }
 
     public void moveDownItems(DefaultMutableTreeNode[] items) {
-        System.out.println("DOWN");
+        // reverse
+        for (int i = 0; i < items.length / 2; i++) {
+            DefaultMutableTreeNode temp = items[i];
+            items[i] = items[items.length - (i + 1)];
+            items[items.length - (i + 1)] = temp;
+        }
+
 
         for (DefaultMutableTreeNode item : items) {
-            System.out.println(item);
+            try {
+                treeData.repositionElement(item, item.getParent().getIndex(item) + 1);
+            } catch (NodeNotFoundException e) {
+                e.printStackTrace();
+            }
         }
+
+        drawTree();
     }
 
     public void deleteItems(DefaultMutableTreeNode[] items) {
-        System.out.println("DELETE");
-
         for (DefaultMutableTreeNode item : items) {
-            System.out.println(item);
+            try {
+                treeData.removeElement(item);
+            } catch (NodeNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        drawTree();
+    }
+
+    public void newItem(Component parent) {
+        String name = JOptionPane.showInputDialog(parent, "Input new item name:");
+
+        if (name != null) {
+            try {
+                treeData.addElement(root, name);
+                drawTree();
+            } catch (NodeNotFoundException e) {
+                JOptionPane.showMessageDialog(parent, "Filed to add new item.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+            }
         }
     }
 
-    public void newItem(String name) {
-        System.out.println("NEW");
-        System.out.println(name);
-    }
+    private void setTreeData(TreeData treeData) {
+        this.treeData = treeData;
 
-    private void setDSM(TitanDSM dsm) {
-        this.dsm = dsm;
-
-        if (dsm == null) {
-            return;
-        }
-
-        // FIXME: Temporary implementation
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("root", true);
-
-        DefaultMutableTreeNode tempGroup = new DefaultMutableTreeNode("test.group", true);
-        DefaultMutableTreeNode tempGroup2 = new DefaultMutableTreeNode("test.group.2", true);
-        tempGroup.add(new DefaultMutableTreeNode("test_1", false));
-        tempGroup.add(new DefaultMutableTreeNode("test_2", false));
-        tempGroup.add(new DefaultMutableTreeNode("test_3", false));
-
-        tempGroup2.add(new DefaultMutableTreeNode("test_4", false));
-        tempGroup2.add(new DefaultMutableTreeNode("test_5", false));
-
-        tempGroup.add(tempGroup2);
-        root.add(tempGroup);
-
-        int size = dsm.getSize();
-
-        for (int i = 0; i < size; i++) {
-            root.add(new DefaultMutableTreeNode(dsm.getName(i), false));
-        }
-
-        this.treeModel = new DefaultTreeModel(root, true);
-
-        view.getDataView().setTreeModel(this.treeModel);
         view.getMenuView().setEnabled(true);
         view.getToolBarView().setEnabled(true);
         view.getDataView().setToolBarEnabled(true);
         view.getDataView().setToolBarPartialEnabled(false, false, false, false, false);
 
+        setTreeRoot(treeData.getTree());
+    }
+
+    private void drawTree() {
+        view.getDataView().drawTree();
         drawTable();
+    }
+
+    private void setTreeRoot(DefaultMutableTreeNode root) {
+        this.root = root;
+
+        view.getDataView().setTreeRoot(root);
+        drawTree();
     }
 }

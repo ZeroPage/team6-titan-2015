@@ -57,6 +57,13 @@ public class TitanMenuView {
             }
         });
 
+        fileMenu.getLoadClusterMenuItem().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.openCluster(parent);
+            }
+        });
+
         fileMenu.getExitMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -5,11 +5,10 @@ import components.main.left.TitanTree;
 import components.main.right.TitanTable;
 import controller.TitanMainController;
 
-import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeModel;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -67,6 +66,10 @@ public class TitanDataView {
         return rows.toArray(new DefaultMutableTreeNode[rows.size()]);
     }
 
+    public DefaultMutableTreeNode getRoot() {
+        return (DefaultMutableTreeNode) tree.getModel().getRoot();
+    }
+
     public void setToolBarEnabled(boolean enabled) {
         toolBar.setEnabledAll(enabled);
     }
@@ -79,15 +82,16 @@ public class TitanDataView {
         toolBar.getDeleteButton().setEnabled(delete);
     }
 
-    public void setTreeModel(TreeModel treeModel) {
-        tree.setModel(treeModel);
-    }
-    public TreeModel getTreeModel() {
-        return tree.getModel();
+    public void setTreeRoot(DefaultMutableTreeNode root) {
+        tree.setModel(new DefaultTreeModel(root, true));
     }
 
     public boolean isExpanded(TreePath path) {
         return tree.isExpanded(path);
+    }
+
+    public void drawTree() {
+        ((DefaultTreeModel) tree.getModel()).reload();
     }
 
     public void drawTable(String[] names, boolean[][] data, int[][] color) {
@@ -95,7 +99,7 @@ public class TitanDataView {
     }
 
     public void collapseAll() {
-        Enumeration<DefaultMutableTreeNode> nodes = ((DefaultMutableTreeNode) tree.getModel().getRoot()).postorderEnumeration();
+        Enumeration<DefaultMutableTreeNode> nodes = getRoot().postorderEnumeration();
 
         while (nodes.hasMoreElements()) {
             tree.collapsePath(new TreePath(nodes.nextElement().getPath()));
@@ -103,7 +107,7 @@ public class TitanDataView {
     }
 
     public void expandAll() {
-        Enumeration<DefaultMutableTreeNode> nodes = ((DefaultMutableTreeNode) tree.getModel().getRoot()).preorderEnumeration();
+        Enumeration<DefaultMutableTreeNode> nodes = getRoot().preorderEnumeration();
 
         while (nodes.hasMoreElements()) {
             tree.expandPath(new TreePath(nodes.nextElement().getPath()));
@@ -135,7 +139,7 @@ public class TitanDataView {
         toolBar.getGroupButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.groupItems(getSelectedRows());
+                controller.groupItems(parent, getSelectedRows());
             }
         });
 
@@ -163,11 +167,7 @@ public class TitanDataView {
         toolBar.getNewButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String name = JOptionPane.showInputDialog(parent, "Input new item name:");
-
-                if (name != null) {
-                    controller.newItem(name);
-                }
+                controller.newItem(parent);
             }
         });
 
