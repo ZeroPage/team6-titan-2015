@@ -85,7 +85,7 @@ public class TitanMenuView {
         menuBar.getTitanHelpMenu().getAboutMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(parent, "About"); // TODO: Fill contents
+                JOptionPane.showMessageDialog(parent, "Team 6\n" + "20135262 안미리\n" + "20131298 원준연\n" + "20135796 조영준\n" + "20132811 박희정\n" + "20132465 안용호");
             }
         });
     }
