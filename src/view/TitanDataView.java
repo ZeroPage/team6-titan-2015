@@ -122,8 +122,10 @@ public class TitanDataView {
             tree.expandPath(path);
         }
 
-        for (TreePath path : selected) {
-            tree.addSelectionPath(path);
+        if (selected != null) {
+            for (TreePath path : selected) {
+                tree.addSelectionPath(path);
+            }
         }
     }
 
