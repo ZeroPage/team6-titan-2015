@@ -93,7 +93,7 @@ public class TitanDSM {
         if(isExist(name)) {
             return nameOfClass.indexOf(name);
         } else {
-            throw new NoSuchElementException(name + "not found.");
+            throw new NoSuchElementException(name + " not found.");
         }
     }
 
