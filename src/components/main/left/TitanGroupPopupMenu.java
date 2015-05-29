@@ -4,13 +4,13 @@ import controller.TitanMainController;
 
 import javax.swing.*;
 
-public class TitanLeftPopupMenu extends JPopupMenu {
+public class TitanGroupPopupMenu extends JPopupMenu {
     private RenameMenuItem renameMenuItem;
     private SortMenuItem sortMenuItem;
     private DuplicateMenuItem duplicateMenuItem;
     private ForkMenuItem forkMenuItem;
 
-    public TitanLeftPopupMenu() {
+    public TitanGroupPopupMenu() {
         // Init fields
         renameMenuItem = new RenameMenuItem();
         sortMenuItem = new SortMenuItem();

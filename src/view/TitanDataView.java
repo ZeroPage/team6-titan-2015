@@ -1,5 +1,7 @@
 package view;
 
+import components.main.left.TitanGroupPopupMenu;
+import components.main.left.TitanItemPopupMenu;
 import components.main.left.TitanLeftToolBar;
 import components.main.left.TitanTree;
 import components.main.right.TitanTable;
@@ -13,14 +15,21 @@ import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
 public class TitanDataView {
     private TitanMainController controller;
+
     private TitanTree tree;
     private TitanTable table;
     private TitanLeftToolBar toolBar;
+
+    private TitanGroupPopupMenu groupPopupMenu;
+    private TitanItemPopupMenu itemPopupMenu;
+
     private Container parent;
 
     public TitanDataView(TitanMainController controller, TitanTree tree, TitanTable table, TitanLeftToolBar toolBar, Container parent) {
@@ -29,6 +38,9 @@ public class TitanDataView {
         this.table = table;
         this.toolBar = toolBar;
         this.parent = parent;
+
+        this.groupPopupMenu = new TitanGroupPopupMenu();
+        this.itemPopupMenu = new TitanItemPopupMenu();
 
         initListeners();
     }
@@ -115,6 +127,7 @@ public class TitanDataView {
     }
 
     private void initListeners() {
+        // Tree
         tree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
             public void valueChanged(TreeSelectionEvent e) {
@@ -122,6 +135,36 @@ public class TitanDataView {
             }
         });
 
+
+        tree.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3) { // Check right click
+                    int selectedRow = tree.getRowForLocation(e.getX(), e.getY());
+
+                    if (selectedRow > 0) { // Check valid position excluding root
+                        TreePath selectedPath = tree.getPathForRow(selectedRow);
+                        DefaultMutableTreeNode selectedComponent = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
+
+                        tree.setSelectionPath(selectedPath);
+
+                        if (selectedComponent.getAllowsChildren()) {
+                            groupPopupMenu.show(tree, e.getX(), e.getY());
+                        } else {
+                            itemPopupMenu.show(tree, e.getX(), e.getY());
+                        }
+                    }
+                }
+            }
+        });
+
+        // Popup Menus
+        // TODO: Total 5 Listeners
+
+
+
+
+        // ToolBar Buttons
         toolBar.getExpandButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
