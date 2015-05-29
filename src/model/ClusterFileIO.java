@@ -72,14 +72,14 @@ public class ClusterFileIO {
 		}
 		doc.getDocumentElement().normalize();
 		Element tempclsx = (Element) doc.getChildNodes().item(0);
-		if(!tempclsx.getAttribute("xmlns").equals(namespace)) {
+		if(tempclsx.hasAttribute("xmlns")&&!tempclsx.getAttribute("xmlns").equals(namespace)) {
 			throw new WrongXMLNamespaceException();
 		}
 		
 		treeRoot = new DefaultMutableTreeNode("",true);
 		buildTree(doc.getDocumentElement(),treeRoot);
 		treeRoot = (DefaultMutableTreeNode)treeRoot.getFirstChild();
-		treeRoot.removeFromParent(); // FIXME: hotfix
+		treeRoot.removeFromParent();
 		return treeRoot;
 	}
 	
