@@ -184,8 +184,9 @@ public class TitanMainController {
             for (int j = 0; j < finalSize; j++) {
                 try {
                     data[i][j] = treeData.getDSMValue(selectedRows.get(i), selectedRows.get(j));
-                } catch (ArrayIndexOutOfBoundsException exception) {
+                } catch (ArrayIndexOutOfBoundsException | NoSuchElementException exception) {
                     exception.printStackTrace();
+                    System.err.println(selectedRows.get(i) + " / " + selectedRows.get(j));
                 }
             }
         }
@@ -218,6 +219,7 @@ public class TitanMainController {
                 drawTree();
             } catch (NoSuchElementException e) {
                 e.printStackTrace();
+                System.err.println(item);
             }
         }
     }
@@ -228,6 +230,7 @@ public class TitanMainController {
                 treeData.repositionElement(item, item.getParent().getIndex(item) - 1);
             } catch (NoSuchElementException e) {
                 e.printStackTrace();
+                System.err.println(item);
             }
         }
 
@@ -248,6 +251,7 @@ public class TitanMainController {
                 treeData.repositionElement(item, item.getParent().getIndex(item) + 1);
             } catch (NoSuchElementException e) {
                 e.printStackTrace();
+                System.err.println(item);
             }
         }
 
@@ -260,6 +264,7 @@ public class TitanMainController {
                 treeData.removeElement(item);
             } catch (NoSuchElementException e) {
                 e.printStackTrace();
+                System.err.println(item);
             }
         }
 
@@ -276,6 +281,7 @@ public class TitanMainController {
             } catch (NoSuchElementException e) {
                 JOptionPane.showMessageDialog(parent, "Filed to add new item.", "ERROR", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
+                System.err.println(root);
             }
         }
     }
