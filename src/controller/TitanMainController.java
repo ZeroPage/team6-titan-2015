@@ -21,6 +21,9 @@ public class TitanMainController {
     // View
     private TitanMainView view;
 
+    // FileChooser Related
+    File lastFile;
+
     public TitanMainController() {
         // Init view
         this.view = new TitanMainView(this);
@@ -28,6 +31,9 @@ public class TitanMainController {
         this.view.getMenuView().setEnabled(false);
         this.view.getToolBarView().setEnabled(false);
         this.view.getDataView().setToolBarEnabled(false);
+
+        // Init extra fields
+        lastFile = new File(".");
     }
 
     public void openDialog() {
@@ -50,7 +56,7 @@ public class TitanMainController {
 
     public void openDSM(Component parent) {
         // Init fileChooser
-        JFileChooser fileChooser = new JFileChooser(new File("."));
+        JFileChooser fileChooser = new JFileChooser(lastFile);
         fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setFileFilter(new FileNameExtensionFilter("DSM File (*.dsm)", "dsm"));
@@ -59,6 +65,8 @@ public class TitanMainController {
         int result = fileChooser.showOpenDialog(parent);
 
         if (result == JFileChooser.APPROVE_OPTION) {
+            lastFile = fileChooser.getSelectedFile();
+
             try {
                 setTreeData(new TreeData(fileChooser.getSelectedFile()));
             } catch (IOException | WrongDSMFormatException exception) {
@@ -70,7 +78,7 @@ public class TitanMainController {
 
     public void openCluster(Component parent) {
         // Init fileChooser
-        JFileChooser fileChooser = new JFileChooser(new File("."));
+        JFileChooser fileChooser = new JFileChooser(lastFile);
         fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setFileFilter(new FileNameExtensionFilter("Cluster File (*.clsx)", "clsx"));
@@ -79,6 +87,8 @@ public class TitanMainController {
         int result = fileChooser.showOpenDialog(parent);
 
         if (result == JFileChooser.APPROVE_OPTION) {
+            lastFile = fileChooser.getSelectedFile();
+
             try {
                 treeData.loadClusterData(fileChooser.getSelectedFile());
                 setTreeRoot(treeData.getTree());
