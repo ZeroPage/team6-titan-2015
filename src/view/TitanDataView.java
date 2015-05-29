@@ -103,7 +103,29 @@ public class TitanDataView {
     }
 
     public void drawTree() {
+        Enumeration<DefaultMutableTreeNode> nodes = getRoot().preorderEnumeration();
+
+        ArrayList<TreePath> expanded = new ArrayList<>();
+        TreePath[] selected = tree.getSelectionPaths();
+
+        while (nodes.hasMoreElements()) {
+            DefaultMutableTreeNode currentNode = nodes.nextElement();
+            TreePath currentPath = new TreePath(currentNode.getPath());
+
+            if (tree.isExpanded(currentPath)) {
+                expanded.add(currentPath);
+            }
+        }
+
         ((DefaultTreeModel) tree.getModel()).reload();
+
+        for (TreePath path : expanded) {
+            tree.expandPath(path);
+        }
+
+        for (TreePath path : selected) {
+            tree.addSelectionPath(path);
+        }
     }
 
     public void drawTable(String[] names, boolean[][] data, int[][] color) {
