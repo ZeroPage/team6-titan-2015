@@ -63,7 +63,6 @@ public class TitanDataView {
         ArrayList<DefaultMutableTreeNode> rows = new ArrayList<>();
 
         Enumeration<DefaultMutableTreeNode> nodes = root.preorderEnumeration();
-        nodes.nextElement(); // exclude root
 
         while (nodes.hasMoreElements()) {
             DefaultMutableTreeNode node = nodes.nextElement();

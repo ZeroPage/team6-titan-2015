@@ -162,6 +162,8 @@ public class TitanMainController {
             currentRow++;
         }
 
+        tempGroups.remove(0); // remove root's grouping
+
         int finalSize = selectedRows.size();
         String[] name = new String[finalSize];
         boolean[][] data = new boolean[finalSize][finalSize];
