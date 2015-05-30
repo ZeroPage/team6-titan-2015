@@ -64,6 +64,12 @@ public class TitanMenuView {
             }
         });
 
+        fileMenu.getSaveAsClusterMenuItem().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.saveClusterAs(parent);
+            }
+        });
         fileMenu.getExportAsMenu().exportDSMMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

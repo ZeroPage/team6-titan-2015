@@ -78,7 +78,7 @@ public class TitanMainController {
 
     public void saveDSMAs(Component parent) {
         JFileChooser fileChooser = new JFileChooser(lastFile);
-        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);;
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setFileFilter(new FileNameExtensionFilter("DSM File (*.dsm)", "dsm"));
 
@@ -114,6 +114,26 @@ public class TitanMainController {
             } catch (IOException | WrongXMLNamespaceException e) {
                 JOptionPane.showMessageDialog(parent, "Failed to open file.", "ERROR", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
+            }
+        }
+    }
+
+    public void saveClusterAs(Component parent) {
+        JFileChooser fileChooser = new JFileChooser(lastFile);
+        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);;
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Cluster File (*.clsx)", "clsx"));
+
+        int result = fileChooser.showOpenDialog(parent);
+
+        if(result == JFileChooser.APPROVE_OPTION) {
+            lastFile = fileChooser.getSelectedFile();
+
+            try {
+                treeData.saveClusterData(lastFile);
+            } catch (IOException exception) {
+                JOptionPane.showMessageDialog(parent, "Failed to save file.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                exception.printStackTrace();
             }
         }
     }
