@@ -76,7 +76,7 @@ public class TitanMainController {
         }
     }
 
-    public void saveDSMAs(Component parent) {
+    public void saveAsDSM(Component parent) {
         JFileChooser fileChooser = new JFileChooser(lastFile);
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);;
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -118,7 +118,7 @@ public class TitanMainController {
         }
     }
 
-    public void saveClusterAs(Component parent) {
+    public void saveAsCluster(Component parent) {
         JFileChooser fileChooser = new JFileChooser(lastFile);
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);;
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
