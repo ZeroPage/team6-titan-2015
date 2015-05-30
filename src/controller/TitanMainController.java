@@ -91,6 +91,7 @@ public class TitanMainController {
                 treeData.saveDSMData(lastFile);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(parent, "Failed to save file.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
             }
         }
     }
@@ -131,9 +132,9 @@ public class TitanMainController {
 
             try {
                 treeData.saveClusterData(lastFile);
-            } catch (IOException exception) {
+            } catch (IOException e) {
                 JOptionPane.showMessageDialog(parent, "Failed to save file.", "ERROR", JOptionPane.ERROR_MESSAGE);
-                exception.printStackTrace();
+                e.printStackTrace();
             }
         }
     }
