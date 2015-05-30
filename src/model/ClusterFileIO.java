@@ -31,9 +31,7 @@ public class ClusterFileIO {
 		BufferedWriter out = new BufferedWriter(new FileWriter(path,false));
 		out.write("<cluster xmlns=\"http://rise.cs.drexel.edu/minos/clsx\">");
 		out.newLine();
-		for(int i=0;i<treeRoot.getChildCount();i++) {
-			writeGroup(out,(DefaultMutableTreeNode)treeRoot.getChildAt(i));
-		}
+		writeGroup(out,(DefaultMutableTreeNode)treeRoot);
 		out.append("</cluster>");
 		out.close();
 	}
