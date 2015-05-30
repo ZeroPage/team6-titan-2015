@@ -32,7 +32,7 @@ public class ClusterFileIO {
 		out.write("<cluster xmlns=\"http://rise.cs.drexel.edu/minos/clsx\">");
 		out.newLine();
 		for(int i=0;i<treeRoot.getChildCount();i++) {
-			writeGroup(out,(DefaultMutableTreeNode)treeRoot.getChildAt(0));
+			writeGroup(out,(DefaultMutableTreeNode)treeRoot.getChildAt(i));
 		}
 		out.append("</cluster>");
 		out.close();
