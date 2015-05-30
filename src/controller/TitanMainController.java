@@ -82,7 +82,7 @@ public class TitanMainController {
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setFileFilter(new FileNameExtensionFilter("DSM File (*.dsm)", "dsm"));
 
-        int result = fileChooser.showOpenDialog(parent);
+        int result = fileChooser.showSaveDialog(parent);
 
         if(result == JFileChooser.APPROVE_OPTION) {
             lastFile = fileChooser.getSelectedFile();
@@ -124,7 +124,7 @@ public class TitanMainController {
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setFileFilter(new FileNameExtensionFilter("Cluster File (*.clsx)", "clsx"));
 
-        int result = fileChooser.showOpenDialog(parent);
+        int result = fileChooser.showSaveDialog(parent);
 
         if(result == JFileChooser.APPROVE_OPTION) {
             lastFile = fileChooser.getSelectedFile();
