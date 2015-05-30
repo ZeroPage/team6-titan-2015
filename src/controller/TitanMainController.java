@@ -21,6 +21,10 @@ public class TitanMainController {
     // View
     private TitanMainView view;
 
+    //Current File
+    File CurrentDSMFile;
+    File CurrentClusterFile;
+
     // FileChooser Related
     File lastFile;
 
@@ -66,7 +70,7 @@ public class TitanMainController {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             lastFile = fileChooser.getSelectedFile();
-
+            CurrentDSMFile = fileChooser.getSelectedFile();
             try {
                 setTreeData(new TreeData(fileChooser.getSelectedFile()));
             } catch (IOException | WrongDSMFormatException exception) {
@@ -76,9 +80,19 @@ public class TitanMainController {
         }
     }
 
+    public void saveDSM(Component parent){
+        if(CurrentDSMFile == null)
+               saveAsDSM(parent);
+        try {
+            treeData.saveDSMData(CurrentDSMFile);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(parent, "Failed to save file.", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     public void saveAsDSM(Component parent) {
         JFileChooser fileChooser = new JFileChooser(lastFile);
-        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);;
+        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setFileFilter(new FileNameExtensionFilter("DSM File (*.dsm)", "dsm"));
 
@@ -86,7 +100,6 @@ public class TitanMainController {
 
         if(result == JFileChooser.APPROVE_OPTION) {
             lastFile = fileChooser.getSelectedFile();
-
             try {
                 treeData.saveDSMData(lastFile);
             } catch (IOException e) {
@@ -108,7 +121,7 @@ public class TitanMainController {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             lastFile = fileChooser.getSelectedFile();
-
+            CurrentClusterFile = fileChooser.getSelectedFile();
             try {
                 treeData.loadClusterData(fileChooser.getSelectedFile());
                 setTreeRoot(treeData.getTree());
@@ -116,6 +129,16 @@ public class TitanMainController {
                 JOptionPane.showMessageDialog(parent, "Failed to open file.", "ERROR", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void saveCluster(Component parent){
+        if(CurrentClusterFile == null)
+            saveAsCluster(parent);
+        try {
+            treeData.saveClusterData(CurrentClusterFile);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(parent, "Failed to save file.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -129,7 +152,6 @@ public class TitanMainController {
 
         if(result == JFileChooser.APPROVE_OPTION) {
             lastFile = fileChooser.getSelectedFile();
-
             try {
                 treeData.saveClusterData(lastFile);
             } catch (IOException e) {

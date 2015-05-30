@@ -57,6 +57,16 @@ public class TitanMenuView {
             }
         });
 
+        fileMenu.getSaveDSMMenuItem().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { controller.saveDSM(parent); }
+        });
+
+        fileMenu.getSaveClusterMenuItem().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { controller.saveCluster(parent); }
+        });
+
         fileMenu.getLoadClusterMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -70,6 +80,7 @@ public class TitanMenuView {
                 controller.saveAsCluster(parent);
             }
         });
+
         fileMenu.getExportAsMenu().exportDSMMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
