@@ -64,6 +64,13 @@ public class TitanMenuView {
             }
         });
 
+        fileMenu.getExportAsMenu().exportDSMMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.saveDSMAs(parent);
+            }
+        });
+
         fileMenu.getExitMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

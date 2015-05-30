@@ -76,6 +76,27 @@ public class TitanMainController {
         }
     }
 
+    public void saveDSMAs(Component parent) {
+        JFileChooser fileChooser = new JFileChooser(lastFile);
+        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setFileFilter(new FileNameExtensionFilter("DSM File (*.dsm)", "dsm"));
+
+        int result = fileChooser.showOpenDialog(parent);
+
+        if(result == JFileChooser.APPROVE_OPTION) {
+            lastFile = fileChooser.getSelectedFile();
+
+            try {
+                treeData.saveDSMData(lastFile);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(parent, "Failed to save file.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+
+    }
+
     public void openCluster(Component parent) {
         // Init fileChooser
         JFileChooser fileChooser = new JFileChooser(lastFile);
