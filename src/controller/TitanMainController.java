@@ -70,7 +70,7 @@ public class TitanMainController {
             try {
                 setTreeData(new TreeData(fileChooser.getSelectedFile()));
             } catch (IOException | WrongDSMFormatException exception) {
-                JOptionPane.showMessageDialog(parent, "Filed to open file.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parent, "Failed to open file.", "ERROR", JOptionPane.ERROR_MESSAGE);
                 exception.printStackTrace();
             }
         }
@@ -92,9 +92,7 @@ public class TitanMainController {
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(parent, "Failed to save file.", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
-
         }
-
     }
 
     public void openCluster(Component parent) {
@@ -114,7 +112,7 @@ public class TitanMainController {
                 treeData.loadClusterData(fileChooser.getSelectedFile());
                 setTreeRoot(treeData.getTree());
             } catch (IOException | WrongXMLNamespaceException e) {
-                JOptionPane.showMessageDialog(parent, "Filed to open file.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parent, "Failed to open file.", "ERROR", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
         }
@@ -310,7 +308,7 @@ public class TitanMainController {
                 treeData.addElement(root, name);
                 drawTree();
             } catch (NoSuchElementException e) {
-                JOptionPane.showMessageDialog(parent, "Filed to add new item.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parent, "Failed to add new item.", "ERROR", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
                 System.err.println(root);
             }
