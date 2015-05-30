@@ -185,6 +185,12 @@ public class TreeData {
 		cluster.freeGroup(groupNode);
 	}
 	
+	public void setDSMData(DefaultMutableTreeNode rowNode, DefaultMutableTreeNode columnNode, Boolean value) {
+		String row = rowNode.getUserObject().toString();
+		String column = columnNode.getUserObject().toString();
+		dsmData.setData(value, row, column);
+	}
+	
 //build temporary cluster with DSM only.
 	private DefaultMutableTreeNode buildDefaultTree() {
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("ROOT",true);
