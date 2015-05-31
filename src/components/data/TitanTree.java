@@ -1,4 +1,4 @@
-package components.main.left;
+package components.data;
 
 import javax.swing.*;
 

@@ -1,12 +1,10 @@
-package components.main.left;
-
-import controller.TitanMainController;
+package components.data;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class TitanLeftToolBar extends JToolBar {
+public class TitanDataToolBar extends JToolBar {
     private ExpandButton expandButton;
     private CollapseButton collapseButton;
     private GroupButton groupButton;
@@ -18,7 +16,7 @@ public class TitanLeftToolBar extends JToolBar {
     
     private ArrayList<Component> components;
 
-    public TitanLeftToolBar() {
+    public TitanDataToolBar() {
         // Init ToolBar
         super(JToolBar.HORIZONTAL);
         setFloatable(false);

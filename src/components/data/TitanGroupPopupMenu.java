@@ -1,6 +1,4 @@
-package components.main.left;
-
-import controller.TitanMainController;
+package components.data;
 
 import javax.swing.*;
 

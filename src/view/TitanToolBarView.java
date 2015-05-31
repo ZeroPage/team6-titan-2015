@@ -1,6 +1,6 @@
 package view;
 
-import components.main.TitanToolBar;
+import components.TitanToolBar;
 import controller.TitanMainController;
 
 import java.awt.*;

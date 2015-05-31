@@ -1,4 +1,4 @@
-package components.main.right;
+package components.data;
 
 import com.sun.istack.internal.NotNull;
 

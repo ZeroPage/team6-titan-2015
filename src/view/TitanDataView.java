@@ -1,10 +1,6 @@
 package view;
 
-import components.main.left.TitanGroupPopupMenu;
-import components.main.left.TitanItemPopupMenu;
-import components.main.left.TitanLeftToolBar;
-import components.main.left.TitanTree;
-import components.main.right.TitanTable;
+import components.data.*;
 import controller.TitanMainController;
 
 import javax.swing.event.TreeSelectionEvent;
@@ -25,7 +21,7 @@ public class TitanDataView {
 
     private TitanTree tree;
     private TitanTable table;
-    private TitanLeftToolBar toolBar;
+    private TitanDataToolBar toolBar;
 
     private TitanGroupPopupMenu groupPopupMenu;
     private TitanItemPopupMenu itemPopupMenu;
@@ -34,11 +30,11 @@ public class TitanDataView {
 
     private DefaultMutableTreeNode[] lastElements;
 
-    public TitanDataView(TitanMainController controller, TitanTree tree, TitanTable table, TitanLeftToolBar toolBar, Container parent) {
+    public TitanDataView(TitanMainController controller, TitanDataPanel dataPanel, Container parent) {
         this.controller = controller;
-        this.tree = tree;
-        this.table = table;
-        this.toolBar = toolBar;
+        this.tree = dataPanel.getTree();
+        this.table = dataPanel.getTable();
+        this.toolBar = dataPanel.getToolBar();
         this.parent = parent;
         this.lastElements = null;
 

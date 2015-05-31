@@ -1,8 +1,6 @@
 package components;
 
-import components.main.TitanToolBar;
-import components.main.left.TitanLeftPanel;
-import components.main.right.TitanTable;
+import components.data.TitanDataPanel;
 import components.menu.TitanMenuBar;
 
 import javax.swing.*;
@@ -16,8 +14,7 @@ public class TitanFrame extends JFrame {
 
     private TitanMenuBar titanMenuBar;
     private TitanToolBar titanToolBar;
-    private TitanLeftPanel titanLeftPanel;
-    private TitanTable titanTable;
+    private TitanDataPanel titanDataPanel;
 
     public TitanFrame() {
         // Init Frame
@@ -32,18 +29,14 @@ public class TitanFrame extends JFrame {
         // Init fields
         titanMenuBar = new TitanMenuBar();
         titanToolBar = new TitanToolBar();
-        titanLeftPanel = new TitanLeftPanel();
-        titanTable = new TitanTable();
+        titanDataPanel = new TitanDataPanel();
 
         // Add components
         Container contentPane = getContentPane();
         JPanel panel = new JPanel(new BorderLayout());
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, titanLeftPanel, new JScrollPane(titanTable));
-        splitPane.setOneTouchExpandable(true);
-
         panel.add(titanToolBar, BorderLayout.NORTH);
-        panel.add(splitPane, BorderLayout.CENTER);
+        panel.add(titanDataPanel, BorderLayout.CENTER);
 
         contentPane.setLayout(new BorderLayout());
         contentPane.add(titanMenuBar, BorderLayout.NORTH);
@@ -58,11 +51,7 @@ public class TitanFrame extends JFrame {
         return titanToolBar;
     }
 
-    public TitanLeftPanel getTitanLeftPanel() {
-        return titanLeftPanel;
-    }
-
-    public TitanTable getTitanTable() {
-        return titanTable;
+    public TitanDataPanel getTitanDataPanel() {
+        return titanDataPanel;
     }
 }
