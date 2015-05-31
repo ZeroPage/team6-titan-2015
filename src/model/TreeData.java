@@ -197,7 +197,7 @@ public class TreeData {
 	}
 	
 //build temporary cluster with DSM only.
-	private DefaultMutableTreeNode buildDefaultTree() {
+	public DefaultMutableTreeNode buildDefaultTree() {
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("ROOT",true);
 		for(int i=0;i<this.dsmData.getSize();i++) {
 			root.add(new DefaultMutableTreeNode(this.dsmData.getName(i),false));
