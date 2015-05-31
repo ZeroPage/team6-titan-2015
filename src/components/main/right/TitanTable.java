@@ -1,10 +1,13 @@
 package components.main.right;
 
+import com.sun.istack.internal.NotNull;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class TitanTable extends JTable {
     private int[][] group;
@@ -21,7 +24,8 @@ public class TitanTable extends JTable {
         // Init Table
         setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         setTableHeader(null);
-        setEnabled(false);
+        setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        setRowSelectionAllowed(false);
     }
 
     public void setTableContents(String[] names, boolean[][] data, int[][] group) {
@@ -30,7 +34,13 @@ public class TitanTable extends JTable {
         // Init variables
         int dataSize = names.length;
         int tableSize = names.length + 1;
-        DefaultTableModel tableModel = new DefaultTableModel(0, tableSize);
+        DefaultTableModel tableModel = new DefaultTableModel(0, tableSize) {
+            // Non Editable
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         setModel(tableModel);
         TableColumnModel columnModel = getColumnModel();
 
@@ -77,7 +87,9 @@ public class TitanTable extends JTable {
     @Override
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
         Component component = super.prepareRenderer(renderer, row, column);
+
         component.setBackground(Color.WHITE);
+        component.setForeground(Color.BLACK);
 
         if (group != null) {
             if (row > 0 && column > 0) {
@@ -88,5 +100,26 @@ public class TitanTable extends JTable {
         }
 
         return component;
+    }
+
+    @Override
+    public String getToolTipText(@NotNull MouseEvent event) {
+        String tooltip = null;
+        Point p = event.getPoint();
+
+        int row = rowAtPoint(p);
+        int column = columnAtPoint(p);
+
+        if (row > 0 && column > 0) {
+            tooltip = String.format("<html>%d] %s<br>%d] %s<br><b>Click to change value</b></html>",
+                    row, getValueAt(row, 0).toString(),
+                    column, getValueAt(column, 0).toString());
+        }
+
+        if (tooltip == null) {
+            tooltip = getToolTipText();
+        }
+
+        return tooltip;
     }
 }

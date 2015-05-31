@@ -237,19 +237,8 @@ public class TitanMainController {
         tempGroups.remove(0); // remove root's grouping
 
         int finalSize = selectedRows.size();
-        String[] name = new String[finalSize];
         boolean[][] data = new boolean[finalSize][finalSize];
         int[][] group = new int[finalSize][finalSize];
-
-        // Prepare Name
-        for (int i = 0; i < finalSize; i++) {
-            String prefix = "";
-            if (view.getMenuView().isShowRowLabelsSelected()) {
-                prefix = (i + 1) + " ";
-            }
-
-            name[i] = prefix + selectedRows.get(i);
-        }
 
         // Prepare Data
         for (int i = 0; i < finalSize; i++) {
@@ -272,7 +261,10 @@ public class TitanMainController {
             }
         }
 
-        view.getDataView().drawTable(name, data, group);
+        boolean showRowLabel = view.getMenuView().isShowRowLabelsSelected();
+        DefaultMutableTreeNode[] elements = selectedRows.toArray(new DefaultMutableTreeNode[selectedRows.size()]);
+
+        view.getDataView().drawTable(elements, data, group, showRowLabel);
     }
 
     public void groupItems(Component parent, DefaultMutableTreeNode[] items) {
@@ -356,6 +348,10 @@ public class TitanMainController {
                 System.err.println(root);
             }
         }
+    }
+
+    public void changeItemValue(DefaultMutableTreeNode from, DefaultMutableTreeNode to) {
+        treeData.setDSMData(from, to, !treeData.getDSMValue(from, to));
     }
 
     private void setTreeData(TreeData treeData) {

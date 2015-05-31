@@ -32,12 +32,15 @@ public class TitanDataView {
 
     private Container parent;
 
+    private DefaultMutableTreeNode[] lastElements;
+
     public TitanDataView(TitanMainController controller, TitanTree tree, TitanTable table, TitanLeftToolBar toolBar, Container parent) {
         this.controller = controller;
         this.tree = tree;
         this.table = table;
         this.toolBar = toolBar;
         this.parent = parent;
+        this.lastElements = null;
 
         this.groupPopupMenu = new TitanGroupPopupMenu();
         this.itemPopupMenu = new TitanItemPopupMenu();
@@ -129,7 +132,21 @@ public class TitanDataView {
         }
     }
 
-    public void drawTable(String[] names, boolean[][] data, int[][] color) {
+    public void drawTable(DefaultMutableTreeNode[] elements, boolean[][] data, int[][] color, boolean showRowLabel) {
+        lastElements = elements;
+
+        String[] names = new String[elements.length];
+
+        for (int i = 0; i < elements.length; i++) {
+            if (showRowLabel) {
+                names[i] = String.valueOf(i + 1);
+            } else {
+                names[i] = "";
+            }
+
+            names[i] += elements[i].toString();
+        }
+
         table.setTableContents(names, data, color);
     }
 
@@ -176,6 +193,27 @@ public class TitanDataView {
                         } else {
                             itemPopupMenu.show(tree, e.getX(), e.getY());
                         }
+                    }
+                }
+            }
+        });
+
+        // Table
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+
+                int row = table.rowAtPoint(e.getPoint());
+                int column = table.columnAtPoint(e.getPoint());
+
+                if (row > 0 && column > 0) {
+                    DefaultMutableTreeNode from = lastElements[row - 1];
+                    DefaultMutableTreeNode to = lastElements[column - 1];
+
+                    if (!from.getAllowsChildren() && !to.getAllowsChildren()) {
+                        controller.changeItemValue(from, to);
+                        controller.drawTable();
                     }
                 }
             }
