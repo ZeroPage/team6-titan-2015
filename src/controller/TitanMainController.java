@@ -126,6 +126,11 @@ public class TitanMainController {
         }
     }
 
+    public void newCluster(Component parent) {
+        setTreeRoot(treeData.buildDefaultTree());
+        currentClusterFile = null;
+    }
+
     public void openCluster(Component parent) {
         // Init fileChooser
         JFileChooser fileChooser = new JFileChooser(lastFile);
