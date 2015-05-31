@@ -161,6 +161,10 @@ public class TitanMainController {
         }
     }
 
+    public void copyTree(DefaultMutableTreeNode newRoot) {
+        setTreeData(new TreeData(treeData, newRoot));
+    }
+
     public void checkSelection(TreePath[] paths) {
         boolean canGroup = true;
         boolean canUngroup = true;

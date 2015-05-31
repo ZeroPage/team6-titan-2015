@@ -21,6 +21,11 @@ public class ClusterData {
 		ClusterFileIO reader = ClusterFileIO.getInstance();
 		this.treeRoot = reader.loadClusterData(source);
 	}
+
+	public ClusterData(DefaultMutableTreeNode root) {
+		root.removeFromParent();
+		treeRoot = root;
+	}
 	
 //load new .clsx file
 	public void loadClusterData(File source) throws IOException, WrongXMLNamespaceException {

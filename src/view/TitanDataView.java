@@ -220,9 +220,13 @@ public class TitanDataView {
         });
 
         // Popup Menus
-        // TODO: Total 5 Listeners
-
-
+        // TODO: Total 4 Listeners
+        groupPopupMenu.getDuplicateMenuItem().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.copyTree(getSelectedRows()[0]);
+            }
+        });
 
 
         // ToolBar Buttons

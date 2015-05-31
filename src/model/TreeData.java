@@ -24,6 +24,11 @@ public class TreeData {
 		cluster = new ClusterData(this.dsmData);
 	}
 
+	public TreeData(TreeData original, DefaultMutableTreeNode newRoot) { // Forking
+		dsmData = original.dsmData;
+		cluster = new ClusterData(newRoot);
+	}
+
 //load clsx, and rebuild the data tree structure
 	public void loadClusterData(File clsxFile) throws IOException, WrongXMLNamespaceException {
 		cluster = new ClusterData(clsxFile);
