@@ -22,26 +22,43 @@ public class TitanMainController {
     private TitanMainView view;
 
     //Current File
-    File CurrentDSMFile;
-    File CurrentClusterFile;
+    private File currentDSMFile;
+    private File currentClusterFile;
 
     // FileChooser Related
-    File lastFile;
+    private File lastFile;
 
     public TitanMainController() {
         // Init view
         this.view = new TitanMainView(this);
 
-        this.view.getMenuView().setEnabled(false);
-        this.view.getToolBarView().setEnabled(false);
+        this.view.getMenuView().setDefaultEnabled();
+        this.view.getToolBarView().setDefaultEnabled();
         this.view.getDataView().setToolBarEnabled(false);
 
         // Init extra fields
         lastFile = new File(".");
     }
 
-    public void openDialog() {
-        view.showFrame();
+    public TitanMainController(TreeData data, DefaultMutableTreeNode root) {
+        this();
+
+        setTreeData(data);
+        setTreeRoot(root);
+    }
+
+    public void openDialog(boolean isForked) {
+        if (isForked) {
+            view.getMenuView().setFileMenuEnabled(false);
+            view.getToolBarView().setEnabledAll(false);
+            view.setSubTitle("FORKED");
+            view.setCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        } else {
+            view.setSubTitle(null);
+            view.setCloseOperation(JFrame.EXIT_ON_CLOSE);
+        }
+
+        view.openDialog();
     }
 
     public void newDSM(Component parent) {
@@ -70,7 +87,7 @@ public class TitanMainController {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             lastFile = fileChooser.getSelectedFile();
-            CurrentDSMFile = fileChooser.getSelectedFile();
+            currentDSMFile = fileChooser.getSelectedFile();
             try {
                 setTreeData(new TreeData(fileChooser.getSelectedFile()));
             } catch (IOException | WrongDSMFormatException exception) {
@@ -81,10 +98,10 @@ public class TitanMainController {
     }
 
     public void saveDSM(Component parent){
-        if(CurrentDSMFile == null)
+        if(currentDSMFile == null)
                saveAsDSM(parent);
         try {
-            treeData.saveDSMData(CurrentDSMFile);
+            treeData.saveDSMData(currentDSMFile);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(parent, "Failed to save file.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
@@ -121,7 +138,7 @@ public class TitanMainController {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             lastFile = fileChooser.getSelectedFile();
-            CurrentClusterFile = fileChooser.getSelectedFile();
+            currentClusterFile = fileChooser.getSelectedFile();
             try {
                 treeData.loadClusterData(fileChooser.getSelectedFile());
                 setTreeRoot(treeData.getTree());
@@ -133,10 +150,10 @@ public class TitanMainController {
     }
 
     public void saveCluster(Component parent){
-        if(CurrentClusterFile == null)
+        if(currentClusterFile == null)
             saveAsCluster(parent);
         try {
-            treeData.saveClusterData(CurrentClusterFile);
+            treeData.saveClusterData(currentClusterFile);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(parent, "Failed to save file.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
@@ -144,7 +161,7 @@ public class TitanMainController {
 
     public void saveAsCluster(Component parent) {
         JFileChooser fileChooser = new JFileChooser(lastFile);
-        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);;
+        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setFileFilter(new FileNameExtensionFilter("Cluster File (*.clsx)", "clsx"));
 
@@ -163,6 +180,11 @@ public class TitanMainController {
 
     public void copyTree(DefaultMutableTreeNode newRoot) {
         setTreeData(new TreeData(treeData, newRoot));
+    }
+
+    public void forkTree(DefaultMutableTreeNode newRoot) {
+        TitanMainController forkController = new TitanMainController(treeData, newRoot);
+        forkController.openDialog(true);
     }
 
     public void checkSelection(TreePath[] paths) {
@@ -215,6 +237,11 @@ public class TitanMainController {
         view.getDataView().setToolBarPartialEnabled(canGroup, canUngroup, canMoveUp, canMoveDown, canDelete);
     }
 
+    public void drawTree() {
+        view.getDataView().drawTree();
+        drawTable();
+    }
+
     public void drawTable() {
         TitanDataView dataView = view.getDataView();
         DefaultMutableTreeNode[] rows = dataView.getVisibleRows(view.getDataView().getRoot(), false);
@@ -238,7 +265,9 @@ public class TitanMainController {
             currentRow++;
         }
 
-        tempGroups.remove(0); // remove root's grouping
+        if (tempGroups.size() > 0) {
+            tempGroups.remove(0); // remove root's grouping
+        }
 
         int finalSize = selectedRows.size();
         boolean[][] data = new boolean[finalSize][finalSize];
@@ -275,7 +304,7 @@ public class TitanMainController {
         String userInput = JOptionPane.showInputDialog(parent, "New Group name: ", "new_group_name");
 
         if (userInput != null) {
-            treeData.groupElement(new ArrayList<DefaultMutableTreeNode>(Arrays.asList(items)), userInput);
+            treeData.groupElement(new ArrayList<>(Arrays.asList(items)), userInput);
             drawTree();
         }
     }
@@ -361,17 +390,12 @@ public class TitanMainController {
     private void setTreeData(TreeData treeData) {
         this.treeData = treeData;
 
-        view.getMenuView().setEnabled(true);
-        view.getToolBarView().setEnabled(true);
+        view.getMenuView().setEnabledAll(true);
+        view.getToolBarView().setEnabledAll(true);
         view.getDataView().setToolBarEnabled(true);
         view.getDataView().setToolBarPartialEnabled(false, false, false, false, false);
 
         setTreeRoot(treeData.getTree());
-    }
-
-    private void drawTree() {
-        view.getDataView().drawTree();
-        drawTable();
     }
 
     private void setTreeRoot(DefaultMutableTreeNode root) {

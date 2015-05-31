@@ -23,16 +23,29 @@ public class TitanMenuView {
         initListeners();
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setFileMenuEnabled(boolean enabled) {
+        menuBar.getTitanFileMenu().setEnabled(enabled);
+    }
+
+    public void setEnabledAll(boolean enabled) {
         TitanFileMenu fileMenu = menuBar.getTitanFileMenu();
         fileMenu.setEnabledAll(enabled);
+
+        TitanViewMenu viewMenu = menuBar.getTitanViewMenu();
+        viewMenu.getRedrawMenuItem().setEnabled(enabled);
+        viewMenu.getShowRowLabelMenuItem().setEnabled(enabled);
+    }
+
+    public void setDefaultEnabled() {
+        TitanFileMenu fileMenu = menuBar.getTitanFileMenu();
+        fileMenu.setEnabledAll(false);
         fileMenu.getNewDSMMenuItem().setEnabled(true);
         fileMenu.getOpenDSMMenuItem().setEnabled(true);
         fileMenu.getExitMenuItem().setEnabled(true);
 
         TitanViewMenu viewMenu = menuBar.getTitanViewMenu();
-        viewMenu.getRedrawMenuItem().setEnabled(enabled);
-        viewMenu.getShowRowLabelMenuItem().setEnabled(enabled);
+        viewMenu.getRedrawMenuItem().setEnabled(false);
+        viewMenu.getShowRowLabelMenuItem().setEnabled(false);
     }
 
     public boolean isShowRowLabelsSelected() {
@@ -101,7 +114,7 @@ public class TitanMenuView {
         menuBar.getTitanViewMenu().getRedrawMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.drawTable();
+                controller.drawTree();
             }
         });
 

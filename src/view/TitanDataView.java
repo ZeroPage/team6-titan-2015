@@ -3,17 +3,15 @@ package view;
 import components.data.*;
 import controller.TitanMainController;
 
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
+import javax.swing.event.*;
+import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 
 public class TitanDataView {
@@ -26,11 +24,11 @@ public class TitanDataView {
     private TitanGroupPopupMenu groupPopupMenu;
     private TitanItemPopupMenu itemPopupMenu;
 
-    private Container parent;
+    private Component parent;
 
     private DefaultMutableTreeNode[] lastElements;
 
-    public TitanDataView(TitanMainController controller, TitanDataPanel dataPanel, Container parent) {
+    public TitanDataView(TitanMainController controller, TitanDataPanel dataPanel, Component parent) {
         this.controller = controller;
         this.tree = dataPanel.getTree();
         this.table = dataPanel.getTable();
@@ -66,7 +64,7 @@ public class TitanDataView {
         while (nodes.hasMoreElements()) {
             DefaultMutableTreeNode node = nodes.nextElement();
 
-            TreePath path = new TreePath(node.getPath());
+            TreePath path = getRelativePath(node);
 
             if (tree.isVisible(path) && !(excludeExpanded && tree.isExpanded(path))) {
                 rows.add(node);
@@ -97,7 +95,7 @@ public class TitanDataView {
     }
 
     public boolean isExpanded(TreePath path) {
-        return tree.isExpanded(path);
+        return tree.isExpanded(getRelativePath(path));
     }
 
     public void drawTree() {
@@ -108,7 +106,7 @@ public class TitanDataView {
 
         while (nodes.hasMoreElements()) {
             DefaultMutableTreeNode currentNode = nodes.nextElement();
-            TreePath currentPath = new TreePath(currentNode.getPath());
+            TreePath currentPath = getRelativePath(currentNode);
 
             if (tree.isExpanded(currentPath)) {
                 expanded.add(currentPath);
@@ -116,14 +114,15 @@ public class TitanDataView {
         }
 
         ((DefaultTreeModel) tree.getModel()).reload();
+        collapseAll();
 
         for (TreePath path : expanded) {
-            tree.expandPath(path);
+            tree.expandPath(getRelativePath(path));
         }
 
         if (selected != null) {
             for (TreePath path : selected) {
-                tree.addSelectionPath(path);
+                tree.addSelectionPath(getRelativePath(path));
             }
         }
     }
@@ -135,7 +134,7 @@ public class TitanDataView {
 
         for (int i = 0; i < elements.length; i++) {
             if (showRowLabel) {
-                names[i] = String.valueOf(i + 1);
+                names[i] = String.valueOf(i + 1) + " ";
             } else {
                 names[i] = "";
             }
@@ -150,7 +149,7 @@ public class TitanDataView {
         Enumeration<DefaultMutableTreeNode> nodes = getRoot().postorderEnumeration();
 
         while (nodes.hasMoreElements()) {
-            tree.collapsePath(new TreePath(nodes.nextElement().getPath()));
+            tree.collapsePath(getRelativePath(nodes.nextElement()));
         }
     }
 
@@ -158,8 +157,19 @@ public class TitanDataView {
         Enumeration<DefaultMutableTreeNode> nodes = getRoot().preorderEnumeration();
 
         while (nodes.hasMoreElements()) {
-            tree.expandPath(new TreePath(nodes.nextElement().getPath()));
+            tree.expandPath(getRelativePath(nodes.nextElement()));
         }
+    }
+
+    // Needs due to forking
+    private TreePath getRelativePath(DefaultMutableTreeNode target) {
+        TreeNode[] path = target.getPath();
+
+        return new TreePath(Arrays.copyOfRange(path, getRoot().getLevel(), path.length));
+    }
+
+    private TreePath getRelativePath(TreePath target) {
+        return getRelativePath((DefaultMutableTreeNode) target.getLastPathComponent());
     }
 
     private void initListeners() {
@@ -221,6 +231,13 @@ public class TitanDataView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.copyTree(getSelectedRows()[0]);
+            }
+        });
+
+        groupPopupMenu.getForkMenuItem().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.forkTree(getSelectedRows()[0]);
             }
         });
 

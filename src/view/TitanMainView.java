@@ -18,7 +18,15 @@ public class TitanMainView {
         this.dataView = new TitanDataView(controller, titanFrame.getTitanDataPanel(), titanFrame);
     }
 
-    public void showFrame() {
+    public void setCloseOperation(int operation) {
+        titanFrame.setDefaultCloseOperation(operation);
+    }
+
+    public void setSubTitle(String subTitle) {
+        titanFrame.setSubTitle(subTitle);
+    }
+
+    public void openDialog() {
         this.titanFrame.setVisible(true);
     }
 
