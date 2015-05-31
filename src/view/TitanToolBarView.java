@@ -38,6 +38,39 @@ public class TitanToolBarView {
             }
         });
 
-        // TODO: Total 5 Listeners
+        toolBar.getRedrawButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.drawTree();
+            }
+        });
+
+        toolBar.getNewClusterButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.newCluster(parent);
+            }
+        });
+
+        toolBar.getOpenClusterButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.openCluster(parent);
+            }
+        });
+
+        toolBar.getSaveClusterButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.saveCluster(parent);
+            }
+        });
+
+        toolBar.getSaveAsClusterButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.saveAsCluster(parent);
+            }
+        });
     }
 }

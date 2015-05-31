@@ -115,8 +115,6 @@ public class TitanMenuView {
             }
         });
 
-        // TODO: Total 5 Listeners
-
         // View
         menuBar.getTitanViewMenu().getRedrawMenuItem().addActionListener(new ActionListener() {
             @Override
