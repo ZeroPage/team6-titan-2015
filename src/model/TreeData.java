@@ -13,24 +13,24 @@ public class TreeData {
 
 //initializing with only DSM
 	public TreeData(File dsmFile) throws IOException, WrongDSMFormatException {
-		dsmData = new TitanDSM(dsmFile);
-		cluster = new ClusterData(this.dsmData);
+		this.dsmData = new TitanDSM(dsmFile);
+		this.cluster = new ClusterData(this.dsmData);
 	}
 	
 	public TreeData(int size) throws IOException, WrongDSMFormatException, NotPositiveException {
-		dsmData = new TitanDSM(size);
-		cluster = new ClusterData(this.dsmData);
+		this.dsmData = new TitanDSM(size);
+		this.cluster = new ClusterData(this.dsmData);
 	}
 
 	public TreeData(TreeData original, DefaultMutableTreeNode newRoot) { // Forking
-		dsmData = original.dsmData;
-		cluster = new ClusterData(newRoot);
+		this.dsmData = original.dsmData;
+		this.cluster = new ClusterData(newRoot);
 	}
 
 //load clsx, and rebuild the data tree structure
 	public void loadClusterData(File clsxFile) throws IOException, WrongXMLNamespaceException {
-		cluster = new ClusterData(clsxFile);
-		cluster.refresh(this.dsmData);
+		this.cluster = new ClusterData(clsxFile);
+		this.cluster.refresh(this.dsmData);
 	}
 	
 	public void saveData(File dsmFile, File clusterFile) throws IOException {
@@ -49,6 +49,25 @@ public class TreeData {
 //build default cluster with DSM only.
 	public void setClusterAsDefault() {
 		this.cluster = new ClusterData(this.dsmData);
+	}
+	
+	public void sortGroupElements(DefaultMutableTreeNode group) {
+		for(int i=1;i<group.getChildCount();i++) {
+			int index=0;
+			
+			DefaultMutableTreeNode comparisonNode = (DefaultMutableTreeNode)group.getChildAt(index);
+			DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode)group.getChildAt(i);
+			
+			String comparison = comparisonNode.getUserObject().toString();
+			String target = targetNode.getUserObject().toString();
+			
+			while(comparison.compareTo(target)<0&&index<i) {
+				index++;
+				comparisonNode = (DefaultMutableTreeNode)group.getChildAt(index);
+				comparison = comparisonNode.getUserObject().toString();
+			}
+			group.insert(targetNode,index);
+		}
 	}
 	
 	public DefaultMutableTreeNode getTree(){
@@ -80,35 +99,35 @@ public class TreeData {
 		String row = rowNode.getUserObject().toString();
 		String column = columnNode.getUserObject().toString();
 		
-		dsmData.setData(value, row, column);
+		this.dsmData.setData(value, row, column);
 	}
 
 	public void renameElement(DefaultMutableTreeNode currentNode, String newName) throws ItemAlreadyExistException, NoSuchElementException {
 		if(!currentNode.getAllowsChildren()) {
 			String elementName = currentNode.getUserObject().toString();
-			dsmData.setName(newName, elementName);
+			this.dsmData.setName(newName, elementName);
 		}
-		cluster.renameNode(currentNode, newName);
+		this.cluster.renameNode(currentNode, newName);
 	}
 	
 	public void repositionElement(DefaultMutableTreeNode elementNode,int newIndex) throws NoSuchElementException {
-		cluster.moveNode(elementNode, newIndex);
+		this.cluster.moveNode(elementNode, newIndex);
 	}
 	
 	public void removeElement(DefaultMutableTreeNode elementNode) throws NoSuchElementException {
-		cluster.deleteItem(elementNode);
+		this.cluster.deleteItem(elementNode);
 	}
 	
 	public void addElement(DefaultMutableTreeNode groupNode, String itemName) throws NoSuchElementException {
-		cluster.addItem(groupNode, itemName);
+		this.cluster.addItem(groupNode, itemName);
 	}
 	
 	public void groupElement(ArrayList<DefaultMutableTreeNode> elementList, String groupName) {
-		cluster.newGroupbyNode(elementList, groupName);
+		this.cluster.newGroupbyNode(elementList, groupName);
 	}
 	
 	public void freeGroup(DefaultMutableTreeNode groupNode) throws NoSuchElementException {
-		cluster.freeGroup(groupNode);
+		this.cluster.freeGroup(groupNode);
 	}
 	
 	private boolean getGroupGroupValue(DefaultMutableTreeNode rGroup, DefaultMutableTreeNode cGroup) {
@@ -188,7 +207,7 @@ public class TreeData {
 		String row = rowElement.getUserObject().toString();
 		String column = columnElement.getUserObject().toString();
 		
-		return dsmData.getData(row, column);
+		return this.dsmData.getData(row, column);
 	}
 
 	public void partition() {

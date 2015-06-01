@@ -87,9 +87,8 @@ public class ClusterData {
 		DefaultMutableTreeNode firstElem = nodeArr.get(0);
 		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)firstElem.getParent();
 		
-		int index;
 		for(int i=1;i<nodeArr.size();i++) {
-			index=0;
+			int index=0;
 			int comparison = parent.getIndex(nodeArr.get(index));
 			int target = parent.getIndex(nodeArr.get(i));
 			while(comparison<target&&index<i) {
@@ -100,6 +99,8 @@ public class ClusterData {
 			nodeArr.add(index, targetNode);
 			nodeArr.remove(i+1);
 		}
+		
+		firstElem = nodeArr.get(0);
 		
 		int groupIndex = parent.getIndex(firstElem);
 		DefaultMutableTreeNode newGroup = new DefaultMutableTreeNode(newGroupName,true);
