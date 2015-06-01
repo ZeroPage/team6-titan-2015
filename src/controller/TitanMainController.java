@@ -112,7 +112,9 @@ public class TitanMainController {
     }
 
     public void newCluster() {
-        setTreeRoot(treeData.buildDefaultTree());
+        treeData.setClusterAsDefault();
+        setTreeRoot(treeData.getTree());
+
         view.getFileChooseView().clearLastClusterFile();
     }
 
