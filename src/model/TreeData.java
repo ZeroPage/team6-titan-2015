@@ -68,14 +68,14 @@ public class TreeData {
 				}
 			}
 		} else if(isR) {
-			for(int i=0;i<rGroup.getChildCount();i++) {
+			for(int i=0;i<cGroup.getChildCount();i++) {
 				DefaultMutableTreeNode item = (DefaultMutableTreeNode)cGroup.getChildAt(i);
 				if(getGroupItemValue(rGroup,item)) {
 					return true;
 				}
 			}
 		} else if(isC) {
-			for(int i=0;i<cGroup.getChildCount();i++) {
+			for(int i=0;i<rGroup.getChildCount();i++) {
 				DefaultMutableTreeNode item = (DefaultMutableTreeNode)rGroup.getChildAt(i);
 				if(getItemGroupValue(item,cGroup)) {
 					return true;
@@ -93,7 +93,7 @@ public class TreeData {
 	}
 	
 	private boolean getGroupItemValue(DefaultMutableTreeNode group, DefaultMutableTreeNode element) {
-		if(group.getFirstChild().getAllowsChildren()) {
+		if(group.getChildCount()!=0&&group.getFirstChild().getAllowsChildren()) {
 			for(int i=0;i<group.getChildCount();i++) {
 				if(getGroupItemValue((DefaultMutableTreeNode)group.getChildAt(i),element)) {
 					return true;
@@ -111,7 +111,7 @@ public class TreeData {
 	}
 	
 	private boolean getItemGroupValue(DefaultMutableTreeNode element, DefaultMutableTreeNode group) {
-		if(group.getFirstChild().getAllowsChildren()) {
+		if(group.getChildCount()!=0&&group.getFirstChild().getAllowsChildren()) {
 			for(int i=0;i<group.getChildCount();i++) {
 				if(getItemGroupValue(element,(DefaultMutableTreeNode)group.getChildAt(i))) {
 					return true;
