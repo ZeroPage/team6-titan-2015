@@ -207,8 +207,8 @@ public class TreeData {
 	
    public DefaultMutableTreeNode getTree(){
 		return this.cluster.getTree();
-	} 
-	
+	}
+
 	public void saveDSMData(File dsmFile) throws IOException{
 		this.dsmData.saveToFile(dsmFile);
 	}
@@ -220,5 +220,9 @@ public class TreeData {
 	public void saveData(File dsmFile, File clusterFile) throws IOException{
 		this.dsmData.saveToFile(dsmFile);
 		this.cluster.saveClusterData(clusterFile);
+	}
+
+	public void partition() {
+		// TODO
 	}
 }
