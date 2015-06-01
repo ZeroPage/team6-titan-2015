@@ -133,13 +133,11 @@ public class TitanDataView {
         String[] names = new String[elements.length];
 
         for (int i = 0; i < elements.length; i++) {
-            if (showRowLabel) {
-                names[i] = String.valueOf(i + 1) + " ";
-            } else {
-                names[i] = "";
-            }
+            names[i] = String.valueOf(i + 1) + " ";
 
-            names[i] += elements[i].toString();
+            if (showRowLabel) {
+                names[i] += elements[i].toString();
+            }
         }
 
         table.setTableContents(names, data, color);

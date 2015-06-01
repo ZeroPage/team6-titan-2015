@@ -81,7 +81,7 @@ public class TitanTable extends JTable {
             Component component = prepareRenderer(renderer, i, 0);
             maxSize = Math.max(maxSize, component.getPreferredSize().width);
         }
-        columnModel.getColumn(0).setMinWidth(maxSize + 10);
+        columnModel.getColumn(0).setMinWidth(maxSize);
     }
 
     @Override
