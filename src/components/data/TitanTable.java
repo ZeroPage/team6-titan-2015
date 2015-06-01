@@ -50,7 +50,7 @@ public class TitanTable extends JTable {
 
         for (int i = 1; i < tableSize; i++) {
             columnNames[i] = String.valueOf(i);
-            columnModel.getColumn(i).setMaxWidth(15);
+            columnModel.getColumn(i).setMaxWidth(20);
         }
 
         tableModel.addRow(columnNames);
