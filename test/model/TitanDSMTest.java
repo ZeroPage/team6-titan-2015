@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.NoSuchElementException;
 
 public class TitanDSMTest {
 
@@ -45,6 +46,16 @@ public class TitanDSMTest {
         assertTrue(dsm.getData("entity_1","entity_2"));
     }
 
+    @Test(expected=NoSuchElementException.class)
+    public void testSetDataWithException() throws Exception {
+        int size = 10;
+        String existingString = "entity_2";
+        String nonExistingString = "entity";
+
+        TitanDSM dsm = new TitanDSM(size);
+        dsm.setData(true,nonExistingString, existingString);
+    }
+
     @Test
     public void testDeleteData() throws Exception {
         TitanDSM dsm = new TitanDSM(30);
@@ -80,8 +91,8 @@ public class TitanDSMTest {
         String existingString = "entity_10";
         String nonExistingString = "test";
         TitanDSM dsm = new TitanDSM(size);
-        assertEquals(true, dsm.isExist(existingString));
-        assertEquals(false, dsm.isExist(nonExistingString));
+        assertTrue(dsm.isExist(existingString));
+        assertFalse(dsm.isExist(nonExistingString));
     }
 
     @Test
