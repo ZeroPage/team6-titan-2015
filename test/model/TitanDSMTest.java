@@ -1,11 +1,10 @@
 package model;
 
-import model.TitanDSM;
 import org.junit.Test;
 
-import java.io.File;
-
 import static org.junit.Assert.*;
+
+import java.io.File;
 
 public class TitanDSMTest {
 
@@ -39,7 +38,6 @@ public class TitanDSMTest {
     public void testGetName() throws Exception {
         TitanDSM dsm = new TitanDSM(30);
         assertEquals("entity_1",dsm.getName(0));
-        assertEquals("entity",dsm.getName(0));
     }
 
     @Test
@@ -51,17 +49,31 @@ public class TitanDSMTest {
 
     @Test
     public void testIsExist() throws Exception {
-
+        int size = 10;
+        String existingString = "entity_10";
+        String nonExistingString = "test";
+        TitanDSM dsm = new TitanDSM(size);
+        assertEquals(true, dsm.isExist(existingString));
+        assertEquals(false, dsm.isExist(nonExistingString));
     }
 
     @Test
     public void testAddEntity() throws Exception {
-
+        int size = 10;
+        TitanDSM dsm = new TitanDSM(size);
+        dsm.addEntity();
+        assertEquals(size + 1, dsm.getSize());
     }
 
     @Test
     public void testLoadFromFile() throws Exception {
-
+        int size = 10;
+        String testString = "edu.drexel.cs.rise.titan.action.RedrawAction";
+        String pathName = "./sample/titan/titan.dsm";
+        File file = new File(pathName);
+        TitanDSM dsm = new TitanDSM(size);
+        dsm.loadFromFile(file);
+        assertEquals(true, dsm.isExist(testString));
     }
 
     @Test
@@ -73,5 +85,4 @@ public class TitanDSMTest {
         TitanDSM dsm2 = new TitanDSM(file);
         assertEquals(dsm.getData("entity_1","entity_2"),dsm2.getData("entity_1","entity_2"));
     }
-
 }
