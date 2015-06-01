@@ -9,9 +9,27 @@ import java.io.File;
 public class TitanDSMTest {
 
     @Test
+    public void testTitanDSM() throws Exception {
+        int size = 10;
+        String filePath = "./sample/titan/titan.dsm";
+        File file = new File(filePath);
+
+        TitanDSM newDSM = new TitanDSM(size);
+        assertNotNull(newDSM);
+        TitanDSM loadDSM = new TitanDSM(file);
+        assertNotNull(loadDSM);
+    }
+
+    @Test(expected=NotPositiveException.class)
+    public void testTitanDSMWithException() throws Exception {
+        int size = -1;
+        TitanDSM newDSM = new TitanDSM(size);
+    }
+
+    @Test
     public void testGetSize() throws Exception {
         TitanDSM dsm = new TitanDSM(30);
-        assertEquals(30,dsm.getSize());
+        assertEquals(30, dsm.getSize());
     }
 
     @Test
@@ -23,7 +41,7 @@ public class TitanDSMTest {
     @Test
     public void testSetData() throws Exception {
         TitanDSM dsm = new TitanDSM(30);
-        dsm.setData(true,"entity_1","entity_2");
+        dsm.setData(true,"entity_1", "entity_2");
         assertTrue(dsm.getData("entity_1","entity_2"));
     }
 
@@ -45,6 +63,15 @@ public class TitanDSMTest {
         TitanDSM dsm = new TitanDSM(30);
         dsm.setName("NewName","entity_1");
         assertEquals("NewName",dsm.getName(0));
+    }
+
+    @Test(expected=ItemAlreadyExistException.class)
+    public void testSetNameWithException() throws Exception {
+        int size = 10;
+        String newClassName = "entity_1";
+        String oldClassName = "entity_2";
+        TitanDSM dsm = new TitanDSM(size);
+        dsm.setName(newClassName, oldClassName);
     }
 
     @Test
