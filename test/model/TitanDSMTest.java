@@ -24,7 +24,7 @@ public class TitanDSMTest {
     public void testSetData() throws Exception {
         TitanDSM dsm = new TitanDSM(30);
         dsm.setData(true,"entity_1","entity_2");
-        assertEquals(true, dsm.getData("entity_1","entity_2"));
+        assertTrue(dsm.getData("entity_1","entity_2"));
     }
 
     @Test
