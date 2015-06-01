@@ -15,6 +15,7 @@ public class TitanMainView {
     private TitanMenuView menuView;
     private TitanToolBarView toolBarView;
     private TitanDataView dataView;
+    private TitanFileChooseView fileChooseView;
 
     private boolean forked;
 
@@ -25,6 +26,7 @@ public class TitanMainView {
         this.menuView = new TitanMenuView(controller, titanFrame.getTitanMenuBar(), titanFrame);
         this.toolBarView = new TitanToolBarView(controller, titanFrame.getTitanToolBar(), titanFrame);
         this.dataView = new TitanDataView(controller, titanFrame.getTitanDataPanel(), titanFrame);
+        this.fileChooseView = new TitanFileChooseView(titanFrame);
 
         this.forked = forked;
 
@@ -40,15 +42,6 @@ public class TitanMainView {
         titanFrame.setSubTitle(subTitle);
     }
 
-    public void setVisible(boolean visible) {
-        if (forked) {
-            getMenuView().setFileMenuEnabled(false);
-            getToolBarView().setEnabledAll(false);
-        }
-
-        this.titanFrame.setVisible(visible);
-    }
-
     public TitanMenuView getMenuView() {
         return menuView;
     }
@@ -61,17 +54,41 @@ public class TitanMainView {
         return dataView;
     }
 
+    public TitanFileChooseView getFileChooseView() {
+        return fileChooseView;
+    }
+
+    public boolean isForked() {
+        return this.forked;
+    }
+
+    public void showDialog() {
+        if (forked) {
+            getMenuView().setFileMenuEnabled(false);
+            getToolBarView().setEnabledAll(false);
+        }
+
+        this.titanFrame.setVisible(true);
+    }
+
+    public void disposeDialog() {
+        titanFrame.dispose();
+    }
+
+
+    public void showError(String message) {
+        JOptionPane.showMessageDialog(titanFrame, message, "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public String showInput(String message, String defaultValue) {
+        return JOptionPane.showInputDialog(titanFrame, message, defaultValue);
+    }
+
     private void initListeners() {
         titanFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                if (forked) {
-                    titanFrame.dispose();
-                } else {
-                    if (controller.checkExit(titanFrame)) {
-                        System.exit(0);
-                    }
-                }
+                controller.disposeDialog();
             }
         });
     }

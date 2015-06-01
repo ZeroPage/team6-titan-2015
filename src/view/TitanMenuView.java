@@ -59,61 +59,59 @@ public class TitanMenuView {
         fileMenu.getNewDSMMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.newDSM(parent);
+                controller.newDSM();
             }
         });
 
         fileMenu.getOpenDSMMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.openDSM(parent);
+                controller.openDSM();
             }
         });
 
         fileMenu.getSaveDSMMenuItem().addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { controller.saveDSM(parent); }
+            public void actionPerformed(ActionEvent e) { controller.saveDSM(); }
         });
 
         fileMenu.getSaveClusterMenuItem().addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { controller.saveCluster(parent); }
+            public void actionPerformed(ActionEvent e) { controller.saveCluster(); }
         });
 
         fileMenu.getLoadClusterMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.openCluster(parent);
+                controller.openCluster();
             }
         });
 
         fileMenu.getNewClusterMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.newCluster(parent);
+                controller.newCluster();
             }
         });
 
         fileMenu.getSaveAsClusterMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.saveAsCluster(parent);
+                controller.saveAsCluster();
             }
         });
 
         fileMenu.getExportAsMenu().exportDSMMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.saveAsDSM(parent);
+                controller.saveAsDSM();
             }
         });
 
         fileMenu.getExitMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (controller.checkExit(parent)) {
-                    System.exit(0);
-                }
+                controller.disposeDialog();
             }
         });
 

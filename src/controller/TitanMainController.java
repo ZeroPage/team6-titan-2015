@@ -4,10 +4,8 @@ import model.*;
 import view.TitanDataView;
 import view.TitanMainView;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.tree.*;
-import java.awt.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,13 +18,6 @@ public class TitanMainController {
 
     // View
     private TitanMainView view;
-
-    // Current File
-    private File currentDSMFile;
-    private File currentClusterFile;
-
-    // FileChooser Related
-    private File lastFile;
 
     // Forked Controllers
     ArrayList<TitanMainController> forkedControllers;
@@ -44,151 +35,138 @@ public class TitanMainController {
         this.view.getDataView().setToolBarEnabled(false);
 
         // Init extra fields
-        lastFile = new File(".");
         forkedControllers = new ArrayList<>();
 
         setTreeData(data);
         setTreeRoot(root);
     }
 
-    public void setDialogVisible(boolean visible) {
-        view.setVisible(visible);
+    public void showDialog() {
+        view.showDialog();
     }
 
-    public void newDSM(Component parent) {
-        String userInput = JOptionPane.showInputDialog(parent, "Input Size: ", 10);
+    public void disposeDialog() {
+        if (!view.isForked()) {
+            clearForked();
+
+            // TODO: check save
+            view.showError("CLOSING");
+        }
+
+        view.disposeDialog();
+    }
+
+    public void newDSM() {
+        String userInput = view.showInput("Input Size: ", "10");
 
         if (userInput != null) {
             try {
                 int size = Integer.valueOf(userInput);
                 setTreeData(new TreeData(size));
+                view.getFileChooseView().clearLastDSMFile();
             } catch (NumberFormatException | NotPositiveException | WrongDSMFormatException | IOException exception) {
-                JOptionPane.showMessageDialog(parent, "Invalid Input", "ERROR", JOptionPane.ERROR_MESSAGE);
+                view.showError("Invalid Input");
                 exception.printStackTrace();
             }
         }
     }
 
-    public void openDSM(Component parent) {
-        // Init fileChooser
-        JFileChooser fileChooser = new JFileChooser(lastFile);
-        fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setFileFilter(new FileNameExtensionFilter("DSM File (*.dsm)", "dsm"));
+    public void openDSM() {
+        File file = view.getFileChooseView().openDSM();
 
-        // Show FileChooser
-        int result = fileChooser.showOpenDialog(parent);
-
-        if (result == JFileChooser.APPROVE_OPTION) {
-            lastFile = fileChooser.getSelectedFile();
-            currentDSMFile = fileChooser.getSelectedFile();
+        if (file != null) {
             try {
-                setTreeData(new TreeData(fileChooser.getSelectedFile()));
+                setTreeData(new TreeData(file));
             } catch (IOException | WrongDSMFormatException exception) {
-                JOptionPane.showMessageDialog(parent, "Failed to open file.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                view.showError("Failed to open file.");
                 exception.printStackTrace();
             }
         }
     }
 
-    public void saveDSM(Component parent){
-        if(currentDSMFile == null)
-               saveAsDSM(parent);
-        try {
-            treeData.saveDSMData(currentDSMFile);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(parent, "Failed to save file.", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+    public void saveDSM(){
+        File file = view.getFileChooseView().getLastDSMFile();
 
-    public void saveAsDSM(Component parent) {
-        JFileChooser fileChooser = new JFileChooser(lastFile);
-        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setFileFilter(new FileNameExtensionFilter("DSM File (*.dsm)", "dsm"));
-
-        int result = fileChooser.showSaveDialog(parent);
-
-        if(result == JFileChooser.APPROVE_OPTION) {
-            lastFile = fileChooser.getSelectedFile();
+        if(file == null) {
+            saveAsDSM();
+        } else {
             try {
-                treeData.saveDSMData(lastFile);
+                treeData.saveDSMData(file);
             } catch (IOException e) {
-                JOptionPane.showMessageDialog(parent, "Failed to save file.", "ERROR", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
+                view.showError("Failed to save file.");
             }
         }
     }
 
-    public void newCluster(Component parent) {
+    public void saveAsDSM() {
+        File file = view.getFileChooseView().saveDSM();
+
+        if (file != null) {
+            try {
+                treeData.saveDSMData(file);
+            } catch (IOException exception) {
+                view.showError("Failed to save file.");
+                exception.printStackTrace();
+            }
+        }
+    }
+
+    public void newCluster() {
         setTreeRoot(treeData.buildDefaultTree());
-        currentClusterFile = null;
+        view.getFileChooseView().clearLastClusterFile();
     }
 
-    public void openCluster(Component parent) {
-        // Init fileChooser
-        JFileChooser fileChooser = new JFileChooser(lastFile);
-        fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Cluster File (*.clsx)", "clsx"));
+    public void openCluster() {
+        File file = view.getFileChooseView().openCluster();
 
-        // Show FileChooser
-        int result = fileChooser.showOpenDialog(parent);
-
-        if (result == JFileChooser.APPROVE_OPTION) {
-            lastFile = fileChooser.getSelectedFile();
-            currentClusterFile = fileChooser.getSelectedFile();
+        if (file != null) {
             try {
-                treeData.loadClusterData(fileChooser.getSelectedFile());
+                treeData.loadClusterData(file);
                 setTreeRoot(treeData.getTree());
-            } catch (IOException | WrongXMLNamespaceException e) {
-                JOptionPane.showMessageDialog(parent, "Failed to open file.", "ERROR", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
+            } catch (IOException | WrongXMLNamespaceException exception) {
+                view.showError("Failed to open file.");
+                exception.printStackTrace();
             }
         }
     }
 
-    public void saveCluster(Component parent){
-        if(currentClusterFile == null)
-            saveAsCluster(parent);
-        try {
-            treeData.saveClusterData(currentClusterFile);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(parent, "Failed to save file.", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+    public void saveCluster(){
+        File file = view.getFileChooseView().getLastClusterFile();
 
-    public void saveAsCluster(Component parent) {
-        JFileChooser fileChooser = new JFileChooser(lastFile);
-        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Cluster File (*.clsx)", "clsx"));
-
-        int result = fileChooser.showSaveDialog(parent);
-
-        if(result == JFileChooser.APPROVE_OPTION) {
-            lastFile = fileChooser.getSelectedFile();
+        if(file == null) {
+            saveAsCluster();
+        } else {
             try {
-                treeData.saveClusterData(lastFile);
+                treeData.saveClusterData(file);
             } catch (IOException e) {
-                JOptionPane.showMessageDialog(parent, "Failed to save file.", "ERROR", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
+                view.showError("Failed to save file.");
             }
         }
     }
 
-    public void copyTree(DefaultMutableTreeNode newRoot, Component parent) {
-        if (checkExit(parent)) {
-            new TitanMainController(new TreeData(treeData, newRoot), newRoot, false).setDialogVisible(true);
-            setDialogVisible(false);
+    public void saveAsCluster() {
+        File file = view.getFileChooseView().saveCluster();
+
+        if (file != null) {
+            try {
+                treeData.saveClusterData(file);
+            } catch (IOException exception) {
+                view.showError("Failed to save file.");
+                exception.printStackTrace();
+            }
         }
+    }
+
+    public void copyTree(DefaultMutableTreeNode newRoot) {
+        new TitanMainController(new TreeData(treeData, newRoot), newRoot, false).showDialog();
+        disposeDialog();
     }
 
     public void forkTree(DefaultMutableTreeNode newRoot) {
         TitanMainController forkController = new TitanMainController(treeData, newRoot, true);
         forkedControllers.add(forkController);
 
-        forkController.setDialogVisible(true);
+        forkController.showDialog();
     }
 
     public void checkSelection(TreePath[] paths) {
@@ -304,8 +282,8 @@ public class TitanMainController {
         view.getDataView().drawTable(elements, data, group, showRowLabel);
     }
 
-    public void groupItems(Component parent, DefaultMutableTreeNode[] items) {
-        String userInput = JOptionPane.showInputDialog(parent, "New Group name: ", "new_group_name");
+    public void groupItems(DefaultMutableTreeNode[] items) {
+        String userInput = view.showInput("New Group name: ", "new_group_name");
 
         if (userInput != null) {
             treeData.groupElement(new ArrayList<>(Arrays.asList(items)), userInput);
@@ -372,15 +350,15 @@ public class TitanMainController {
         drawTree();
     }
 
-    public void newItem(Component parent) {
-        String name = JOptionPane.showInputDialog(parent, "Input new item name:");
+    public void newItem() {
+        String name = view.showInput("Input new item name:", "");
 
         if (name != null) {
             try {
                 treeData.addElement(root, name);
                 drawTree();
             } catch (NoSuchElementException e) {
-                JOptionPane.showMessageDialog(parent, "Failed to add new item.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                view.showError("Failed to add new item.");
                 e.printStackTrace();
                 System.err.println(root);
             }
@@ -389,12 +367,6 @@ public class TitanMainController {
 
     public void changeItemValue(DefaultMutableTreeNode from, DefaultMutableTreeNode to) {
         treeData.setDSMData(from, to, !treeData.getDSMValue(from, to));
-    }
-
-    public boolean checkExit(Component parent) {
-        // TODO: ask save
-        JOptionPane.showMessageDialog(parent, "Exiting...");
-        return true;
     }
 
     // Set New TreeData. Needs when changing DSM.
@@ -421,12 +393,16 @@ public class TitanMainController {
             drawTree();
         }
 
+        clearForked();
+    }
 
-        // Close all forked windows
+    // Close all forked windows
+    private void clearForked() {
         for (TitanMainController controller : forkedControllers) {
-            controller.setDialogVisible(false);
+            controller.disposeDialog();
         }
 
         forkedControllers.clear();
+
     }
 }

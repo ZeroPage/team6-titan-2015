@@ -228,7 +228,7 @@ public class TitanDataView {
         groupPopupMenu.getDuplicateMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.copyTree(getSelectedRows()[0], parent);
+                controller.copyTree(getSelectedRows()[0]);
             }
         });
 
@@ -258,7 +258,7 @@ public class TitanDataView {
         toolBar.getGroupButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.groupItems(parent, getSelectedRows());
+                controller.groupItems(getSelectedRows());
             }
         });
 
@@ -286,7 +286,7 @@ public class TitanDataView {
         toolBar.getNewButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.newItem(parent);
+                controller.newItem();
             }
         });
 
