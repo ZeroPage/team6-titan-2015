@@ -111,9 +111,8 @@ public class TitanTable extends JTable {
         int column = columnAtPoint(p);
 
         if (row > 0 && column > 0) {
-            tooltip = String.format("<html>%d] %s<br>%d] %s<br><b>Click to change value</b></html>",
-                    row, getValueAt(row, 0).toString(),
-                    column, getValueAt(column, 0).toString());
+            tooltip = String.format("<html>%s<br>%s<br><b>Click to change value</b></html>",
+                    getValueAt(row, 0).toString(), getValueAt(column, 0).toString());
         }
 
         if (tooltip == null) {
