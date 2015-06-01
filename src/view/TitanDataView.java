@@ -56,6 +56,16 @@ public class TitanDataView {
         return rows.toArray(new DefaultMutableTreeNode[rows.size()]);
     }
 
+    public DefaultMutableTreeNode getSelectedRow() {
+        DefaultMutableTreeNode[] rows = getSelectedRows();
+
+        if (rows == null) {
+            return null;
+        } else {
+            return rows[0];
+        }
+    }
+
     public DefaultMutableTreeNode[] getVisibleRows(DefaultMutableTreeNode root, boolean excludeExpanded) {
         ArrayList<DefaultMutableTreeNode> rows = new ArrayList<>();
 
@@ -227,28 +237,28 @@ public class TitanDataView {
         groupPopupMenu.getDuplicateMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.copyTree(getSelectedRows()[0]);
+                controller.copyTree(getSelectedRow());
             }
         });
 
         groupPopupMenu.getForkMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.forkTree(getSelectedRows()[0]);
+                controller.forkTree(getSelectedRow());
             }
         });
 
         groupPopupMenu.getRenameMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.renameElement(getSelectedRows()[0]);
+                controller.renameElement(getSelectedRow());
             }
         });
 
         itemPopupMenu.getRenameMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.renameElement(getSelectedRows()[0]);
+                controller.renameElement(getSelectedRow());
             }
         });
 
