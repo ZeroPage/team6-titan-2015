@@ -133,13 +133,11 @@ public class TitanDataView {
         String[] names = new String[elements.length];
 
         for (int i = 0; i < elements.length; i++) {
-            if (showRowLabel) {
-                names[i] = String.valueOf(i + 1) + " ";
-            } else {
-                names[i] = "";
-            }
+            names[i] = String.valueOf(i + 1) + " ";
 
-            names[i] += elements[i].toString();
+            if (showRowLabel) {
+                names[i] += elements[i].toString();
+            }
         }
 
         table.setTableContents(names, data, color);
@@ -260,7 +258,7 @@ public class TitanDataView {
         toolBar.getGroupButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.groupItems(parent, getSelectedRows());
+                controller.groupItems(getSelectedRows());
             }
         });
 
@@ -288,7 +286,7 @@ public class TitanDataView {
         toolBar.getNewButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.newItem(parent);
+                controller.newItem();
             }
         });
 

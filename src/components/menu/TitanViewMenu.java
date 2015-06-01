@@ -43,6 +43,7 @@ public class TitanViewMenu extends JMenu {
     public class ShowRowLabelMenuItem extends JCheckBoxMenuItem {
         public ShowRowLabelMenuItem() {
             super("Show Row Labels");
+            setSelected(true);
 
             setMnemonic(KeyEvent.VK_L);
         }

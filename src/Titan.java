@@ -17,6 +17,6 @@ class Titan {
             }
         }
 
-        new TitanMainController().openDialog(false);
+        new TitanMainController().showDialog();
     }
 }

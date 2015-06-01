@@ -34,7 +34,7 @@ public class TitanToolBarView {
         toolBar.getOpenDSMButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.openDSM(parent);
+                controller.openDSM();
             }
         });
 
@@ -48,28 +48,28 @@ public class TitanToolBarView {
         toolBar.getNewClusterButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.newCluster(parent);
+                controller.newCluster();
             }
         });
 
         toolBar.getOpenClusterButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.openCluster(parent);
+                controller.openCluster();
             }
         });
 
         toolBar.getSaveClusterButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.saveCluster(parent);
+                controller.saveCluster();
             }
         });
 
         toolBar.getSaveAsClusterButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.saveAsCluster(parent);
+                controller.saveAsCluster();
             }
         });
     }

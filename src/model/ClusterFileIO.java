@@ -29,9 +29,12 @@ public class ClusterFileIO {
 	
 	public void saveClusterData(File path, TreeNode treeRoot) throws IOException {
 		BufferedWriter out = new BufferedWriter(new FileWriter(path,false));
+		
 		out.write("<cluster xmlns=\"http://rise.cs.drexel.edu/minos/clsx\">");
 		out.newLine();
+		
 		writeGroup(out,(DefaultMutableTreeNode)treeRoot);
+		
 		out.append("</cluster>");
 		out.close();
 	}
@@ -41,9 +44,11 @@ public class ClusterFileIO {
 		if(node.getAllowsChildren()) {
 			out.append("<group name=\"" + attributeName + "\">");
 			out.newLine();
+			
 			for(int i=0;i<node.getChildCount();i++) {
 				writeGroup(out,(DefaultMutableTreeNode)node.getChildAt(i));
 			}
+			
 			out.append("</group>");
 			out.newLine();
 		} else {
@@ -58,18 +63,22 @@ public class ClusterFileIO {
 		DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder xmlBuilder = null;
 		Document doc = null;
+		
 		try {
 			xmlBuilder = xmlFactory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
 			// To be implemented...
 		}
+		
 		try {
 			doc = xmlBuilder.parse(source);
 		} catch (SAXException e) {
 			// To be implemented...
 		}
+		
 		doc.getDocumentElement().normalize();
 		Element tempclsx = (Element) doc.getChildNodes().item(0);
+		
 		if(tempclsx.hasAttribute("xmlns")&&!tempclsx.getAttribute("xmlns").equals(namespace)) {
 			throw new WrongXMLNamespaceException();
 		}
@@ -78,20 +87,25 @@ public class ClusterFileIO {
 		buildTree(doc.getDocumentElement(),treeRoot);
 		treeRoot = (DefaultMutableTreeNode)treeRoot.getFirstChild();
 		treeRoot.removeFromParent();
+		
 		return treeRoot;
 	}
 	
 	private void buildTree(Element DOMnode, DefaultMutableTreeNode treeNode) {
 		NodeList nodeList = DOMnode.getChildNodes();
+		
 		for(int i=0; i<nodeList.getLength();i++) {
 			Element elem=null;
 			DefaultMutableTreeNode newNode=null;
+			
 			Node node = nodeList.item(i);
 			if(node.getNodeType()==Node.ELEMENT_NODE) {
 				elem = (Element) node;
 				newNode = new DefaultMutableTreeNode(elem.getAttribute("name"),elem.hasChildNodes());
-				if(newNode.getAllowsChildren())
+				if(newNode.getAllowsChildren()) {
 					buildTree(elem,newNode);
+				}
+				
 				treeNode.add(newNode);
 			}
 		}

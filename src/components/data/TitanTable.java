@@ -50,7 +50,7 @@ public class TitanTable extends JTable {
 
         for (int i = 1; i < tableSize; i++) {
             columnNames[i] = String.valueOf(i);
-            columnModel.getColumn(i).setMaxWidth(15);
+            columnModel.getColumn(i).setMaxWidth(20);
         }
 
         tableModel.addRow(columnNames);
@@ -81,7 +81,7 @@ public class TitanTable extends JTable {
             Component component = prepareRenderer(renderer, i, 0);
             maxSize = Math.max(maxSize, component.getPreferredSize().width);
         }
-        columnModel.getColumn(0).setMinWidth(maxSize + 10);
+        columnModel.getColumn(0).setMinWidth(maxSize);
     }
 
     @Override
@@ -111,9 +111,8 @@ public class TitanTable extends JTable {
         int column = columnAtPoint(p);
 
         if (row > 0 && column > 0) {
-            tooltip = String.format("<html>%d] %s<br>%d] %s<br><b>Click to change value</b></html>",
-                    row, getValueAt(row, 0).toString(),
-                    column, getValueAt(column, 0).toString());
+            tooltip = String.format("<html>%s<br>%s<br><b>Click to change value</b></html>",
+                    getValueAt(row, 0).toString(), getValueAt(column, 0).toString());
         }
 
         if (tooltip == null) {

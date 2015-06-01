@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
 
 public class TreeData {
 	private TitanDSM dsmData;
@@ -57,8 +56,6 @@ public class TreeData {
 	}
 	
 	private boolean getGroupGroupValue(DefaultMutableTreeNode rGroup, DefaultMutableTreeNode cGroup) {
-		boolean result = false;
-		
 		boolean isR, isC;
 		isR = rGroup.getFirstChild().getAllowsChildren();
 		isC = cGroup.getFirstChild().getAllowsChildren();
@@ -66,99 +63,83 @@ public class TreeData {
 		if(isR&isC) {
 			for(int i=0;i<cGroup.getChildCount();i++) {
 				DefaultMutableTreeNode child = (DefaultMutableTreeNode)cGroup.getChildAt(i);
-				if(result = getGroupGroupValue(rGroup,child)) {
-					return result;
+				if(getGroupGroupValue(rGroup,child)) {
+					return true;
 				}
 			}
 		} else if(isR) {
-			for(int i=0;i<rGroup.getChildCount();i++) {
+			for(int i=0;i<cGroup.getChildCount();i++) {
 				DefaultMutableTreeNode item = (DefaultMutableTreeNode)cGroup.getChildAt(i);
-				if(result = getGroupItemValue(rGroup,item)) {
-					return result;
+				if(getGroupItemValue(rGroup,item)) {
+					return true;
 				}
 			}
 		} else if(isC) {
-			for(int i=0;i<cGroup.getChildCount();i++) {
+			for(int i=0;i<rGroup.getChildCount();i++) {
 				DefaultMutableTreeNode item = (DefaultMutableTreeNode)rGroup.getChildAt(i);
-				if(result = getItemGroupValue(item,cGroup)) {
-					return result;
+				if(getItemGroupValue(item,cGroup)) {
+					return true;
 				}
 			}
 		} else {
 			for(int i=0;i<rGroup.getChildCount();i++) {
 				DefaultMutableTreeNode item = (DefaultMutableTreeNode)rGroup.getChildAt(i);
-				if(result = getItemGroupValue(item,cGroup)) {
-					return result;
+				if(getItemGroupValue(item,cGroup)) {
+					return true;
 				}
 			}
 		}
-		return result;
+		return false;
 	}
 	
 	private boolean getGroupItemValue(DefaultMutableTreeNode group, DefaultMutableTreeNode element) {
-		boolean  result = false;
-		
-		if(group.getFirstChild().getAllowsChildren()) {
+		if(group.getChildCount()!=0&&group.getFirstChild().getAllowsChildren()) {
 			for(int i=0;i<group.getChildCount();i++) {
-				if(result = getGroupItemValue((DefaultMutableTreeNode)group.getChildAt(i),element)) {
-					return result;
+				if(getGroupItemValue((DefaultMutableTreeNode)group.getChildAt(i),element)) {
+					return true;
 				}
 			}
 		} else {
 			for(int i=0;i<group.getChildCount();i++) {
 				DefaultMutableTreeNode item = (DefaultMutableTreeNode)group.getChildAt(i);
-				if(result = getItemItemValue(item, element)) {
-					return result;
+				if(getItemItemValue(item, element)) {
+					return true;
 				}
 			}
 		}
-		return result;
+		return false;
 	}
 	
 	private boolean getItemGroupValue(DefaultMutableTreeNode element, DefaultMutableTreeNode group) {
-		boolean result = false;
-		
-		if(group.getFirstChild().getAllowsChildren()) {
+		if(group.getChildCount()!=0&&group.getFirstChild().getAllowsChildren()) {
 			for(int i=0;i<group.getChildCount();i++) {
-				if(result = getItemGroupValue(element,(DefaultMutableTreeNode)group.getChildAt(i))) {
-					return result;
+				if(getItemGroupValue(element,(DefaultMutableTreeNode)group.getChildAt(i))) {
+					return true;
 				}
 			}
 		} else {
 			for(int i=0;i<group.getChildCount();i++) {
 				DefaultMutableTreeNode item = (DefaultMutableTreeNode)group.getChildAt(i);
-				if(result = getItemItemValue(element, item)) {
-					return result;
+				if(getItemItemValue(element, item)) {
+					return true;
 				}
 			}
 		}
-		return result;
+		return false;
 	}
 	
 	private boolean getItemItemValue(DefaultMutableTreeNode rowElement, DefaultMutableTreeNode columnElement) {
-		boolean result = false;
-		
 		String row = rowElement.getUserObject().toString();
 		String column = columnElement.getUserObject().toString();
 		
-		result = dsmData.getData(row, column);
-			
-		return result;
-	}
-	
-	public void loadDSM(String dsmFileName) throws IOException, WrongDSMFormatException{
-		this.dsmData = new TitanDSM(new File(dsmFileName));
-		if(cluster == null) {
-			buildDefaultTree();
-		} else {
-			cluster.refresh(this.dsmData);
-		}
+		return dsmData.getData(row, column);
 	}
 
 //rename the element(Group, Item both)
 	public void renameElement(DefaultMutableTreeNode currentNode, String newName) throws ItemAlreadyExistException, NoSuchElementException {
 		if(!currentNode.getAllowsChildren()) {
-			dsmData.setName(newName, currentNode.getUserObject().toString());
+			String elementName = currentNode.getUserObject().toString();
+			dsmData.setName(newName, elementName);
 		}
 		cluster.renameNode(currentNode, newName);
 	}
@@ -169,11 +150,6 @@ public class TreeData {
 	}
 	
 	public void removeElement(DefaultMutableTreeNode elementNode) throws NoSuchElementException {
-		if(elementNode.getAllowsChildren()) {
-			//Case 1: the element was group - subtree has to be deleted.
-		} else {
-			//Case 2: the element was item - delete only stated element.
-		}
 		cluster.deleteItem(elementNode);
 	}
 	
@@ -193,32 +169,33 @@ public class TreeData {
 	public void setDSMData(DefaultMutableTreeNode rowNode, DefaultMutableTreeNode columnNode, Boolean value) {
 		String row = rowNode.getUserObject().toString();
 		String column = columnNode.getUserObject().toString();
+		
 		dsmData.setData(value, row, column);
 	}
 	
 //build temporary cluster with DSM only.
-	public DefaultMutableTreeNode buildDefaultTree() {
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("ROOT",true);
-		for(int i=0;i<this.dsmData.getSize();i++) {
-			root.add(new DefaultMutableTreeNode(this.dsmData.getName(i),false));
-		}
-		return root;
+	public void setClusterAsDefault() {
+		this.cluster = new ClusterData(this.dsmData);
 	}
 	
-   public DefaultMutableTreeNode getTree(){
+	public DefaultMutableTreeNode getTree(){
 		return this.cluster.getTree();
-	} 
-	
+	}
+
 	public void saveDSMData(File dsmFile) throws IOException{
 		this.dsmData.saveToFile(dsmFile);
 	}
-	
+
 	public void saveClusterData(File clusterFile) throws IOException{
 		this.cluster.saveClusterData(clusterFile);
 	}
-	
+
 	public void saveData(File dsmFile, File clusterFile) throws IOException{
 		this.dsmData.saveToFile(dsmFile);
 		this.cluster.saveClusterData(clusterFile);
+	}
+
+	public void partition() {
+		// TODO
 	}
 }
