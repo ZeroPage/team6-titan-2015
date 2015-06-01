@@ -111,7 +111,9 @@ public class TitanMenuView {
         fileMenu.getExitMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                if (controller.checkExit(parent)) {
+                    System.exit(0);
+                }
             }
         });
 

@@ -21,16 +21,23 @@ public class TitanMainController {
     // View
     private TitanMainView view;
 
-    //Current File
+    // Current File
     private File currentDSMFile;
     private File currentClusterFile;
 
     // FileChooser Related
     private File lastFile;
 
+    // Forked Controllers
+    ArrayList<TitanMainController> forkedControllers;
+
     public TitanMainController() {
+        this(null, null, false);
+    }
+
+    public TitanMainController(TreeData data, DefaultMutableTreeNode root, boolean forked) {
         // Init view
-        this.view = new TitanMainView(this);
+        this.view = new TitanMainView(this, forked);
 
         this.view.getMenuView().setDefaultEnabled();
         this.view.getToolBarView().setDefaultEnabled();
@@ -38,27 +45,14 @@ public class TitanMainController {
 
         // Init extra fields
         lastFile = new File(".");
-    }
-
-    public TitanMainController(TreeData data, DefaultMutableTreeNode root) {
-        this();
+        forkedControllers = new ArrayList<>();
 
         setTreeData(data);
         setTreeRoot(root);
     }
 
-    public void openDialog(boolean isForked) {
-        if (isForked) {
-            view.getMenuView().setFileMenuEnabled(false);
-            view.getToolBarView().setEnabledAll(false);
-            view.setSubTitle("FORKED");
-            view.setCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        } else {
-            view.setSubTitle(null);
-            view.setCloseOperation(JFrame.EXIT_ON_CLOSE);
-        }
-
-        view.openDialog();
+    public void setDialogVisible(boolean visible) {
+        view.setVisible(visible);
     }
 
     public void newDSM(Component parent) {
@@ -183,13 +177,18 @@ public class TitanMainController {
         }
     }
 
-    public void copyTree(DefaultMutableTreeNode newRoot) {
-        setTreeData(new TreeData(treeData, newRoot));
+    public void copyTree(DefaultMutableTreeNode newRoot, Component parent) {
+        if (checkExit(parent)) {
+            new TitanMainController(new TreeData(treeData, newRoot), newRoot, false).setDialogVisible(true);
+            setDialogVisible(false);
+        }
     }
 
     public void forkTree(DefaultMutableTreeNode newRoot) {
-        TitanMainController forkController = new TitanMainController(treeData, newRoot);
-        forkController.openDialog(true);
+        TitanMainController forkController = new TitanMainController(treeData, newRoot, true);
+        forkedControllers.add(forkController);
+
+        forkController.setDialogVisible(true);
     }
 
     public void checkSelection(TreePath[] paths) {
@@ -392,21 +391,42 @@ public class TitanMainController {
         treeData.setDSMData(from, to, !treeData.getDSMValue(from, to));
     }
 
+    public boolean checkExit(Component parent) {
+        // TODO: ask save
+        JOptionPane.showMessageDialog(parent, "Exiting...");
+        return true;
+    }
+
+    // Set New TreeData. Needs when changing DSM.
     private void setTreeData(TreeData treeData) {
         this.treeData = treeData;
 
-        view.getMenuView().setEnabledAll(true);
-        view.getToolBarView().setEnabledAll(true);
-        view.getDataView().setToolBarEnabled(true);
-        view.getDataView().setToolBarPartialEnabled(false, false, false, false, false);
+        if (this.treeData != null) {
 
-        setTreeRoot(treeData.getTree());
+            view.getMenuView().setEnabledAll(true);
+            view.getToolBarView().setEnabledAll(true);
+            view.getDataView().setToolBarEnabled(true);
+            view.getDataView().setToolBarPartialEnabled(false, false, false, false, false);
+
+            setTreeRoot(treeData.getTree());
+        }
     }
 
+    // Set New root. Needs when DSM is same but cluster has been changed (ex. loadingCluster, ...)
     private void setTreeRoot(DefaultMutableTreeNode root) {
         this.root = root;
 
-        view.getDataView().setTreeRoot(root);
-        drawTree();
+        if (this.root != null) {
+            view.getDataView().setTreeRoot(root);
+            drawTree();
+        }
+
+
+        // Close all forked windows
+        for (TitanMainController controller : forkedControllers) {
+            controller.setDialogVisible(false);
+        }
+
+        forkedControllers.clear();
     }
 }

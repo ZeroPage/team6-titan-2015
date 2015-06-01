@@ -230,7 +230,7 @@ public class TitanDataView {
         groupPopupMenu.getDuplicateMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.copyTree(getSelectedRows()[0]);
+                controller.copyTree(getSelectedRows()[0], parent);
             }
         });
 
