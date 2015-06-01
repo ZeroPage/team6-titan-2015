@@ -400,6 +400,7 @@ public class TitanMainController {
     private void clearForked() {
         for (TitanMainController controller : forkedControllers) {
             controller.disposeDialog();
+            controller.clearForked();
         }
 
         forkedControllers.clear();
