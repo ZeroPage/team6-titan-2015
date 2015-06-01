@@ -36,14 +36,14 @@ public class TitanDSMTest {
     @Test
     public void testGetData() throws Exception {
         TitanDSM dsm = new TitanDSM(30);
-        assertEquals(false, dsm.getData("entity_1","entity_2"));
+        assertEquals(false, dsm.getData("entity_1", "entity_2"));
     }
 
     @Test
     public void testSetData() throws Exception {
         TitanDSM dsm = new TitanDSM(30);
-        dsm.setData(true,"entity_1", "entity_2");
-        assertTrue(dsm.getData("entity_1","entity_2"));
+        dsm.setData(true, "entity_1", "entity_2");
+        assertEquals(true, dsm.getData("entity_1", "entity_2"));
     }
 
     @Test(expected=NoSuchElementException.class)
@@ -72,7 +72,7 @@ public class TitanDSMTest {
     @Test
     public void testSetName() throws Exception {
         TitanDSM dsm = new TitanDSM(30);
-        dsm.setName("NewName","entity_1");
+        dsm.setName("NewName", "entity_1");
         assertEquals("NewName",dsm.getName(0));
     }
 
@@ -112,6 +112,60 @@ public class TitanDSMTest {
         TitanDSM dsm = new TitanDSM(size);
         dsm.loadFromFile(file);
         assertEquals(true, dsm.isExist(testString));
+    }
+
+    @Test(expected = WrongDSMFormatException.class)
+    public void testLoadFromFileWithExceptionForWrongLength() throws Exception {
+        int size = 10;
+        String pathName = "./sample/titan/titan2.dsm";
+        File file = new File(pathName);
+        TitanDSM dsm = new TitanDSM(size);
+        dsm.loadFromFile(file);
+    }
+
+    @Test(expected = WrongDSMFormatException.class)
+    public void testLoadFromFileWithExceptionForWrongMatrixColomn() throws Exception {
+        int size = 10;
+        String pathName = "./sample/titan/titan3.dsm";
+        File file = new File(pathName);
+        TitanDSM dsm = new TitanDSM(size);
+        dsm.loadFromFile(file);
+    }
+
+    @Test(expected = WrongDSMFormatException.class)
+    public void testLoadFromFileWithExceptionForWrongMatrixData() throws Exception {
+        int size = 10;
+        String pathName = "./sample/titan/titan4.dsm";
+        File file = new File(pathName);
+        TitanDSM dsm = new TitanDSM(size);
+        dsm.loadFromFile(file);
+    }
+
+    @Test(expected = WrongDSMFormatException.class)
+    public void testLoadFromFileWithExceptionForWrongClassSize() throws Exception {
+        int size = 10;
+        String pathName = "./sample/titan/titan5.dsm";
+        File file = new File(pathName);
+        TitanDSM dsm = new TitanDSM(size);
+        dsm.loadFromFile(file);
+    }
+
+    @Test(expected = WrongDSMFormatException.class)
+    public void testLoadFromFileWithExceptionForWrongClassData() throws Exception {
+        int size = 10;
+        String pathName = "./sample/titan/titan6.dsm";
+        File file = new File(pathName);
+        TitanDSM dsm = new TitanDSM(size);
+        dsm.loadFromFile(file);
+    }
+
+    @Test(expected = WrongDSMFormatException.class)
+    public void testLoadFromFileWithExceptionForWrongClassEnd() throws Exception {
+        int size = 10;
+        String pathName = "./sample/titan/titan7.dsm";
+        File file = new File(pathName);
+        TitanDSM dsm = new TitanDSM(size);
+        dsm.loadFromFile(file);
     }
 
     @Test
