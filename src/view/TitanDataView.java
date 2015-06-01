@@ -296,5 +296,12 @@ public class TitanDataView {
                 controller.deleteItems(getSelectedRows());
             }
         });
+
+        toolBar.getPartitionButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.partition();
+            }
+        });
     }
 }

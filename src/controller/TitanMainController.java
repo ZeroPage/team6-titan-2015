@@ -371,6 +371,11 @@ public class TitanMainController {
         treeData.setDSMData(from, to, !treeData.getDSMValue(from, to));
     }
 
+    public void partition() {
+        treeData.partition();
+        setTreeRoot(treeData.getTree());
+    }
+
     // Set New TreeData. Needs when changing DSM.
     private void setTreeData(TreeData treeData) {
         this.treeData = treeData;

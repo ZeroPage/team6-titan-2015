@@ -3,8 +3,7 @@ package model;
 import java.io.File;
 import java.io.IOException;
 
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -196,6 +195,83 @@ public class TreeData {
 	}
 
 	public void partition() {
-		// TODO
+		setClusterAsDefault();
+		partitionSubTree(getTree());
+	}
+
+	private void partitionSubTree(DefaultMutableTreeNode subRoot) {
+		List<DefaultMutableTreeNode> children = Collections.list(subRoot.children());
+		int top = 0;
+		int bottom = children.size();
+
+		// STEP 1: move empty row items to top
+		for (int i = 0; i < bottom; i++) {
+			DefaultMutableTreeNode current = children.get(i);
+			boolean rowEmpty = true;
+
+			for (int j = 0; j < bottom; j++) {
+				rowEmpty &= !getDSMValue(current, children.get(j));
+			}
+
+			if (rowEmpty) {
+				repositionElement(current, top); // move to top
+				top++;
+				children = Collections.list(subRoot.children());
+			}
+		}
+
+		// STEP 2: move empty column items to bottom
+		children = Collections.list(subRoot.children());
+		for (int i = top; i < bottom; i++) {
+			DefaultMutableTreeNode current = children.get(i);
+			boolean columnEmpty = true;
+
+			for (int j = top; j < bottom; j++) {
+				columnEmpty &= !getDSMValue(children.get(j), current);
+			}
+
+			if (columnEmpty) {
+				i--;
+				bottom--;
+				repositionElement(current, bottom); // move to bottom
+				children = Collections.list(subRoot.children());
+			}
+		}
+
+		// STEP 3: find circuits and group them
+		int newGroupNumber = 0;
+		children = Collections.list(subRoot.children());
+
+		for (int i = top; i < bottom; i++) {
+			HashSet<DefaultMutableTreeNode> circuit = new HashSet<>();
+			Queue<DefaultMutableTreeNode> queue = new LinkedList<>();
+
+			circuit.add(children.get(i));
+			queue.add(children.get(i));
+
+			while (!queue.isEmpty()) {
+				DefaultMutableTreeNode current = queue.remove();
+
+				for (int j = top; j < bottom; j++) {
+					DefaultMutableTreeNode related = children.get(j);
+					if (getDSMValue(current, related)) {
+						if (!circuit.contains(related)) {
+							circuit.add(related);
+							queue.add(related);
+						}
+					}
+				}
+			}
+
+			if (circuit.size() > 1) {
+				newGroupNumber++;
+				groupElement(new ArrayList<>(circuit), "group_" + newGroupNumber);
+
+				bottom -= circuit.size() - 1;
+				children = Collections.list(subRoot.children());
+			}
+
+			top++;
+		}
 	}
 }
