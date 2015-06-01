@@ -33,6 +33,28 @@ public class TreeData {
 		cluster.refresh(this.dsmData);
 	}
 	
+	public void saveData(File dsmFile, File clusterFile) throws IOException {
+		this.dsmData.saveToFile(dsmFile);
+		this.cluster.saveClusterData(clusterFile);
+	}
+	
+	public void saveDSMData(File dsmFile) throws IOException {
+		this.dsmData.saveToFile(dsmFile);
+	}
+
+	public void saveClusterData(File clusterFile) throws IOException {
+		this.cluster.saveClusterData(clusterFile);
+	}
+	
+//build default cluster with DSM only.
+	public void setClusterAsDefault() {
+		this.cluster = new ClusterData(this.dsmData);
+	}
+	
+	public DefaultMutableTreeNode getTree(){
+		return this.cluster.getTree();
+	}
+	
 	public boolean getDSMValue(DefaultMutableTreeNode rowElement, DefaultMutableTreeNode columnElement) {
 		boolean result = false;
 		
@@ -52,6 +74,41 @@ public class TreeData {
 		}
 
 		return result;
+	}
+	
+	public void setDSMData(DefaultMutableTreeNode rowNode, DefaultMutableTreeNode columnNode, Boolean value) {
+		String row = rowNode.getUserObject().toString();
+		String column = columnNode.getUserObject().toString();
+		
+		dsmData.setData(value, row, column);
+	}
+
+	public void renameElement(DefaultMutableTreeNode currentNode, String newName) throws ItemAlreadyExistException, NoSuchElementException {
+		if(!currentNode.getAllowsChildren()) {
+			String elementName = currentNode.getUserObject().toString();
+			dsmData.setName(newName, elementName);
+		}
+		cluster.renameNode(currentNode, newName);
+	}
+	
+	public void repositionElement(DefaultMutableTreeNode elementNode,int newIndex) throws NoSuchElementException {
+		cluster.moveNode(elementNode, newIndex);
+	}
+	
+	public void removeElement(DefaultMutableTreeNode elementNode) throws NoSuchElementException {
+		cluster.deleteItem(elementNode);
+	}
+	
+	public void addElement(DefaultMutableTreeNode groupNode, String itemName) throws NoSuchElementException {
+		cluster.addItem(groupNode, itemName);
+	}
+	
+	public void groupElement(ArrayList<DefaultMutableTreeNode> elementList, String groupName) {
+		cluster.newGroupbyNode(elementList, groupName);
+	}
+	
+	public void freeGroup(DefaultMutableTreeNode groupNode) throws NoSuchElementException {
+		cluster.freeGroup(groupNode);
 	}
 	
 	private boolean getGroupGroupValue(DefaultMutableTreeNode rGroup, DefaultMutableTreeNode cGroup) {
@@ -132,66 +189,6 @@ public class TreeData {
 		String column = columnElement.getUserObject().toString();
 		
 		return dsmData.getData(row, column);
-	}
-
-//rename the element(Group, Item both)
-	public void renameElement(DefaultMutableTreeNode currentNode, String newName) throws ItemAlreadyExistException, NoSuchElementException {
-		if(!currentNode.getAllowsChildren()) {
-			String elementName = currentNode.getUserObject().toString();
-			dsmData.setName(newName, elementName);
-		}
-		cluster.renameNode(currentNode, newName);
-	}
-	
-	public void repositionElement(DefaultMutableTreeNode elementNode,int newIndex) throws NoSuchElementException {
-		cluster.moveNode(elementNode, newIndex);
-		//Does DSM has something to do with this method?
-	}
-	
-	public void removeElement(DefaultMutableTreeNode elementNode) throws NoSuchElementException {
-		cluster.deleteItem(elementNode);
-	}
-	
-	public void addElement(DefaultMutableTreeNode groupNode, String itemName) throws NoSuchElementException {
-		cluster.addItem(groupNode, itemName);
-		//DSM team, Plz add your codes that are needed.
-	}
-	
-	public void groupElement(ArrayList<DefaultMutableTreeNode> elementList, String groupName) {
-		cluster.newGroupbyNode(elementList, groupName);
-	}
-	
-	public void freeGroup(DefaultMutableTreeNode groupNode) throws NoSuchElementException {
-		cluster.freeGroup(groupNode);
-	}
-	
-	public void setDSMData(DefaultMutableTreeNode rowNode, DefaultMutableTreeNode columnNode, Boolean value) {
-		String row = rowNode.getUserObject().toString();
-		String column = columnNode.getUserObject().toString();
-		
-		dsmData.setData(value, row, column);
-	}
-	
-//build temporary cluster with DSM only.
-	public void setClusterAsDefault() {
-		this.cluster = new ClusterData(this.dsmData);
-	}
-	
-	public DefaultMutableTreeNode getTree(){
-		return this.cluster.getTree();
-	}
-
-	public void saveDSMData(File dsmFile) throws IOException{
-		this.dsmData.saveToFile(dsmFile);
-	}
-
-	public void saveClusterData(File clusterFile) throws IOException{
-		this.cluster.saveClusterData(clusterFile);
-	}
-
-	public void saveData(File dsmFile, File clusterFile) throws IOException{
-		this.dsmData.saveToFile(dsmFile);
-		this.cluster.saveClusterData(clusterFile);
 	}
 
 	public void partition() {

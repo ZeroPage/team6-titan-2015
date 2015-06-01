@@ -38,6 +38,20 @@ public class ClusterData {
 	public DefaultMutableTreeNode getTree() {
 		return this.treeRoot;
 	}
+	
+	public boolean getAllowsChildren(String nodeName) throws NoSuchElementException {
+		DefaultMutableTreeNode node = findNode(this.treeRoot,nodeName);
+		if(node==null) {throw new NoSuchElementException();}
+		
+		return node.getAllowsChildren();
+	}
+	
+	public TreeNode getNode(String nodeName) throws NoSuchElementException {
+		DefaultMutableTreeNode node = findNode(this.treeRoot,nodeName);
+		if(node==null) {throw new NoSuchElementException();}
+		
+		return node;
+	}
 
 //refactor the tree with dsmData
 	public void refresh(TitanDSM dsmData) {
@@ -60,44 +74,12 @@ public class ClusterData {
 		ClusterFileIO writer = ClusterFileIO.getInstance();
 		writer.saveClusterData(path, this.treeRoot);
 	}
-	
-	private DefaultMutableTreeNode findNode(DefaultMutableTreeNode node, String nodeName) {
-		DefaultMutableTreeNode targetNode = null;
-		DefaultMutableTreeNode temp;
-		
-		if(node.getUserObject().equals(nodeName)) {
-			targetNode = node;
-		} else if(node.getAllowsChildren()) {
-			for(int i=0;i<node.getChildCount();i++) {
-				temp = findNode((DefaultMutableTreeNode)node.getChildAt(i),nodeName);
-				if(temp!=null) {
-					targetNode = temp;
-					break;
-				}
-			}
-		}
-		return targetNode;
-	}
+
 
 //moving a node(group or item) to new index	
 	public void moveNode(DefaultMutableTreeNode node, int newIndex) {
 		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)node.getParent();
 		parent.insert(node, newIndex);
-	}
-	
-//Added for DSM search - whether item or not
-	public boolean getAllowsChildren(String nodeName) throws NoSuchElementException {
-		DefaultMutableTreeNode node = findNode(this.treeRoot,nodeName);
-		if(node==null) {throw new NoSuchElementException();}
-		
-		return node.getAllowsChildren();
-	}
-	
-	public TreeNode getNode(String nodeName) throws NoSuchElementException {
-		DefaultMutableTreeNode node = findNode(this.treeRoot,nodeName);
-		if(node==null) {throw new NoSuchElementException();}
-		
-		return node;
 	}
 
 //group multiple nodes(group or item) into new group, and add it as a new child of parental group
@@ -148,5 +130,23 @@ public class ClusterData {
 	
 	public void deleteItem(DefaultMutableTreeNode node) {
 		node.removeFromParent();
+	}
+		
+	private DefaultMutableTreeNode findNode(DefaultMutableTreeNode node, String nodeName) {
+		DefaultMutableTreeNode targetNode = null;
+		DefaultMutableTreeNode temp;
+		
+		if(node.getUserObject().equals(nodeName)) {
+			targetNode = node;
+		} else if(node.getAllowsChildren()) {
+			for(int i=0;i<node.getChildCount();i++) {
+				temp = findNode((DefaultMutableTreeNode)node.getChildAt(i),nodeName);
+				if(temp!=null) {
+					targetNode = temp;
+					break;
+				}
+			}
+		}
+		return targetNode;
 	}
 }
