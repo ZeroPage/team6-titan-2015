@@ -224,7 +224,6 @@ public class TitanDataView {
         });
 
         // Popup Menus
-        // TODO: Total 4 Listeners
         groupPopupMenu.getDuplicateMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -236,6 +235,20 @@ public class TitanDataView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.forkTree(getSelectedRows()[0]);
+            }
+        });
+
+        groupPopupMenu.getRenameMenuItem().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.renameElement(getSelectedRows()[0]);
+            }
+        });
+
+        itemPopupMenu.getRenameMenuItem().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.renameElement(getSelectedRows()[0]);
             }
         });
 
