@@ -39,24 +39,6 @@ public class ClusterFileIO {
 		out.close();
 	}
 	
-	private void writeGroup(BufferedWriter out, DefaultMutableTreeNode node) throws IOException {
-		String attributeName = node.getUserObject().toString();
-		if(node.getAllowsChildren()) {
-			out.append("<group name=\"" + attributeName + "\">");
-			out.newLine();
-			
-			for(int i=0;i<node.getChildCount();i++) {
-				writeGroup(out,(DefaultMutableTreeNode)node.getChildAt(i));
-			}
-			
-			out.append("</group>");
-			out.newLine();
-		} else {
-			out.append("<item name=\"" + attributeName + "\" />");
-			out.newLine();
-		}
-	}
-	
 	public DefaultMutableTreeNode loadClusterData(File source) throws IOException, WrongXMLNamespaceException {
 		DefaultMutableTreeNode treeRoot;
 		
@@ -89,6 +71,25 @@ public class ClusterFileIO {
 		treeRoot.removeFromParent();
 		
 		return treeRoot;
+	}
+	
+	
+	private void writeGroup(BufferedWriter out, DefaultMutableTreeNode node) throws IOException {
+		String attributeName = node.getUserObject().toString();
+		if(node.getAllowsChildren()) {
+			out.append("<group name=\"" + attributeName + "\">");
+			out.newLine();
+			
+			for(int i=0;i<node.getChildCount();i++) {
+				writeGroup(out,(DefaultMutableTreeNode)node.getChildAt(i));
+			}
+			
+			out.append("</group>");
+			out.newLine();
+		} else {
+			out.append("<item name=\"" + attributeName + "\" />");
+			out.newLine();
+		}
 	}
 	
 	private void buildTree(Element DOMnode, DefaultMutableTreeNode treeNode) {

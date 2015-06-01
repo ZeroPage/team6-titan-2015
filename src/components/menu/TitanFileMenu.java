@@ -166,7 +166,7 @@ public class TitanFileMenu extends JMenu {
     }
 
     public class ExportAsMenu extends JMenu {
-        public ExportDSMMenuItem exportDSMMenuItem;
+        private ExportDSMMenuItem exportDSMMenuItem;
 
         public ExportAsMenu() {
             super("Export As");
@@ -176,6 +176,10 @@ public class TitanFileMenu extends JMenu {
             exportDSMMenuItem = new ExportDSMMenuItem();
 
             add(exportDSMMenuItem);
+        }
+
+        public ExportDSMMenuItem getExportDSMMenuItem() {
+            return exportDSMMenuItem;
         }
 
         public class ExportDSMMenuItem extends JMenuItem {

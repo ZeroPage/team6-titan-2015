@@ -3,8 +3,7 @@ package model;
 import java.io.File;
 import java.io.IOException;
 
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -34,6 +33,28 @@ public class TreeData {
 		cluster.refresh(this.dsmData);
 	}
 	
+	public void saveData(File dsmFile, File clusterFile) throws IOException {
+		this.dsmData.saveToFile(dsmFile);
+		this.cluster.saveClusterData(clusterFile);
+	}
+	
+	public void saveDSMData(File dsmFile) throws IOException {
+		this.dsmData.saveToFile(dsmFile);
+	}
+
+	public void saveClusterData(File clusterFile) throws IOException {
+		this.cluster.saveClusterData(clusterFile);
+	}
+	
+//build default cluster with DSM only.
+	public void setClusterAsDefault() {
+		this.cluster = new ClusterData(this.dsmData);
+	}
+	
+	public DefaultMutableTreeNode getTree(){
+		return this.cluster.getTree();
+	}
+	
 	public boolean getDSMValue(DefaultMutableTreeNode rowElement, DefaultMutableTreeNode columnElement) {
 		boolean result = false;
 		
@@ -53,6 +74,41 @@ public class TreeData {
 		}
 
 		return result;
+	}
+	
+	public void setDSMData(DefaultMutableTreeNode rowNode, DefaultMutableTreeNode columnNode, Boolean value) {
+		String row = rowNode.getUserObject().toString();
+		String column = columnNode.getUserObject().toString();
+		
+		dsmData.setData(value, row, column);
+	}
+
+	public void renameElement(DefaultMutableTreeNode currentNode, String newName) throws ItemAlreadyExistException, NoSuchElementException {
+		if(!currentNode.getAllowsChildren()) {
+			String elementName = currentNode.getUserObject().toString();
+			dsmData.setName(newName, elementName);
+		}
+		cluster.renameNode(currentNode, newName);
+	}
+	
+	public void repositionElement(DefaultMutableTreeNode elementNode,int newIndex) throws NoSuchElementException {
+		cluster.moveNode(elementNode, newIndex);
+	}
+	
+	public void removeElement(DefaultMutableTreeNode elementNode) throws NoSuchElementException {
+		cluster.deleteItem(elementNode);
+	}
+	
+	public void addElement(DefaultMutableTreeNode groupNode, String itemName) throws NoSuchElementException {
+		cluster.addItem(groupNode, itemName);
+	}
+	
+	public void groupElement(ArrayList<DefaultMutableTreeNode> elementList, String groupName) {
+		cluster.newGroupbyNode(elementList, groupName);
+	}
+	
+	public void freeGroup(DefaultMutableTreeNode groupNode) throws NoSuchElementException {
+		cluster.freeGroup(groupNode);
 	}
 	
 	private boolean getGroupGroupValue(DefaultMutableTreeNode rGroup, DefaultMutableTreeNode cGroup) {
@@ -135,67 +191,84 @@ public class TreeData {
 		return dsmData.getData(row, column);
 	}
 
-//rename the element(Group, Item both)
-	public void renameElement(DefaultMutableTreeNode currentNode, String newName) throws ItemAlreadyExistException, NoSuchElementException {
-		if(!currentNode.getAllowsChildren()) {
-			String elementName = currentNode.getUserObject().toString();
-			dsmData.setName(newName, elementName);
-		}
-		cluster.renameNode(currentNode, newName);
-	}
-	
-	public void repositionElement(DefaultMutableTreeNode elementNode,int newIndex) throws NoSuchElementException {
-		cluster.moveNode(elementNode, newIndex);
-		//Does DSM has something to do with this method?
-	}
-	
-	public void removeElement(DefaultMutableTreeNode elementNode) throws NoSuchElementException {
-		cluster.deleteItem(elementNode);
-	}
-	
-	public void addElement(DefaultMutableTreeNode groupNode, String itemName) throws NoSuchElementException {
-		cluster.addItem(groupNode, itemName);
-		//DSM team, Plz add your codes that are needed.
-	}
-	
-	public void groupElement(ArrayList<DefaultMutableTreeNode> elementList, String groupName) {
-		cluster.newGroupbyNode(elementList, groupName);
-	}
-	
-	public void freeGroup(DefaultMutableTreeNode groupNode) throws NoSuchElementException {
-		cluster.freeGroup(groupNode);
-	}
-	
-	public void setDSMData(DefaultMutableTreeNode rowNode, DefaultMutableTreeNode columnNode, Boolean value) {
-		String row = rowNode.getUserObject().toString();
-		String column = columnNode.getUserObject().toString();
-		
-		dsmData.setData(value, row, column);
-	}
-	
-//build temporary cluster with DSM only.
-	public void setClusterAsDefault() {
-		this.cluster = new ClusterData(this.dsmData);
-	}
-	
-	public DefaultMutableTreeNode getTree(){
-		return this.cluster.getTree();
-	}
-
-	public void saveDSMData(File dsmFile) throws IOException{
-		this.dsmData.saveToFile(dsmFile);
-	}
-
-	public void saveClusterData(File clusterFile) throws IOException{
-		this.cluster.saveClusterData(clusterFile);
-	}
-
-	public void saveData(File dsmFile, File clusterFile) throws IOException{
-		this.dsmData.saveToFile(dsmFile);
-		this.cluster.saveClusterData(clusterFile);
-	}
-
 	public void partition() {
-		// TODO
+		setClusterAsDefault();
+		partitionSubTree(getTree());
+	}
+
+	private void partitionSubTree(DefaultMutableTreeNode subRoot) {
+		List<DefaultMutableTreeNode> children = Collections.list(subRoot.children());
+		int top = 0;
+		int bottom = children.size();
+
+		// STEP 1: move empty row items to top
+		for (int i = 0; i < bottom; i++) {
+			DefaultMutableTreeNode current = children.get(i);
+			boolean rowEmpty = true;
+
+			for (int j = 0; j < bottom; j++) {
+				rowEmpty &= !getDSMValue(current, children.get(j));
+			}
+
+			if (rowEmpty) {
+				repositionElement(current, top); // move to top
+				top++;
+				children = Collections.list(subRoot.children());
+			}
+		}
+
+		// STEP 2: move empty column items to bottom
+		children = Collections.list(subRoot.children());
+		for (int i = top; i < bottom; i++) {
+			DefaultMutableTreeNode current = children.get(i);
+			boolean columnEmpty = true;
+
+			for (int j = top; j < bottom; j++) {
+				columnEmpty &= !getDSMValue(children.get(j), current);
+			}
+
+			if (columnEmpty) {
+				i--;
+				bottom--;
+				repositionElement(current, bottom); // move to bottom
+				children = Collections.list(subRoot.children());
+			}
+		}
+
+		// STEP 3: find circuits and group them
+		int newGroupNumber = 0;
+		children = Collections.list(subRoot.children());
+
+		for (int i = top; i < bottom; i++) {
+			HashSet<DefaultMutableTreeNode> circuit = new HashSet<>();
+			Queue<DefaultMutableTreeNode> queue = new LinkedList<>();
+
+			circuit.add(children.get(i));
+			queue.add(children.get(i));
+
+			while (!queue.isEmpty()) {
+				DefaultMutableTreeNode current = queue.remove();
+
+				for (int j = top; j < bottom; j++) {
+					DefaultMutableTreeNode related = children.get(j);
+					if (getDSMValue(current, related)) {
+						if (!circuit.contains(related)) {
+							circuit.add(related);
+							queue.add(related);
+						}
+					}
+				}
+			}
+
+			if (circuit.size() > 1) {
+				newGroupNumber++;
+				groupElement(new ArrayList<>(circuit), "group_" + newGroupNumber);
+
+				bottom -= circuit.size() - 1;
+				children = Collections.list(subRoot.children());
+			}
+
+			top++;
+		}
 	}
 }

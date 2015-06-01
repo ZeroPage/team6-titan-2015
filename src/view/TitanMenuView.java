@@ -101,7 +101,7 @@ public class TitanMenuView {
             }
         });
 
-        fileMenu.getExportAsMenu().exportDSMMenuItem.addActionListener(new ActionListener() {
+        fileMenu.getExportAsMenu().getExportDSMMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.saveAsDSM();

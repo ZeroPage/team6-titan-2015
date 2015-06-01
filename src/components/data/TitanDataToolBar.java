@@ -13,6 +13,7 @@ public class TitanDataToolBar extends JToolBar {
     private MoveDownButton moveDownButton;
     private NewButton newButton;
     private DeleteButton deleteButton;
+    private PartitionButton partitionButton;
     
     private ArrayList<Component> components;
 
@@ -30,6 +31,7 @@ public class TitanDataToolBar extends JToolBar {
         this.moveDownButton = new MoveDownButton();
         this.newButton = new NewButton();
         this.deleteButton = new DeleteButton();
+        this.partitionButton = new PartitionButton();
         
         this.components = new ArrayList<>();
         this.components.add(expandButton);
@@ -40,6 +42,7 @@ public class TitanDataToolBar extends JToolBar {
         this.components.add(moveDownButton);
         this.components.add(newButton);
         this.components.add(deleteButton);
+        this.components.add(partitionButton);
 
         // Add components
         add(expandButton);
@@ -53,6 +56,8 @@ public class TitanDataToolBar extends JToolBar {
         addSeparator();
         add(newButton);
         add(deleteButton);
+        addSeparator();
+        add(partitionButton);
     }
 
     public ExpandButton getExpandButton() {
@@ -86,7 +91,11 @@ public class TitanDataToolBar extends JToolBar {
     public DeleteButton getDeleteButton() {
         return deleteButton;
     }
-    
+
+    public PartitionButton getPartitionButton() {
+        return partitionButton;
+    }
+
     public void setEnabledAll(boolean enabled) {
         for (Component component : components) {
             component.setEnabled(enabled);
@@ -162,6 +171,15 @@ public class TitanDataToolBar extends JToolBar {
 
             setIcon(new ImageIcon("res/delete.png"));
             setToolTipText("Delete");
+        }
+    }
+
+    public class PartitionButton extends JButton {
+        public PartitionButton() {
+            super();
+
+            setIcon(new ImageIcon("res/dsm.png"));
+            setToolTipText("Partition");
         }
     }
 }

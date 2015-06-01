@@ -371,6 +371,23 @@ public class TitanMainController {
         treeData.setDSMData(from, to, !treeData.getDSMValue(from, to));
     }
 
+    public void renameElement(DefaultMutableTreeNode node) {
+        String newName = view.showInput("Input new name:", "new_name");
+
+        if (newName != null) {
+            try {
+                treeData.renameElement(node, newName);
+            } catch (ItemAlreadyExistException e) {
+                view.showError(newName + " already exists.");
+            }
+        }
+    }
+
+    public void partition() {
+        treeData.partition();
+        setTreeRoot(treeData.getTree());
+    }
+
     // Set New TreeData. Needs when changing DSM.
     private void setTreeData(TreeData treeData) {
         this.treeData = treeData;
