@@ -86,15 +86,19 @@ public class ClusterData {
 	public void newGroupbyNode(ArrayList<DefaultMutableTreeNode> nodeArr,String newGroupName) {
 		DefaultMutableTreeNode firstElem = nodeArr.get(0);
 		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)firstElem.getParent();
-
-		int minIndex = parent.getChildCount();
-
-		for (int i = 0; i < nodeArr.size(); i++) {
-			DefaultMutableTreeNode current = nodeArr.get(i);
-			if (parent.getIndex(current) < minIndex) {
-				minIndex = parent.getIndex(current);
-				firstElem = current;
+		
+		int index;
+		for(int i=1;i<nodeArr.size();i++) {
+			index=0;
+			int comparison = parent.getIndex(nodeArr.get(index));
+			int target = parent.getIndex(nodeArr.get(i));
+			while(comparison<target&&index<i) {
+				index++;
+				comparison = parent.getIndex(nodeArr.get(index));
 			}
+			DefaultMutableTreeNode targetNode = nodeArr.get(i);
+			nodeArr.add(index, targetNode);
+			nodeArr.remove(i+1);
 		}
 		
 		int groupIndex = parent.getIndex(firstElem);
