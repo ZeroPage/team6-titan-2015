@@ -11,6 +11,7 @@ public class ClusterData {
 	
 	public ClusterData(TitanDSM dsmData) {
 		this.treeRoot = new DefaultMutableTreeNode("ROOT",true);
+		
 		for(int i=0;i<dsmData.getSize();i++) {
 			treeRoot.add(new DefaultMutableTreeNode(dsmData.getName(i),false));
 		}
@@ -41,6 +42,7 @@ public class ClusterData {
 //refactor the tree with dsmData
 	public void refresh(TitanDSM dsmData) {
 		DefaultMutableTreeNode leaf = this.treeRoot.getFirstLeaf();
+		
 		while(leaf!=null) {
 			if(leaf.getAllowsChildren()) {
 				leaf = leaf.getNextLeaf();
@@ -62,6 +64,7 @@ public class ClusterData {
 	private DefaultMutableTreeNode findNode(DefaultMutableTreeNode node, String nodeName) {
 		DefaultMutableTreeNode targetNode = null;
 		DefaultMutableTreeNode temp;
+		
 		if(node.getUserObject().equals(nodeName)) {
 			targetNode = node;
 		} else if(node.getAllowsChildren()) {
@@ -77,75 +80,43 @@ public class ClusterData {
 	}
 
 //moving a node(group or item) to new index	
-	public void moveNode(String nodeName, int newIndex) throws NoSuchElementException {
-		DefaultMutableTreeNode node = findNode(this.treeRoot,nodeName);
-		if(node==null) {throw new NoSuchElementException();}
-		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)node.getParent();
-		parent.insert(node, newIndex);
-	}
-	
 	public void moveNode(DefaultMutableTreeNode node, int newIndex) {
 		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)node.getParent();
 		parent.insert(node, newIndex);
 	}
-
 	
 //Added for DSM search - whether item or not
 	public boolean getAllowsChildren(String nodeName) throws NoSuchElementException {
 		DefaultMutableTreeNode node = findNode(this.treeRoot,nodeName);
 		if(node==null) {throw new NoSuchElementException();}
+		
 		return node.getAllowsChildren();
 	}
 	
 	public TreeNode getNode(String nodeName) throws NoSuchElementException {
 		DefaultMutableTreeNode node = findNode(this.treeRoot,nodeName);
 		if(node==null) {throw new NoSuchElementException();}
+		
 		return node;
 	}
 
-//group multiple nodes(group or item) into new group, and add it as a new child of parental group	
-	public void newGroupbyName(ArrayList<String> nodeName, String newGroupName) throws NoSuchElementException {
-		DefaultMutableTreeNode firstElem = findNode(this.treeRoot,nodeName.get(0));
-		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)firstElem.getParent();
-		int groupIndex = parent.getIndex(firstElem);
-		DefaultMutableTreeNode newGroup = new DefaultMutableTreeNode(newGroupName,true);
-		for(int i=nodeName.size()-1;i>=0;i--) {
-			DefaultMutableTreeNode child = findNode(parent,nodeName.get(i));
-			if(child==null||parent.getIndex(child)==-1) {
-				throw new NoSuchElementException();
-			}
-			newGroup.insert(child,0);
-		}
-		parent.insert(newGroup, groupIndex);
-	}
-	
+//group multiple nodes(group or item) into new group, and add it as a new child of parental group
 	public void newGroupbyNode(ArrayList<DefaultMutableTreeNode> nodeArr,String newGroupName) {
 		DefaultMutableTreeNode firstElem = nodeArr.get(0);
 		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)firstElem.getParent();
+		
 		int groupIndex = parent.getIndex(firstElem);
 		DefaultMutableTreeNode newGroup = new DefaultMutableTreeNode(newGroupName,true);
+		
 		for(int i=nodeArr.size()-1;i>=0;i--) {
 			DefaultMutableTreeNode child = nodeArr.get(i);
 			newGroup.insert(child,0);
 		}
+		
 		parent.insert(newGroup, groupIndex);
 	}
 
 //free the group, and add all the children as the child of parent group
-	public void freeGroup(String nodeName) throws NoSuchElementException {
-		DefaultMutableTreeNode node = findNode(this.treeRoot,nodeName);
-		if(node==null) {
-			throw new NoSuchElementException();
-		}
-		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)node.getParent();
-		int cursor = parent.getIndex(node);
-		while(node.getChildCount()!=0) {
-			parent.insert((MutableTreeNode)node.getFirstChild(),cursor);
-			cursor++;
-		}
-		parent.remove(node);
-	}
-	
 	public void freeGroup(DefaultMutableTreeNode node) {
 		DefaultMutableTreeNode parent = (DefaultMutableTreeNode)node.getParent();
 		int cursor = parent.getIndex(node);
@@ -157,36 +128,12 @@ public class ClusterData {
 	}
 
 //rename the particular item or group
-	public void renameNode(String nodeName, String newName) throws NoSuchElementException {
-		DefaultMutableTreeNode node = findNode(this.treeRoot,nodeName);
-		if(node==null) {
-			throw new NoSuchElementException();
-		}
-		node.setUserObject(newName);
-	}
-	
 	public void renameNode(DefaultMutableTreeNode node, String newName) {
 		node.setUserObject(newName);
 	}
 	
-	public void addItem(String groupName, String itemName) throws NoSuchElementException {
-		DefaultMutableTreeNode group = findNode(this.treeRoot,groupName);
-		if(group==null) {
-			throw new NoSuchElementException();
-		}
-		group.add(new DefaultMutableTreeNode(itemName,false));
-	}
-	
 	public void addItem(DefaultMutableTreeNode groupNode, String itemName) {
 		groupNode.add(new DefaultMutableTreeNode(itemName,false));
-	}
-	
-	public void deleteItem(String itemName) throws NoSuchElementException {
-		DefaultMutableTreeNode node = findNode(this.treeRoot,itemName);
-		if(node==null) {
-			throw new NoSuchElementException();
-		}
-		node.removeFromParent();
 	}
 	
 	public void deleteItem(DefaultMutableTreeNode node) {
