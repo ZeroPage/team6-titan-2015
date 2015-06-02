@@ -248,6 +248,13 @@ public class TitanDataView {
             }
         });
 
+        groupPopupMenu.getSortMenuItem().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.sortGroup(getSelectedRow());
+            }
+        });
+
         groupPopupMenu.getRenameMenuItem().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

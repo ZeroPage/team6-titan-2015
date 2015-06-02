@@ -383,6 +383,11 @@ public class TitanMainController {
         }
     }
 
+    public void sortGroup(DefaultMutableTreeNode group) {
+        treeData.sortGroupElements(group);
+        drawTree();
+    }
+
     public void partition() {
         treeData.partition();
         setTreeRoot(treeData.getTree());
