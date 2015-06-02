@@ -4,6 +4,7 @@ import model.*;
 import view.TitanDataView;
 import view.TitanMainView;
 
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.io.*;
@@ -20,7 +21,10 @@ public class TitanMainController {
     private TitanMainView view;
 
     // Forked Controllers
-    ArrayList<TitanMainController> forkedControllers;
+    private ArrayList<TitanMainController> forkedControllers;
+
+    private boolean modifiedDSM;
+    private boolean modifiedCluster;
 
     public TitanMainController() {
         this(null, null, false);
@@ -46,17 +50,22 @@ public class TitanMainController {
     }
 
     public void disposeDialog() {
+        if (!askBeforeExit()) {
+            return;
+        }
+
         if (!view.isForked()) {
             clearForked();
-
-            // TODO: check save
-            view.showError("CLOSING");
         }
 
         view.disposeDialog();
     }
 
     public void newDSM() {
+        if (!askBeforeExit()) {
+            return;
+        }
+
         String userInput = view.showInput("Input Size: ", "10");
 
         if (userInput != null) {
@@ -64,6 +73,7 @@ public class TitanMainController {
                 int size = Integer.valueOf(userInput);
                 setTreeData(new TreeData(size));
                 view.getFileChooseView().clearLastDSMFile();
+                modifiedDSM = false;
             } catch (NumberFormatException | NotPositiveException | WrongDSMFormatException | IOException exception) {
                 view.showError("Invalid Input");
                 exception.printStackTrace();
@@ -72,11 +82,16 @@ public class TitanMainController {
     }
 
     public void openDSM() {
+        if (!askBeforeExit()) {
+            return;
+        }
+
         File file = view.getFileChooseView().openDSM();
 
         if (file != null) {
             try {
                 setTreeData(new TreeData(file));
+                modifiedDSM = false;
             } catch (IOException | WrongDSMFormatException exception) {
                 view.showError("Failed to open file.");
                 exception.printStackTrace();
@@ -92,6 +107,7 @@ public class TitanMainController {
         } else {
             try {
                 treeData.saveDSMData(file);
+                modifiedDSM = false;
             } catch (IOException e) {
                 view.showError("Failed to save file.");
             }
@@ -104,6 +120,7 @@ public class TitanMainController {
         if (file != null) {
             try {
                 treeData.saveDSMData(file);
+                modifiedDSM = false;
             } catch (IOException exception) {
                 view.showError("Failed to save file.");
                 exception.printStackTrace();
@@ -112,19 +129,30 @@ public class TitanMainController {
     }
 
     public void newCluster() {
+        if (!askBeforeExit()) {
+            return;
+        }
+
         treeData.setClusterAsDefault();
         setTreeRoot(treeData.getTree());
 
         view.getFileChooseView().clearLastClusterFile();
+        modifiedCluster = false;
+
     }
 
     public void openCluster() {
+        if (!askBeforeExit()) {
+            return;
+        }
+
         File file = view.getFileChooseView().openCluster();
 
         if (file != null) {
             try {
                 treeData.loadClusterData(file);
                 setTreeRoot(treeData.getTree());
+                modifiedCluster = false;
             } catch (IOException | WrongXMLNamespaceException exception) {
                 view.showError("Failed to open file.");
                 exception.printStackTrace();
@@ -140,6 +168,7 @@ public class TitanMainController {
         } else {
             try {
                 treeData.saveClusterData(file);
+                modifiedCluster = false;
             } catch (IOException e) {
                 view.showError("Failed to save file.");
             }
@@ -152,11 +181,47 @@ public class TitanMainController {
         if (file != null) {
             try {
                 treeData.saveClusterData(file);
+                modifiedCluster = false;
             } catch (IOException exception) {
                 view.showError("Failed to save file.");
                 exception.printStackTrace();
             }
         }
+    }
+
+    public void partition() {
+        if (!askBeforeExit()) {
+            return;
+        }
+
+        treeData.partition();
+        setTreeRoot(treeData.getTree());
+        modifiedCluster = true;
+    }
+
+    // return true if have to exit
+    public boolean askBeforeExit() {
+        if (modifiedDSM) {
+            int result = view.showConfirm("Save DSM?");
+
+            if (result == JOptionPane.YES_OPTION) {
+                saveDSM();
+            } else if (result == JOptionPane.CANCEL_OPTION) {
+                return false;
+            }
+        }
+
+        if (modifiedCluster) {
+            int result = view.showConfirm("Save Cluster?");
+
+            if (result == JOptionPane.YES_OPTION) {
+                saveCluster();
+            } else if (result == JOptionPane.CANCEL_OPTION) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public void copyTree(DefaultMutableTreeNode newRoot) {
@@ -289,6 +354,7 @@ public class TitanMainController {
 
         if (userInput != null) {
             treeData.groupElement(new ArrayList<>(Arrays.asList(items)), userInput);
+            modifiedCluster = true;
             drawTree();
         }
     }
@@ -298,6 +364,8 @@ public class TitanMainController {
             try {
                 treeData.freeGroup(item);
                 drawTree();
+
+                modifiedCluster = true;
             } catch (NoSuchElementException e) {
                 e.printStackTrace();
                 System.err.println(item);
@@ -315,6 +383,7 @@ public class TitanMainController {
             }
         }
 
+        modifiedCluster = true;
         drawTree();
     }
 
@@ -336,6 +405,7 @@ public class TitanMainController {
             }
         }
 
+        modifiedCluster = true;
         drawTree();
     }
 
@@ -343,6 +413,8 @@ public class TitanMainController {
         for (DefaultMutableTreeNode item : items) {
             try {
                 treeData.removeElement(item);
+                modifiedDSM = true;
+                modifiedCluster = true;
             } catch (NoSuchElementException e) {
                 e.printStackTrace();
                 System.err.println(item);
@@ -359,6 +431,8 @@ public class TitanMainController {
             try {
                 treeData.addElement(root, name);
                 drawTree();
+                modifiedDSM = true;
+                modifiedCluster = true;
             } catch (NoSuchElementException e) {
                 view.showError("Failed to add new item.");
                 e.printStackTrace();
@@ -369,6 +443,8 @@ public class TitanMainController {
 
     public void changeItemValue(DefaultMutableTreeNode from, DefaultMutableTreeNode to) {
         treeData.setDSMData(from, to, !treeData.getDSMValue(from, to));
+
+        modifiedDSM = true;
     }
 
     public void renameElement(DefaultMutableTreeNode node) {
@@ -381,16 +457,19 @@ public class TitanMainController {
                 view.showError(newName + " already exists.");
             }
         }
+
+        // FIXME: should check which one has been changed
+        modifiedCluster = true;
+        modifiedDSM = true;
+
+        drawTree();
     }
 
     public void sortGroup(DefaultMutableTreeNode group) {
         treeData.sortGroupElements(group);
         drawTree();
-    }
 
-    public void partition() {
-        treeData.partition();
-        setTreeRoot(treeData.getTree());
+        modifiedCluster = true;
     }
 
     // Set New TreeData. Needs when changing DSM.
@@ -404,6 +483,9 @@ public class TitanMainController {
             view.getDataView().setToolBarDefaultEnabled(view.isForked());
 
             setTreeRoot(treeData.getTree());
+
+            modifiedDSM = false;
+            modifiedCluster = false;
         }
     }
 
@@ -417,6 +499,8 @@ public class TitanMainController {
         }
 
         clearForked();
+
+        modifiedCluster = false;
     }
 
     // Close all forked windows

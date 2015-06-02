@@ -84,6 +84,10 @@ public class TitanMainView {
         return JOptionPane.showInputDialog(titanFrame, message, defaultValue);
     }
 
+    public int showConfirm(String message) {
+        return JOptionPane.showConfirmDialog(titanFrame, message, "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION);
+    }
+
     private void initListeners() {
         titanFrame.addWindowListener(new WindowAdapter() {
             @Override
