@@ -48,8 +48,8 @@ public class TitanFileChooseView {
         int result = dsmFileChooser.showOpenDialog(parent);
 
         if (result == JFileChooser.APPROVE_OPTION) {
-            lastFile = dsmFileChooser.getSelectedFile();
-            lastDSMFile = dsmFileChooser.getSelectedFile();
+            lastFile = refineFile(dsmFileChooser.getSelectedFile(), DSMFileChooser.SUFFIX);
+            lastDSMFile = lastFile;
 
             return lastFile;
         } else {
@@ -62,8 +62,8 @@ public class TitanFileChooseView {
         int result = dsmFileChooser.showSaveDialog(parent);
 
         if (result == JFileChooser.APPROVE_OPTION) {
-            lastFile = dsmFileChooser.getSelectedFile();
-            lastDSMFile = dsmFileChooser.getSelectedFile();
+            lastFile = refineFile(dsmFileChooser.getSelectedFile(), DSMFileChooser.SUFFIX);
+            lastDSMFile = lastFile;
 
             return lastFile;
         } else {
@@ -76,8 +76,8 @@ public class TitanFileChooseView {
         int result = clusterFileChooser.showOpenDialog(parent);
 
         if (result == JFileChooser.APPROVE_OPTION) {
-            lastFile = clusterFileChooser.getSelectedFile();
-            lastClusterFile = clusterFileChooser.getSelectedFile();
+            lastFile = refineFile(clusterFileChooser.getSelectedFile(), ClusterFileChooser.SUFFIX);
+            lastClusterFile = lastFile;
 
             return lastFile;
         } else {
@@ -90,8 +90,8 @@ public class TitanFileChooseView {
         int result = clusterFileChooser.showSaveDialog(parent);
 
         if (result == JFileChooser.APPROVE_OPTION) {
-            lastFile = clusterFileChooser.getSelectedFile();
-            lastClusterFile = clusterFileChooser.getSelectedFile();
+            lastFile = refineFile(clusterFileChooser.getSelectedFile(), ClusterFileChooser.SUFFIX);
+            lastClusterFile = lastFile;
 
             return lastFile;
         } else {
@@ -99,5 +99,16 @@ public class TitanFileChooseView {
         }
     }
 
+    private File refineFile(File file, String suffix) {
+        String name = file.getName();
+        suffix = "." + suffix;
 
+        if (name.indexOf('.') < 0) {
+            name += suffix;
+            return new File(file.getParent() + "\\" + name);
+        } else {
+            return file;
+        }
+
+    }
 }
