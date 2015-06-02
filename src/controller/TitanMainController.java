@@ -401,8 +401,7 @@ public class TitanMainController {
 
             view.getMenuView().setEnabledAll(true);
             view.getToolBarView().setEnabledAll(true);
-            view.getDataView().setToolBarEnabled(true);
-            view.getDataView().setToolBarPartialEnabled(false, false, false, false, false);
+            view.getDataView().setToolBarDefaultEnabled(view.isForked());
 
             setTreeRoot(treeData.getTree());
         }

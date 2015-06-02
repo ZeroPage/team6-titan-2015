@@ -89,7 +89,13 @@ public class TitanDataView {
     }
 
     public void setToolBarEnabled(boolean enabled) {
-        toolBar.setEnabledAll(enabled);
+        toolBar.setEnabledAll(false);
+    }
+
+    public void setToolBarDefaultEnabled(boolean isForked) {
+        toolBar.getCollapseButton().setEnabled(true);
+        toolBar.getExpandButton().setEnabled(true);
+        toolBar.getPartitionButton().setEnabled(!isForked);
     }
 
     public void setToolBarPartialEnabled(boolean group, boolean ungroup, boolean up, boolean down, boolean delete) {
