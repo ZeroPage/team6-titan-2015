@@ -2,10 +2,12 @@ package model;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 public class TreeData {
 	private TitanDSM dsmData;
@@ -28,7 +30,7 @@ public class TreeData {
 	}
 
 //load clsx, and rebuild the data tree structure
-	public void loadClusterData(File clsxFile) throws IOException, WrongXMLNamespaceException {
+	public void loadClusterData(File clsxFile) throws IOException, WrongXMLNamespaceException, ParserConfigurationException, SAXException {
 		this.cluster = new ClusterData(clsxFile);
 		this.cluster.refresh(this.dsmData);
 	}

@@ -7,6 +7,10 @@ import view.TitanMainView;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -150,7 +154,12 @@ public class TitanMainController {
 
         if (file != null) {
             try {
-                treeData.loadClusterData(file);
+                try {
+					treeData.loadClusterData(file);
+				} catch (ParserConfigurationException | SAXException e) {
+					view.showError("Failed with parsing cluster file.");
+					e.printStackTrace();
+				}
                 setTreeRoot(treeData.getTree());
                 modifiedCluster = false;
             } catch (IOException | WrongXMLNamespaceException exception) {

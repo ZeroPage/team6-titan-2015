@@ -39,7 +39,7 @@ public class ClusterFileIO {
 		out.close();
 	}
 	
-	public DefaultMutableTreeNode loadClusterData(File source) throws IOException, WrongXMLNamespaceException {
+	public DefaultMutableTreeNode loadClusterData(File source) throws IOException, WrongXMLNamespaceException, ParserConfigurationException, SAXException {
 		DefaultMutableTreeNode treeRoot;
 		
 		DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
@@ -49,13 +49,13 @@ public class ClusterFileIO {
 		try {
 			xmlBuilder = xmlFactory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
-			// To be implemented...
+			throw e;
 		}
 		
 		try {
 			doc = xmlBuilder.parse(source);
 		} catch (SAXException e) {
-			// To be implemented...
+			throw e;
 		}
 		
 		doc.getDocumentElement().normalize();

@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.*;
 
 import javax.swing.tree.*;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 public class ClusterData {
 	private DefaultMutableTreeNode treeRoot;
@@ -18,7 +21,7 @@ public class ClusterData {
 	}
 	
 //initializing with File instance	
-	public ClusterData(File source) throws IOException, WrongXMLNamespaceException {
+	public ClusterData(File source) throws IOException, WrongXMLNamespaceException, ParserConfigurationException, SAXException {
 		ClusterFileIO reader = ClusterFileIO.getInstance();
 		this.treeRoot = reader.loadClusterData(source);
 	}
@@ -29,7 +32,7 @@ public class ClusterData {
 	}
 	
 //load new .clsx file
-	public void loadClusterData(File source) throws IOException, WrongXMLNamespaceException {
+	public void loadClusterData(File source) throws IOException, WrongXMLNamespaceException, ParserConfigurationException, SAXException {
 		ClusterFileIO reader = ClusterFileIO.getInstance();
 		this.treeRoot = reader.loadClusterData(source);
 	}
