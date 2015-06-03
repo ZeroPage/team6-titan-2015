@@ -5,6 +5,7 @@ import org.junit.Test;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 
@@ -39,20 +40,18 @@ public class ClusterDataTest {
     }
 
     @Test
-    public void testNewGroupbyNode() throws Exception {
+    public void testGrouping() throws Exception {
         ClusterData cluster = new ClusterData(new DefaultMutableTreeNode());
         ArrayList<DefaultMutableTreeNode> Array = new ArrayList<DefaultMutableTreeNode>();
-        File file = new File("./sample/test/moka_ACDC.clsx");
+        File file = new File("./sample/moka/moka_ACDC.clsx");
+        String className = "edu.drexel.cs.rise.moka.jre16.parser.MethodParser";
 
         cluster.loadClusterData(file);
         Array.add(cluster.getTree().getNextNode());
         cluster.newGroupbyNode(Array, "newGroup");
-        assertEquals(cluster.getNode("edu.drexel.cs.rise.moka.jre16.parser.MethodParser").getParent().toString(),"newGroup");
-    }
-
-    @Test
-    public void testFreeGroup() throws Exception {
-
+        assertEquals(cluster.getNode(className).getParent().toString(),"newGroup");
+        cluster.freeGroup(cluster.getTree().getNextNode());
+        assertEquals(cluster.getTree().getNextNode().getUserObject().toString(), className);
     }
 
     @Test
@@ -65,8 +64,12 @@ public class ClusterDataTest {
 
     }
 
-    @Test
+    @Test(expected = NoSuchElementException.class)
     public void testDeleteItem() throws Exception {
-
+        String filePath = "./sample/titan/titan_ACDC.clsx";
+        String className = "edu.drexel.cs.rise.titan.ui.MatrixViewer";
+        ClusterData cluster = new ClusterData(new File(filePath));
+        cluster.deleteItem((DefaultMutableTreeNode)cluster.getNode(className));
+        cluster.getAllowsChildren(className);
     }
 }
