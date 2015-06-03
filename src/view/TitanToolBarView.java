@@ -31,6 +31,13 @@ public class TitanToolBarView {
 
     private void initListeners() {
         // ToolBar
+        toolBar.getNewDSMButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.newDSM();
+            }
+        });
+
         toolBar.getOpenDSMButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
