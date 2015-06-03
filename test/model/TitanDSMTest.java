@@ -117,6 +117,7 @@ public class TitanDSMTest {
         assertEquals(true, dsm.isExist(testString));
     }
 
+
     @Test(expected = WrongDSMFormatException.class)
     public void testLoadFromFileWithExceptionForWrongLength() throws Exception {
         int size = 10;
