@@ -99,9 +99,11 @@ public class TitanDSMTest {
     @Test
     public void testAddEntity() throws Exception {
         int size = 10;
+        String newName = "test";
         TitanDSM dsm = new TitanDSM(size);
-        dsm.addEntity("test");
+        dsm.addEntity(newName);
         assertEquals(size + 1, dsm.getSize());
+        assertEquals(newName, dsm.getName(dsm.getSize() - 1));
     }
 
     @Test
