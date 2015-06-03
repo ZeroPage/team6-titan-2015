@@ -11,6 +11,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import exception.ItemAlreadyExistException;
+import exception.NotPositiveException;
+import exception.WrongDSMFormatException;
+import exception.WrongXMLNamespaceException;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;

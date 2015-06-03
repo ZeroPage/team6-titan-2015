@@ -13,6 +13,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import exception.WrongXMLNamespaceException;
+
 import javax.swing.tree.*;
 
 public class ClusterFileIO {

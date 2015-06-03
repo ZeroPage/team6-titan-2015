@@ -1,4 +1,4 @@
-package model;
+package exception;
 
 public class NotPositiveException extends  Exception{
     public NotPositiveException() {
