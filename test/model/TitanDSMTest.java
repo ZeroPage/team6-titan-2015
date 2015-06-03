@@ -180,5 +180,6 @@ public class TitanDSMTest {
         dsm.saveToFile(file);
         TitanDSM dsm2 = new TitanDSM(file);
         assertEquals(dsm.getData("entity_1","entity_2"),dsm2.getData("entity_1","entity_2"));
+        file.delete();
     }
 }
