@@ -1,11 +1,15 @@
 package model;
 
+import model.exception.ItemAlreadyExistException;
 import model.exception.NotPositiveException;
 import model.exception.WrongDSMFormatException;
 
+import model.exception.WrongXMLNamespaceException;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.xml.parsers.ParserConfigurationException;
 
 import static org.junit.Assert.*;
 
@@ -14,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class TreeDataTest {
 
@@ -51,23 +56,57 @@ public class TreeDataTest {
     }
 
     @Test
-    public void testGroup() throws NotPositiveException, IOException, WrongDSMFormatException {
+    public void testClusterSaveLoad() throws NotPositiveException, IOException, WrongDSMFormatException, ParserConfigurationException, SAXException, WrongXMLNamespaceException {
+        File temp = new File("temp.dsm");
         TreeData treeData = new TreeData(3);
+
+
+        treeData.groupElement(new ArrayList<>(Collections.list(treeData.getTree().children())), "group");
+
+        treeData.saveClusterData(temp);
+        treeData.loadClusterData(temp);
+        temp.delete();
+
+        assertEquals(treeData.getTree().getChildAt(0).toString(), "group");
+    }
+
+    @Test
+    public void testGroup() throws NotPositiveException, IOException, WrongDSMFormatException {
+        TreeData treeData = new TreeData(4);
         DefaultMutableTreeNode root = treeData.getTree();
         DefaultMutableTreeNode child0 = (DefaultMutableTreeNode) root.getChildAt(0);
         DefaultMutableTreeNode child1 = (DefaultMutableTreeNode) root.getChildAt(1);
         DefaultMutableTreeNode child2 = (DefaultMutableTreeNode) root.getChildAt(2);
+        DefaultMutableTreeNode child3 = (DefaultMutableTreeNode) root.getChildAt(3);
 
         treeData.setDSMData(child0, child2, true);
-        treeData.groupElement(new ArrayList<>(Arrays.asList(new DefaultMutableTreeNode[] {child0, child1})), "group");
-
+        treeData.groupElement(new ArrayList<>(Arrays.asList(new DefaultMutableTreeNode[] {child0, child1})), "group1");
+        treeData.groupElement(new ArrayList<>(Arrays.asList(new DefaultMutableTreeNode[] {child2, child3})), "group2");
         assertEquals(treeData.getDSMValue((DefaultMutableTreeNode) root.getChildAt(0), (DefaultMutableTreeNode) root.getChildAt(1)), true);
 
         treeData.freeGroup((DefaultMutableTreeNode) root.getChildAt(0));
-
         child0 = (DefaultMutableTreeNode) root.getChildAt(0);
         child2 = (DefaultMutableTreeNode) root.getChildAt(2);
         assertEquals(treeData.getDSMValue(child0, child2), true);
+    }
+
+    @Test
+    public void testAddRenameDeleteSort() throws NotPositiveException, IOException, WrongDSMFormatException, ItemAlreadyExistException {
+        TreeData treeData = new TreeData(3);
+        DefaultMutableTreeNode root = treeData.getTree();
+
+        treeData.addElement(root, "new1");
+        treeData.addElement(root, "new2");
+        assertEquals(root.getChildAt(4).toString(), "new2");
+
+        treeData.removeElement((DefaultMutableTreeNode) root.getChildAt(3));
+        assertEquals(root.getChildAt(3).toString(), "new2");
+
+        treeData.renameElement((DefaultMutableTreeNode) root.getChildAt(3), "_");
+        assertEquals(root.getChildAt(3).toString(), "_");
+
+        treeData.sortGroupElements(root);
+        assertEquals(root.getChildAt(0).toString(), "_");
     }
 
     @Test
