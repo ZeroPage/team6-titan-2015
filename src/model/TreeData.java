@@ -122,6 +122,9 @@ public class TreeData {
 	}
 	
 	public void removeElement(DefaultMutableTreeNode elementNode) throws NoSuchElementException {
+		if(!elementNode.getAllowsChildren()) {
+			this.dsmData.deleteData(elementNode.getUserObject().toString());
+		}
 		this.cluster.deleteItem(elementNode);
 
 	}

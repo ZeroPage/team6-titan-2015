@@ -12,26 +12,6 @@ public class ClusterDataTest {
     }
 
     @Test
-    public void testGetTree() throws Exception {
-
-    }
-
-    @Test
-    public void testGetAllowsChildren() throws Exception {
-
-    }
-
-    @Test
-    public void testGetNode() throws Exception {
-
-    }
-
-    @Test
-    public void testRefresh() throws Exception {
-
-    }
-
-    @Test
     public void testSaveClusterData() throws Exception {
 
     }
