@@ -77,7 +77,11 @@ public class ClusterDataTest {
 
     @Test
     public void testAddItem() throws Exception {
-
+        File file = new File("./sample/moka/moka_ACDC.clsx");
+        ClusterData cluster = new ClusterData(new DefaultMutableTreeNode());
+        cluster.loadClusterData(file);
+        cluster.addItem(cluster.getTree().getNextNode(), "MokaCoffee");
+        assertEquals("MokaCoffee", cluster.getTree().getNextNode().getChildAt(2).toString());
     }
 
     @Test(expected = NoSuchElementException.class)
