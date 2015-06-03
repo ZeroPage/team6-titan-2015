@@ -143,7 +143,7 @@ public class TitanMainController {
         }
 
         treeData.setClusterAsDefault();
-        setTreeRoot(treeData.getTree());
+        setTreeRoot(treeData.getTreeRoot());
 
         view.getFileChooseView().clearLastClusterFile();
         modifiedCluster = false;
@@ -165,7 +165,7 @@ public class TitanMainController {
 					view.showError("Failed with parsing cluster file.");
 					e.printStackTrace();
 				}
-                setTreeRoot(treeData.getTree());
+                setTreeRoot(treeData.getTreeRoot());
                 modifiedCluster = false;
             } catch (IOException | WrongXMLNamespaceException exception) {
                 view.showError("Failed to open file.");
@@ -209,7 +209,7 @@ public class TitanMainController {
         }
 
         treeData.partition();
-        setTreeRoot(treeData.getTree());
+        setTreeRoot(treeData.getTreeRoot());
         modifiedCluster = true;
     }
 
@@ -503,7 +503,7 @@ public class TitanMainController {
             view.getToolBarView().setEnabledAll(true);
             view.getDataView().setToolBarDefaultEnabled(view.isForked());
 
-            setTreeRoot(treeData.getTree());
+            setTreeRoot(treeData.getTreeRoot());
 
             modifiedDSM = false;
             modifiedCluster = false;

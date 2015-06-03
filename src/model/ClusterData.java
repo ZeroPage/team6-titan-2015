@@ -40,7 +40,7 @@ public class ClusterData {
 	}
 
 //gives root of the Node(<cluster> level)
-	public DefaultMutableTreeNode getTree() {
+	public DefaultMutableTreeNode getTreeRoot() {
 		return this.treeRoot;
 	}
 	

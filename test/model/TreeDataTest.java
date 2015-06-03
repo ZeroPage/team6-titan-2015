@@ -29,7 +29,7 @@ public class TreeDataTest {
         treeData = new TreeData(new File("./sample/titan/titan.dsm"));
         assertNotNull(treeData);
 
-        treeData = new TreeData(treeData, treeData.getTree());
+        treeData = new TreeData(treeData, treeData.getTreeRoot());
         assertNotNull(treeData);
 
         treeData = new TreeData(10);
@@ -41,14 +41,14 @@ public class TreeDataTest {
         File temp = new File("temp.dsm");
         TreeData treeData = new TreeData(5);
 
-        DefaultMutableTreeNode root = treeData.getTree();
+        DefaultMutableTreeNode root = treeData.getTreeRoot();
         treeData.setDSMData((DefaultMutableTreeNode) root.getChildAt(0), (DefaultMutableTreeNode) root.getChildAt(1), true);
         treeData.saveDSMData(temp);
 
         TreeData savedTreeData = new TreeData(temp);
         temp.delete();
 
-        DefaultMutableTreeNode savedRoot = savedTreeData.getTree();
+        DefaultMutableTreeNode savedRoot = savedTreeData.getTreeRoot();
         boolean originalData = treeData.getDSMValue((DefaultMutableTreeNode) root.getChildAt(0), (DefaultMutableTreeNode) root.getChildAt(1));
         boolean savedData = treeData.getDSMValue((DefaultMutableTreeNode) savedRoot.getChildAt(0), (DefaultMutableTreeNode) savedRoot.getChildAt(1));
 
@@ -61,19 +61,19 @@ public class TreeDataTest {
         TreeData treeData = new TreeData(3);
 
 
-        treeData.groupElement(new ArrayList<>(Collections.list(treeData.getTree().children())), "group");
+        treeData.groupElement(new ArrayList<>(Collections.list(treeData.getTreeRoot().children())), "group");
 
         treeData.saveClusterData(temp);
         treeData.loadClusterData(temp);
         temp.delete();
 
-        assertEquals(treeData.getTree().getChildAt(0).toString(), "group");
+        assertEquals(treeData.getTreeRoot().getChildAt(0).toString(), "group");
     }
 
     @Test
     public void testGroup() throws NotPositiveException, IOException, WrongDSMFormatException {
         TreeData treeData = new TreeData(4);
-        DefaultMutableTreeNode root = treeData.getTree();
+        DefaultMutableTreeNode root = treeData.getTreeRoot();
         DefaultMutableTreeNode child0 = (DefaultMutableTreeNode) root.getChildAt(0);
         DefaultMutableTreeNode child1 = (DefaultMutableTreeNode) root.getChildAt(1);
         DefaultMutableTreeNode child2 = (DefaultMutableTreeNode) root.getChildAt(2);
@@ -93,7 +93,7 @@ public class TreeDataTest {
     @Test
     public void testAddRenameDeleteSort() throws NotPositiveException, IOException, WrongDSMFormatException, ItemAlreadyExistException {
         TreeData treeData = new TreeData(3);
-        DefaultMutableTreeNode root = treeData.getTree();
+        DefaultMutableTreeNode root = treeData.getTreeRoot();
 
         treeData.addElement(root, "new1");
         treeData.addElement(root, "new2");
@@ -112,7 +112,7 @@ public class TreeDataTest {
     @Test
     public void testPartition() throws NotPositiveException, IOException, WrongDSMFormatException {
         TreeData treeData = new TreeData(10);
-        DefaultMutableTreeNode root = treeData.getTree();
+        DefaultMutableTreeNode root = treeData.getTreeRoot();
 
         treeData.setDSMData((DefaultMutableTreeNode) root.getChildAt(1), (DefaultMutableTreeNode) root.getChildAt(2), true);
         treeData.setDSMData((DefaultMutableTreeNode) root.getChildAt(2), (DefaultMutableTreeNode) root.getChildAt(1), true);

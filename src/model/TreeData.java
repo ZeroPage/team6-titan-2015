@@ -72,8 +72,8 @@ public class TreeData {
 		}
 	}
 	
-	public DefaultMutableTreeNode getTree(){
-		return this.cluster.getTree();
+	public DefaultMutableTreeNode getTreeRoot(){
+		return this.cluster.getTreeRoot();
 	}
 	
 	public boolean getDSMValue(DefaultMutableTreeNode rowElement, DefaultMutableTreeNode columnElement) {
@@ -167,7 +167,7 @@ public class TreeData {
 
 	public void partition() {
 		setClusterAsDefault();
-		partitionSubTree(getTree());
+		partitionSubTree(getTreeRoot());
 	}
 	
 	private void partitionSubTree(DefaultMutableTreeNode subRoot) {

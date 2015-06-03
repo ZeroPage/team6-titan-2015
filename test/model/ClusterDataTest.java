@@ -28,7 +28,7 @@ public class ClusterDataTest {
         ClusterData cluster = new ClusterData(new DefaultMutableTreeNode());
         File file = new File("./sample/moka/moka_ACDC.clsx");
         cluster.loadClusterData(file);
-        assertEquals(cluster.getTree().getNextNode().getUserObject().toString(), "edu.drexel.cs.rise.moka.jre16.parser.MethodParser");
+        assertEquals(cluster.getTreeRoot().getNextNode().getUserObject().toString(), "edu.drexel.cs.rise.moka.jre16.parser.MethodParser");
     }
 
     @Test
@@ -47,8 +47,8 @@ public class ClusterDataTest {
         ClusterData cluster = new ClusterData(new DefaultMutableTreeNode());
         File file = new File("./sample/moka/moka_ACDC.clsx");
         cluster.loadClusterData(file);
-        cluster.moveNode(cluster.getTree().getNextNode(), 2);
-        assertEquals(cluster.getTree().getChildAt(2).toString(), "edu.drexel.cs.rise.moka.jre16.parser.MethodParser");
+        cluster.moveNode(cluster.getTreeRoot().getNextNode(), 2);
+        assertEquals(cluster.getTreeRoot().getChildAt(2).toString(), "edu.drexel.cs.rise.moka.jre16.parser.MethodParser");
     }
 
     @Test
@@ -59,11 +59,11 @@ public class ClusterDataTest {
         String className = "edu.drexel.cs.rise.moka.jre16.parser.MethodParser";
 
         cluster.loadClusterData(file);
-        Array.add(cluster.getTree().getNextNode());
+        Array.add(cluster.getTreeRoot().getNextNode());
         cluster.newGroupbyNode(Array, "newGroup");
         assertEquals(cluster.getNode(className).getParent().toString(),"newGroup");
-        cluster.freeGroup(cluster.getTree().getNextNode());
-        assertEquals(cluster.getTree().getNextNode().getUserObject().toString(), className);
+        cluster.freeGroup(cluster.getTreeRoot().getNextNode());
+        assertEquals(cluster.getTreeRoot().getNextNode().getUserObject().toString(), className);
     }
 
     @Test
@@ -71,8 +71,8 @@ public class ClusterDataTest {
         File file = new File("./sample/moka/moka_ACDC.clsx");
         ClusterData cluster = new ClusterData(new DefaultMutableTreeNode());
         cluster.loadClusterData(file);
-        cluster.renameNode(cluster.getTree().getNextNode(),"MokaCoffee");
-        assertEquals(cluster.getTree().getNextNode().getUserObject().toString(),"MokaCoffee");
+        cluster.renameNode(cluster.getTreeRoot().getNextNode(),"MokaCoffee");
+        assertEquals(cluster.getTreeRoot().getNextNode().getUserObject().toString(),"MokaCoffee");
     }
 
     @Test
@@ -80,8 +80,8 @@ public class ClusterDataTest {
         File file = new File("./sample/moka/moka_ACDC.clsx");
         ClusterData cluster = new ClusterData(new DefaultMutableTreeNode());
         cluster.loadClusterData(file);
-        cluster.addItem(cluster.getTree().getNextNode(), "MokaCoffee");
-        assertEquals("MokaCoffee", cluster.getTree().getNextNode().getChildAt(2).toString());
+        cluster.addItem(cluster.getTreeRoot().getNextNode(), "MokaCoffee");
+        assertEquals("MokaCoffee", cluster.getTreeRoot().getNextNode().getChildAt(2).toString());
     }
 
     @Test(expected = NoSuchElementException.class)
