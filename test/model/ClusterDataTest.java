@@ -68,7 +68,11 @@ public class ClusterDataTest {
 
     @Test
     public void testRenameNode() throws Exception {
-
+        File file = new File("./sample/moka/moka_ACDC.clsx");
+        ClusterData cluster = new ClusterData(new DefaultMutableTreeNode());
+        cluster.loadClusterData(file);
+        cluster.renameNode(cluster.getTree().getNextNode(),"MokaCoffee");
+        assertEquals(cluster.getTree().getNextNode().getUserObject().toString(),"MokaCoffee");
     }
 
     @Test
