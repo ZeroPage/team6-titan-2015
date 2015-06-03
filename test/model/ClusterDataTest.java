@@ -1,5 +1,6 @@
 package model;
 
+import model.exception.NotPositiveException;
 import org.junit.Test;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -12,11 +13,15 @@ import static org.junit.Assert.*;
 public class ClusterDataTest {
 
     @Test
-    public void testClusterData() throws  Exception {
-        TitanDSM dsm = new TitanDSM(30);
-        File file = new File("./sample/moka/moka_ACDC.clsx");
-        ClusterData cluster = new ClusterData(dsm);
-        cluster = new ClusterData(file);
+    public void testClusterData() {
+        try {
+            TitanDSM dsm = new TitanDSM(30);
+            ClusterData cluster = new ClusterData(dsm);
+            assertNotNull(cluster);
+        } catch (NotPositiveException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
@@ -26,6 +31,7 @@ public class ClusterDataTest {
         cluster.loadClusterData(file);
         assertEquals(cluster.getTree().getNextNode().getUserObject().toString(), "edu.drexel.cs.rise.moka.jre16.parser.MethodParser");
     }
+
 
     @Test
     public void testSaveClusterData() throws Exception {
