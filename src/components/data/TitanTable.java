@@ -26,6 +26,8 @@ public class TitanTable extends JTable {
         setTableHeader(null);
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setRowSelectionAllowed(false);
+        setShowGrid(true);
+        setGridColor(Color.LIGHT_GRAY);
     }
 
     public void setTableContents(String[] names, boolean[][] data, int[][] group) {
