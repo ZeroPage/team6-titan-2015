@@ -12,11 +12,19 @@ import static org.junit.Assert.*;
 public class ClusterDataTest {
 
     @Test
+    public void testClusterData() throws  Exception {
+        TitanDSM dsm = new TitanDSM(30);
+        File file = new File("./sample/moka/moka_ACDC.clsx");
+        ClusterData cluster = new ClusterData(dsm);
+        cluster = new ClusterData(file);
+    }
+
+    @Test
     public void testLoadClusterData() throws Exception {
         ClusterData cluster = new ClusterData(new DefaultMutableTreeNode());
         File file = new File("./sample/moka/moka_ACDC.clsx");
         cluster.loadClusterData(file);
-        assertEquals(cluster.getTree().getNextNode().getUserObject().toString(),"edu.drexel.cs.rise.moka.jre16.parser.MethodParser");
+        assertEquals(cluster.getTree().getNextNode().getUserObject().toString(), "edu.drexel.cs.rise.moka.jre16.parser.MethodParser");
     }
 
     @Test
