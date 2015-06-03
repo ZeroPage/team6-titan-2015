@@ -100,7 +100,7 @@ public class TitanDSMTest {
     public void testAddEntity() throws Exception {
         int size = 10;
         TitanDSM dsm = new TitanDSM(size);
-        dsm.addEntity();
+        dsm.addEntity("test");
         assertEquals(size + 1, dsm.getSize());
     }
 
