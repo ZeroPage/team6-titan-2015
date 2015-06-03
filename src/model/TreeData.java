@@ -93,7 +93,7 @@ public class TreeData {
 			
 		} else {
 			if(columnElement.getAllowsChildren()) {
-				result = getItemGroupValue(columnElement, rowElement);
+				result = getItemGroupValue(rowElement, columnElement);
 			} else {
 				result = getItemItemValue(rowElement,columnElement);
 			}
