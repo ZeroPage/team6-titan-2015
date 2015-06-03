@@ -82,24 +82,45 @@ public class TreeData {
 	}
 	
 	public boolean getDSMValue(DefaultMutableTreeNode rowElement, DefaultMutableTreeNode columnElement) {
-		boolean result = false;
-		
-		if(rowElement.getAllowsChildren()) {
-			if(columnElement.getAllowsChildren()) {
-				result = getGroupGroupValue(rowElement,columnElement);
-			} else {
-				result = getGroupItemValue(rowElement, columnElement);
+		ArrayList<DefaultMutableTreeNode> rows = new ArrayList<>();
+		ArrayList<DefaultMutableTreeNode> cols = new ArrayList<>();
+
+		if (rowElement.getAllowsChildren()) {
+			Enumeration<DefaultMutableTreeNode> rowEnum = rowElement.preorderEnumeration();
+
+			while (rowEnum.hasMoreElements()) {
+				DefaultMutableTreeNode tempRow = rowEnum.nextElement();
+				if (!tempRow.getAllowsChildren()) {
+					rows.add(tempRow);
+				}
 			}
-			
 		} else {
-			if(columnElement.getAllowsChildren()) {
-				result = getItemGroupValue(rowElement, columnElement);
-			} else {
-				result = getItemItemValue(rowElement,columnElement);
+			rows.add(rowElement);
+		}
+
+
+		if (columnElement.getAllowsChildren()) {
+			Enumeration<DefaultMutableTreeNode> colEnum = columnElement.preorderEnumeration();
+
+			while (colEnum.hasMoreElements()) {
+				DefaultMutableTreeNode tempRow = colEnum.nextElement();
+				if (!tempRow.getAllowsChildren()) {
+					cols.add(tempRow);
+				}
+			}
+		} else {
+			cols.add(columnElement);
+		}
+
+		for (int i = 0; i < rows.size(); i++) {
+			for (int j = 0; j < cols.size(); j++) {
+				if (dsmData.getData(rows.get(i).toString(), cols.get(j).toString())) {
+					return true;
+				}
 			}
 		}
 
-		return result;
+		return false;
 	}
 	
 	public void setDSMData(DefaultMutableTreeNode rowNode, DefaultMutableTreeNode columnNode, Boolean value) {
@@ -140,86 +161,6 @@ public class TreeData {
 	
 	public void freeGroup(DefaultMutableTreeNode groupNode) throws NoSuchElementException {
 		this.cluster.freeGroup(groupNode);
-	}
-	
-	private boolean getGroupGroupValue(DefaultMutableTreeNode rGroup, DefaultMutableTreeNode cGroup) {
-		boolean isR, isC;
-		isR = rGroup.getFirstChild().getAllowsChildren();
-		isC = cGroup.getFirstChild().getAllowsChildren();
-		
-		if(isR&isC) {
-			for(int i=0;i<cGroup.getChildCount();i++) {
-				DefaultMutableTreeNode child = (DefaultMutableTreeNode)cGroup.getChildAt(i);
-				if(getGroupGroupValue(rGroup,child)) {
-					return true;
-				}
-			}
-		} else if(isR) {
-			for(int i=0;i<cGroup.getChildCount();i++) {
-				DefaultMutableTreeNode item = (DefaultMutableTreeNode)cGroup.getChildAt(i);
-				if(getGroupItemValue(rGroup,item)) {
-					return true;
-				}
-			}
-		} else if(isC) {
-			for(int i=0;i<rGroup.getChildCount();i++) {
-				DefaultMutableTreeNode item = (DefaultMutableTreeNode)rGroup.getChildAt(i);
-				if(getItemGroupValue(item,cGroup)) {
-					return true;
-				}
-			}
-		} else {
-			for(int i=0;i<rGroup.getChildCount();i++) {
-				DefaultMutableTreeNode item = (DefaultMutableTreeNode)rGroup.getChildAt(i);
-				if(getItemGroupValue(item,cGroup)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	private boolean getGroupItemValue(DefaultMutableTreeNode group, DefaultMutableTreeNode element) {
-		if(group.getChildCount()!=0&&group.getFirstChild().getAllowsChildren()) {
-			for(int i=0;i<group.getChildCount();i++) {
-				if(getGroupItemValue((DefaultMutableTreeNode)group.getChildAt(i),element)) {
-					return true;
-				}
-			}
-		} else {
-			for(int i=0;i<group.getChildCount();i++) {
-				DefaultMutableTreeNode item = (DefaultMutableTreeNode)group.getChildAt(i);
-				if(getItemItemValue(item, element)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	private boolean getItemGroupValue(DefaultMutableTreeNode element, DefaultMutableTreeNode group) {
-		if(group.getChildCount()!=0&&group.getFirstChild().getAllowsChildren()) {
-			for(int i=0;i<group.getChildCount();i++) {
-				if(getItemGroupValue(element,(DefaultMutableTreeNode)group.getChildAt(i))) {
-					return true;
-				}
-			}
-		} else {
-			for(int i=0;i<group.getChildCount();i++) {
-				DefaultMutableTreeNode item = (DefaultMutableTreeNode)group.getChildAt(i);
-				if(getItemItemValue(element, item)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	private boolean getItemItemValue(DefaultMutableTreeNode rowElement, DefaultMutableTreeNode columnElement) {
-		String row = rowElement.getUserObject().toString();
-		String column = columnElement.getUserObject().toString();
-		
-		return this.dsmData.getData(row, column);
 	}
 
 	public void partition() {
