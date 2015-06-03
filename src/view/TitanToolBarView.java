@@ -23,6 +23,7 @@ public class TitanToolBarView {
     public void setDefaultEnabled() {
         toolBar.setEnabledAll(false);
         toolBar.getOpenDSMButton().setEnabled(true);
+        toolBar.getNewDSMButton().setEnabled(true);
     }
 
     public void setEnabledAll(boolean enabled) {

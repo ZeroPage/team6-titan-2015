@@ -28,7 +28,7 @@ public class TitanToolBar extends JToolBar {
         saveAsClusterButton = new SaveAsClusterButton();
 
         components = new ArrayList<>();
-        components.add(newClusterButton);
+        components.add(newDSMButton);
         components.add(openDSMButton);
         components.add(redrawButton);
         components.add(newClusterButton);
