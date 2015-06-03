@@ -138,9 +138,11 @@ public class TitanDataView {
         }
 
         if (selected != null) {
-            for (TreePath path : selected) {
-                tree.addSelectionPath(getRelativePath(path));
+            for (int i = 0; i < selected.length; i++) {
+                selected[i] = getRelativePath(selected[i]);
             }
+
+            tree.addSelectionPaths(selected);
         }
     }
 

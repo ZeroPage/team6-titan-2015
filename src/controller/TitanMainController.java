@@ -280,6 +280,10 @@ public class TitanMainController {
                     continue;
                 }
 
+                if (path.getParentPath() == null) {
+                    continue;
+                }
+
                 DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getParentPath().getLastPathComponent();
 
                 int childIndex = parent.getIndex(self);
