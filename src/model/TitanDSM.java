@@ -82,9 +82,9 @@ public class TitanDSM {
     public boolean isExist(String name) {
         return nameOfClass.contains(name);
     }
-    public void addEntity(){
+    public void addEntity(String name){
         sizeOfMatrix++;
-        nameOfClass.add("entity" + sizeOfMatrix);
+        nameOfClass.add(name);
         dataMatrix.add(new ArrayList<>());
         for(int i = 0;i < sizeOfMatrix; i++){
             dataMatrix.get(i).add(false);

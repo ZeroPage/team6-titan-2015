@@ -123,10 +123,12 @@ public class TreeData {
 	
 	public void removeElement(DefaultMutableTreeNode elementNode) throws NoSuchElementException {
 		this.cluster.deleteItem(elementNode);
+
 	}
 	
 	public void addElement(DefaultMutableTreeNode groupNode, String itemName) throws NoSuchElementException {
 		this.cluster.addItem(groupNode, itemName);
+		this.dsmData.addEntity(itemName);
 	}
 	
 	public void groupElement(ArrayList<DefaultMutableTreeNode> elementList, String groupName) {
