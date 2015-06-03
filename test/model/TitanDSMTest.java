@@ -171,6 +171,15 @@ public class TitanDSMTest {
         dsm.loadFromFile(file);
     }
 
+    @Test(expected = WrongDSMFormatException.class)
+    public void testLoadFromFileWithExceptionForNoClass() throws Exception {
+        int size = 10;
+        String pathName = "./sample/test/titan8.dsm";
+        File file = new File(pathName);
+        TitanDSM dsm = new TitanDSM(size);
+        dsm.loadFromFile(file);
+    }
+
     @Test
     public void testSaveToFile() throws Exception {
         TitanDSM dsm = new TitanDSM(30);
