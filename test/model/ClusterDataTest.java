@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.File;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -39,7 +40,14 @@ public class ClusterDataTest {
 
     @Test
     public void testNewGroupbyNode() throws Exception {
+        ClusterData cluster = new ClusterData(new DefaultMutableTreeNode());
+        ArrayList<DefaultMutableTreeNode> Array = new ArrayList<DefaultMutableTreeNode>();
+        File file = new File("./sample/test/moka_ACDC.clsx");
 
+        cluster.loadClusterData(file);
+        Array.add(cluster.getTree().getNextNode());
+        cluster.newGroupbyNode(Array, "newGroup");
+        assertEquals(cluster.getNode("edu.drexel.cs.rise.moka.jre16.parser.MethodParser").getParent().toString(),"newGroup");
     }
 
     @Test
