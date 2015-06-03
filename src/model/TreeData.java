@@ -9,10 +9,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import exception.ItemAlreadyExistException;
-import exception.NotPositiveException;
-import exception.WrongDSMFormatException;
-import exception.WrongXMLNamespaceException;
+import model.exception.ItemAlreadyExistException;
+import model.exception.NotPositiveException;
+import model.exception.WrongDSMFormatException;
+import model.exception.WrongXMLNamespaceException;
 
 public class TreeData {
 	private TitanDSM dsmData;

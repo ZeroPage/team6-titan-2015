@@ -4,9 +4,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-import exception.ItemAlreadyExistException;
-import exception.NotPositiveException;
-import exception.WrongDSMFormatException;
+import model.exception.ItemAlreadyExistException;
+import model.exception.NotPositiveException;
+import model.exception.WrongDSMFormatException;
 
 public class TitanDSM {
     private int sizeOfMatrix;

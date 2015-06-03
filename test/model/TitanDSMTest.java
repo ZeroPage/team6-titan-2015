@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.NoSuchElementException;
+import model.exception.*;
 
 public class TitanDSMTest {
 
