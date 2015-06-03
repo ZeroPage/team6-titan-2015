@@ -125,7 +125,7 @@ public class TitanDSMTest {
     }
 
     @Test(expected = WrongDSMFormatException.class)
-    public void testLoadFromFileWithExceptionForWrongMatrixColomn() throws Exception {
+    public void testLoadFromFileWithExceptionForWrongMatrixColumn() throws Exception {
         int size = 10;
         String pathName = "./sample/titan/titan3.dsm";
         File file = new File(pathName);

@@ -27,9 +27,6 @@
 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-0 0 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 
-0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 
 0 0 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 
 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 
@@ -62,3 +59,10 @@ edu.drexel.cs.rise.titan.ui.MatrixViewer$Listener
 edu.drexel.cs.rise.titan.Project
 edu.drexel.cs.rise.titan.action.cluster.SaveAsAction
 edu.drexel.cs.rise.titan.action.AboutAction
+edu.drexel.cs.rise.titan.action.cluster.RenameAction
+edu.drexel.cs.rise.titan.action.cluster.UpAction
+edu.drexel.cs.rise.titan.util.IconFactory
+edu.drexel.cs.rise.titan.action.cluster.UngroupAction
+edu.drexel.cs.rise.titan.action.cluster.GroupAction
+edu.drexel.cs.rise.titan.action.OpenMatrixAction
+edu.drexel.cs.rise.titan.model.MatrixModel
