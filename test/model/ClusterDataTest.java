@@ -21,7 +21,6 @@ public class ClusterDataTest {
         } catch (NotPositiveException e) {
             e.printStackTrace();
         }
-
     }
 
     @Test
@@ -31,7 +30,6 @@ public class ClusterDataTest {
         cluster.loadClusterData(file);
         assertEquals(cluster.getTree().getNextNode().getUserObject().toString(), "edu.drexel.cs.rise.moka.jre16.parser.MethodParser");
     }
-
 
     @Test
     public void testSaveClusterData() throws Exception {
