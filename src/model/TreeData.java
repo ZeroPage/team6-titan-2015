@@ -132,6 +132,10 @@ public class TreeData {
 
 	public void renameElement(DefaultMutableTreeNode currentNode, String newName) throws ItemAlreadyExistException, NoSuchElementException {
 		if(!currentNode.getAllowsChildren()) {
+			if(cluster.isExists(newName)) {
+				throw new ItemAlreadyExistException();
+			}
+			
 			String elementName = currentNode.getUserObject().toString();
 			this.dsmData.setName(newName, elementName);
 		}
@@ -150,7 +154,10 @@ public class TreeData {
 
 	}
 	
-	public void addElement(DefaultMutableTreeNode groupNode, String itemName) throws NoSuchElementException {
+	public void addElement(DefaultMutableTreeNode groupNode, String itemName) throws NoSuchElementException, ItemAlreadyExistException {
+		if(cluster.isExists(itemName)) {
+			throw new ItemAlreadyExistException();
+		}
 		this.cluster.addItem(groupNode, itemName);
 		this.dsmData.addEntity(itemName);
 	}
@@ -168,6 +175,11 @@ public class TreeData {
 		partitionSubTree(getTree());
 	}
 
+	private boolean isNameAlreadyExists(String itemName) {
+		this.cluster.isExists(itemName);
+		return false;
+	}
+	
 	private void partitionSubTree(DefaultMutableTreeNode subRoot) {
 		List<DefaultMutableTreeNode> children = Collections.list(subRoot.children());
 		int top = 0;

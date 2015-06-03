@@ -159,4 +159,24 @@ public class ClusterData {
 		}
 		return targetNode;
 	}
+	
+	public boolean isExists(String itemName) {
+		Enumeration<DefaultMutableTreeNode> itemList;
+		ArrayList<String> nameList = new ArrayList<String>();
+		DefaultMutableTreeNode tempNode=null;
+		
+		itemList = this.treeRoot.preorderEnumeration();
+		
+		while(itemList.hasMoreElements()) {
+			tempNode = itemList.nextElement();
+			if(!tempNode.getAllowsChildren()) {
+				nameList.add(tempNode.getUserObject().toString());
+			}
+		}
+		
+		if(nameList.contains(itemName)) {
+			return true;
+		}
+		return false;
+	}
 }

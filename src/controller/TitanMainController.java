@@ -455,7 +455,10 @@ public class TitanMainController {
                 view.showError("Failed to add new item.");
                 e.printStackTrace();
                 System.err.println(root);
-            }
+            } catch (ItemAlreadyExistException e) {
+				view.showError("Item with same name already exists.");
+				e.printStackTrace();
+			}
         }
     }
 
