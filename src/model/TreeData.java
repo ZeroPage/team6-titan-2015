@@ -40,11 +40,6 @@ public class TreeData {
 		this.cluster.refresh(this.dsmData);
 	}
 	
-	public void saveData(File dsmFile, File clusterFile) throws IOException {
-		this.dsmData.saveToFile(dsmFile);
-		this.cluster.saveClusterData(clusterFile);
-	}
-	
 	public void saveDSMData(File dsmFile) throws IOException {
 		this.dsmData.saveToFile(dsmFile);
 	}
@@ -173,11 +168,6 @@ public class TreeData {
 	public void partition() {
 		setClusterAsDefault();
 		partitionSubTree(getTree());
-	}
-
-	private boolean isNameAlreadyExists(String itemName) {
-		this.cluster.isExists(itemName);
-		return false;
 	}
 	
 	private void partitionSubTree(DefaultMutableTreeNode subRoot) {
