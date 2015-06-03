@@ -23,6 +23,7 @@ public class TitanToolBarView {
     public void setDefaultEnabled() {
         toolBar.setEnabledAll(false);
         toolBar.getOpenDSMButton().setEnabled(true);
+        toolBar.getNewDSMButton().setEnabled(true);
     }
 
     public void setEnabledAll(boolean enabled) {
@@ -31,6 +32,13 @@ public class TitanToolBarView {
 
     private void initListeners() {
         // ToolBar
+        toolBar.getNewDSMButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.newDSM();
+            }
+        });
+
         toolBar.getOpenDSMButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

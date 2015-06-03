@@ -95,6 +95,7 @@ public class TitanDataView {
     public void setToolBarDefaultEnabled(boolean isForked) {
         toolBar.getCollapseButton().setEnabled(true);
         toolBar.getExpandButton().setEnabled(true);
+        toolBar.getNewButton().setEnabled(true);
         toolBar.getPartitionButton().setEnabled(!isForked);
     }
 

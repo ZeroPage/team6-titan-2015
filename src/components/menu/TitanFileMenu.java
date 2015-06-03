@@ -1,11 +1,7 @@
 package components.menu;
 
-import controller.TitanMainController;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
@@ -13,11 +9,11 @@ public class TitanFileMenu extends JMenu {
     private NewDSMMenuItem newDSMMenuItem;
     private OpenDSMMenuItem openDSMMenuItem;
     private SaveDSMMenuItem saveDSMMenuItem;
+    private SaveASDSMMenuItem saveAsDSMMenuItem;
     private NewClusterMenuItem newClusterMenuItem;
     private LoadClusterMenuItem loadClusterMenuItem;
     private SaveClusterMenuItem saveClusterMenuItem;
     private SaveAsClusterMenuItem saveAsClusterMenuItem;
-    private ExportAsMenu exportAsMenu;
     private ExitMenuItem exitMenuItem;
 
     private ArrayList<Component> components;
@@ -32,22 +28,22 @@ public class TitanFileMenu extends JMenu {
         newDSMMenuItem = new NewDSMMenuItem();
         openDSMMenuItem = new OpenDSMMenuItem();
         saveDSMMenuItem = new SaveDSMMenuItem();
+        saveAsDSMMenuItem = new SaveASDSMMenuItem();
         newClusterMenuItem = new NewClusterMenuItem();
         loadClusterMenuItem = new LoadClusterMenuItem();
         saveClusterMenuItem = new SaveClusterMenuItem();
         saveAsClusterMenuItem = new SaveAsClusterMenuItem();
-        exportAsMenu = new ExportAsMenu();
         exitMenuItem = new ExitMenuItem();
 
         components = new ArrayList<>();
         components.add(newDSMMenuItem);
         components.add(openDSMMenuItem);
         components.add(saveDSMMenuItem);
+        components.add(saveAsDSMMenuItem);
         components.add(newClusterMenuItem);
         components.add(loadClusterMenuItem);
         components.add(saveClusterMenuItem);
         components.add(saveAsClusterMenuItem);
-        components.add(exportAsMenu);
         components.add(exitMenuItem);
 
 
@@ -56,14 +52,13 @@ public class TitanFileMenu extends JMenu {
         add(openDSMMenuItem);
         addSeparator();
         add(saveDSMMenuItem);
+        add(saveAsDSMMenuItem);
         addSeparator();
         add(newClusterMenuItem);
         add(loadClusterMenuItem);
         addSeparator();
         add(saveClusterMenuItem);
         add(saveAsClusterMenuItem);
-        addSeparator();
-        add(exportAsMenu);
         addSeparator();
         add(exitMenuItem);
     }
@@ -78,6 +73,10 @@ public class TitanFileMenu extends JMenu {
 
     public SaveDSMMenuItem getSaveDSMMenuItem() {
         return saveDSMMenuItem;
+    }
+
+    public SaveASDSMMenuItem getSaveAsDSMMenuItem() {
+        return saveAsDSMMenuItem;
     }
 
     public NewClusterMenuItem getNewClusterMenuItem() {
@@ -96,10 +95,6 @@ public class TitanFileMenu extends JMenu {
         return saveAsClusterMenuItem;
     }
 
-    public ExportAsMenu getExportAsMenu() {
-        return exportAsMenu;
-    }
-
     public ExitMenuItem getExitMenuItem() {
         return exitMenuItem;
     }
@@ -112,7 +107,10 @@ public class TitanFileMenu extends JMenu {
 
     public class NewDSMMenuItem extends JMenuItem {
         public NewDSMMenuItem() {
-            super("New DSM");
+            super("New DSM", new ImageIcon("res/export.png"));
+
+            setMnemonic(KeyEvent.VK_N);
+            setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK));
         }
     }
 
@@ -127,7 +125,14 @@ public class TitanFileMenu extends JMenu {
 
     public class SaveDSMMenuItem extends JMenuItem {
         public SaveDSMMenuItem() {
-            super("Save DSM...");
+            super("Save DSM");
+        }
+    }
+
+
+    public class SaveASDSMMenuItem extends JMenuItem {
+        public SaveASDSMMenuItem() {
+            super("Save DSM AS...");
         }
     }
 
@@ -162,32 +167,6 @@ public class TitanFileMenu extends JMenu {
             super("Save Clustering As...", new ImageIcon("res/save-clsx-as.png"));
 
             setMnemonic(KeyEvent.VK_A);
-        }
-    }
-
-    public class ExportAsMenu extends JMenu {
-        private ExportDSMMenuItem exportDSMMenuItem;
-
-        public ExportAsMenu() {
-            super("Export As");
-
-            setMnemonic(KeyEvent.VK_E);
-
-            exportDSMMenuItem = new ExportDSMMenuItem();
-
-            add(exportDSMMenuItem);
-        }
-
-        public ExportDSMMenuItem getExportDSMMenuItem() {
-            return exportDSMMenuItem;
-        }
-
-        public class ExportDSMMenuItem extends JMenuItem {
-            public ExportDSMMenuItem() {
-                super("DSM...", new ImageIcon("res/dsm.png"));
-
-                setMnemonic(KeyEvent.VK_D);
-            }
         }
     }
 

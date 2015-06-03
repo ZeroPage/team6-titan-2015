@@ -5,6 +5,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class TitanToolBar extends JToolBar {
+    private NewDSMButton newDSMButton;
     private OpenDSMButton openDSMButton;
     private RedrawButton redrawButton;
     private NewClusterButton newClusterButton;
@@ -18,6 +19,7 @@ public class TitanToolBar extends JToolBar {
         super();
 
         // Init fields
+        newDSMButton = new NewDSMButton();
         openDSMButton = new OpenDSMButton();
         redrawButton = new RedrawButton();
         newClusterButton = new NewClusterButton();
@@ -26,6 +28,7 @@ public class TitanToolBar extends JToolBar {
         saveAsClusterButton = new SaveAsClusterButton();
 
         components = new ArrayList<>();
+        components.add(newDSMButton);
         components.add(openDSMButton);
         components.add(redrawButton);
         components.add(newClusterButton);
@@ -34,13 +37,19 @@ public class TitanToolBar extends JToolBar {
         components.add(saveAsClusterButton);
 
         // Add components
+        add(newDSMButton);
         add(openDSMButton);
-        add(redrawButton);
         addSeparator();
         add(newClusterButton);
         add(openClusterButton);
         add(saveClusterButton);
         add(saveAsClusterButton);
+        addSeparator();
+        add(redrawButton);
+    }
+
+    public NewDSMButton getNewDSMButton() {
+        return newDSMButton;
     }
 
     public OpenDSMButton getOpenDSMButton() {
@@ -70,6 +79,14 @@ public class TitanToolBar extends JToolBar {
     public void setEnabledAll(boolean enabled) {
         for (Component component : components) {
             component.setEnabled(enabled);
+        }
+    }
+
+    public class NewDSMButton extends JButton {
+        public NewDSMButton() {
+            super();
+            setIcon(new ImageIcon("res/export.png"));
+            setToolTipText("New DSM");
         }
     }
 
