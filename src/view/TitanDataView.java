@@ -204,7 +204,7 @@ public class TitanDataView {
                 if (e.getButton() == MouseEvent.BUTTON3) { // Check right click
                     int selectedRow = tree.getRowForLocation(e.getX(), e.getY());
 
-                    if (selectedRow > 0) { // Check valid position excluding root
+                    if (selectedRow >= 0) {
                         TreePath selectedPath = tree.getPathForRow(selectedRow);
                         DefaultMutableTreeNode selectedComponent = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
 
