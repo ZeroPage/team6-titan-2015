@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public class TitanItemPopupMenu extends JPopupMenu {
     private RenameMenuItem renameMenuItem;
+
     public TitanItemPopupMenu() {
         // Init fields
         renameMenuItem = new RenameMenuItem();

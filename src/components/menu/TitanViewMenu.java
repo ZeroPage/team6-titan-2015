@@ -1,7 +1,5 @@
 package components.menu;
 
-import controller.TitanMainController;
-
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 

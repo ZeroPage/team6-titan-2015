@@ -1,12 +1,14 @@
 package model;
 
+import model.exception.ItemAlreadyExistException;
+import model.exception.NotPositiveException;
+import model.exception.WrongDSMFormatException;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.NoSuchElementException;
-import model.exception.*;
+
+import static org.junit.Assert.*;
 
 public class TitanDSMTest {
 
@@ -22,7 +24,7 @@ public class TitanDSMTest {
         assertNotNull(loadDSM);
     }
 
-    @Test(expected=NotPositiveException.class)
+    @Test(expected = NotPositiveException.class)
     public void testTitanDSMWithException() throws Exception {
         int size = -1;
         TitanDSM newDSM = new TitanDSM(size);
@@ -47,37 +49,37 @@ public class TitanDSMTest {
         assertEquals(true, dsm.getData("entity_1", "entity_2"));
     }
 
-    @Test(expected=NoSuchElementException.class)
+    @Test(expected = NoSuchElementException.class)
     public void testSetDataWithException() throws Exception {
         int size = 10;
         String existingString = "entity_2";
         String nonExistingString = "entity";
 
         TitanDSM dsm = new TitanDSM(size);
-        dsm.setData(true,nonExistingString, existingString);
+        dsm.setData(true, nonExistingString, existingString);
     }
 
     @Test
     public void testDeleteData() throws Exception {
         TitanDSM dsm = new TitanDSM(30);
         dsm.deleteData("entity_1");
-        assertEquals(29,dsm.getSize());
+        assertEquals(29, dsm.getSize());
     }
 
     @Test
     public void testGetName() throws Exception {
         TitanDSM dsm = new TitanDSM(30);
-        assertEquals("entity_1",dsm.getName(0));
+        assertEquals("entity_1", dsm.getName(0));
     }
 
     @Test
     public void testSetName() throws Exception {
         TitanDSM dsm = new TitanDSM(30);
         dsm.setName("NewName", "entity_1");
-        assertEquals("NewName",dsm.getName(0));
+        assertEquals("NewName", dsm.getName(0));
     }
 
-    @Test(expected=ItemAlreadyExistException.class)
+    @Test(expected = ItemAlreadyExistException.class)
     public void testSetNameWithException() throws Exception {
         int size = 10;
         String newClassName = "entity_1";
@@ -184,10 +186,10 @@ public class TitanDSMTest {
     public void testSaveToFile() throws Exception {
         TitanDSM dsm = new TitanDSM(30);
         File file = new File("a");
-        dsm.setData(true,"entity_1","entity_2");
+        dsm.setData(true, "entity_1", "entity_2");
         dsm.saveToFile(file);
         TitanDSM dsm2 = new TitanDSM(file);
-        assertEquals(dsm.getData("entity_1","entity_2"),dsm2.getData("entity_1","entity_2"));
+        assertEquals(dsm.getData("entity_1", "entity_2"), dsm2.getData("entity_1", "entity_2"));
         file.delete();
     }
 }

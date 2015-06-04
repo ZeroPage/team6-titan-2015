@@ -3,22 +3,20 @@ package model;
 import model.exception.ItemAlreadyExistException;
 import model.exception.NotPositiveException;
 import model.exception.WrongDSMFormatException;
-
 import model.exception.WrongXMLNamespaceException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.xml.parsers.ParserConfigurationException;
-
-import static org.junit.Assert.*;
-
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class TreeDataTest {
 
@@ -80,8 +78,8 @@ public class TreeDataTest {
         DefaultMutableTreeNode child3 = (DefaultMutableTreeNode) root.getChildAt(3);
 
         treeData.setDSMData(child0, child2, true);
-        treeData.groupElement(new ArrayList<>(Arrays.asList(new DefaultMutableTreeNode[] {child0, child1})), "group1");
-        treeData.groupElement(new ArrayList<>(Arrays.asList(new DefaultMutableTreeNode[] {child2, child3})), "group2");
+        treeData.groupElement(new ArrayList<>(Arrays.asList(new DefaultMutableTreeNode[]{child0, child1})), "group1");
+        treeData.groupElement(new ArrayList<>(Arrays.asList(new DefaultMutableTreeNode[]{child2, child3})), "group2");
         assertEquals(treeData.getDSMValue((DefaultMutableTreeNode) root.getChildAt(0), (DefaultMutableTreeNode) root.getChildAt(1)), true);
 
         treeData.freeGroup((DefaultMutableTreeNode) root.getChildAt(0));

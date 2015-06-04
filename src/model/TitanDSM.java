@@ -1,12 +1,12 @@
 package model;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
-
 import model.exception.ItemAlreadyExistException;
 import model.exception.NotPositiveException;
 import model.exception.WrongDSMFormatException;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class TitanDSM {
     private int sizeOfMatrix;
@@ -31,15 +31,15 @@ public class TitanDSM {
     }
 
     private void initNameOfClass() {
-        for(int i = 1; i <= sizeOfMatrix; i++) {
+        for (int i = 1; i <= sizeOfMatrix; i++) {
             nameOfClass.add("entity_" + i);
         }
     }
 
     private void initDataMatrix() {
-        for(int i = 0; i < sizeOfMatrix; i++) {
+        for (int i = 0; i < sizeOfMatrix; i++) {
             dataMatrix.add(new ArrayList<>());
-            for(int j = 0; j < sizeOfMatrix; j++) {
+            for (int j = 0; j < sizeOfMatrix; j++) {
                 dataMatrix.get(i).add(false);
             }
         }
@@ -60,7 +60,7 @@ public class TitanDSM {
     public void deleteData(String deleteName) throws NoSuchElementException {
         int index = getIndexByName(deleteName);
         nameOfClass.remove(index);
-        for(int i = 0;i<sizeOfMatrix;i++) {
+        for (int i = 0; i < sizeOfMatrix; i++) {
             dataMatrix.get(i).remove(index);
         }
         dataMatrix.remove(index);
@@ -72,7 +72,7 @@ public class TitanDSM {
     }
 
     public void setName(String newName, String oldName) throws ItemAlreadyExistException, NoSuchElementException {
-        if(nameOfClass.contains(newName)) {
+        if (nameOfClass.contains(newName)) {
             throw new ItemAlreadyExistException();
         } else {
             nameOfClass.set(getIndexByName(oldName), newName);
@@ -82,11 +82,12 @@ public class TitanDSM {
     public boolean isExist(String name) {
         return nameOfClass.contains(name);
     }
-    public void addEntity(String name){
+
+    public void addEntity(String name) {
         sizeOfMatrix++;
         nameOfClass.add(name);
         dataMatrix.add(new ArrayList<>());
-        for(int i = 0;i < sizeOfMatrix; i++){
+        for (int i = 0; i < sizeOfMatrix; i++) {
             dataMatrix.get(i).add(false);
             dataMatrix.get(sizeOfMatrix - 1).add(false);
         }
@@ -94,7 +95,7 @@ public class TitanDSM {
     }
 
     private int getIndexByName(String name) throws NoSuchElementException {
-        if(isExist(name)) {
+        if (isExist(name)) {
             return nameOfClass.indexOf(name);
         } else {
             throw new NoSuchElementException(name + " not found.");
@@ -107,7 +108,7 @@ public class TitanDSM {
         String[] temp;
 
         read = fileReader.readLine();
-        if(!isNum(read)){
+        if (!isNum(read)) {
             throw new WrongDSMFormatException();
         }
         sizeOfMatrix = Integer.parseInt(read);
@@ -116,12 +117,12 @@ public class TitanDSM {
         for (int i = 0; i < sizeOfMatrix; i++) {
             read = fileReader.readLine();
             temp = read.split(" ");
-            if(temp.length != sizeOfMatrix){
+            if (temp.length != sizeOfMatrix) {
                 throw new WrongDSMFormatException();
             }
             dataMatrix.add(new ArrayList<>());
             for (int j = 0; j < sizeOfMatrix; j++) {
-                if(!temp[j].equals("0") && !temp[j].equals("1")){
+                if (!temp[j].equals("0") && !temp[j].equals("1")) {
                     throw new WrongDSMFormatException();
                 }
                 dataMatrix.get(i).add(Integer.parseInt(temp[j]) == 1);
@@ -130,42 +131,41 @@ public class TitanDSM {
 
         for (int i = 0; i < sizeOfMatrix; i++) {
             read = fileReader.readLine();
-            if(read == null){
+            if (read == null) {
                 throw new WrongDSMFormatException();
             }
             temp = read.split(" ");
-            if(temp.length != 1){
+            if (temp.length != 1) {
                 throw new WrongDSMFormatException();
             }
             nameOfClass.add(read);
         }
 
-        if(fileReader.read() != -1){
+        if (fileReader.read() != -1) {
             throw new WrongDSMFormatException();
         }
 
         fileReader.close();
     }
 
-    public void saveToFile(File file) throws IOException{
+    public void saveToFile(File file) throws IOException {
         BufferedWriter out = new BufferedWriter(new FileWriter(file));
 
         out.write(String.valueOf(sizeOfMatrix));
         out.newLine();
 
-        for(int i = 0; i < sizeOfMatrix; i++) {
-            for(int j = 0; j < sizeOfMatrix; j++) {
-                if(dataMatrix.get(i).get(j) == Boolean.TRUE) {
+        for (int i = 0; i < sizeOfMatrix; i++) {
+            for (int j = 0; j < sizeOfMatrix; j++) {
+                if (dataMatrix.get(i).get(j) == Boolean.TRUE) {
                     out.write("1 ");
-                        }
-                else {
+                } else {
                     out.write("0 ");
                 }
             }
             out.newLine();
         }
 
-        for(int i = 0; i < sizeOfMatrix; i++) {
+        for (int i = 0; i < sizeOfMatrix; i++) {
             out.write(nameOfClass.get(i));
             out.newLine();
         }
@@ -173,7 +173,7 @@ public class TitanDSM {
         out.close();
     }
 
-    private Boolean isNum(String toCheck){
+    private Boolean isNum(String toCheck) {
         return toCheck.matches("[1-9]\\d*");
     }
 }

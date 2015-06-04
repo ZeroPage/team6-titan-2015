@@ -1,6 +1,11 @@
 package controller;
 
-import model.*;
+import model.TreeData;
+import model.exception.ItemAlreadyExistException;
+import model.exception.NotPositiveException;
+import model.exception.WrongDSMFormatException;
+import model.exception.WrongXMLNamespaceException;
+import org.xml.sax.SAXException;
 import view.TitanDataView;
 import view.TitanMainView;
 
@@ -8,15 +13,8 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
-import model.exception.ItemAlreadyExistException;
-import model.exception.NotPositiveException;
-import model.exception.WrongDSMFormatException;
-import model.exception.WrongXMLNamespaceException;
-
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
@@ -108,10 +106,10 @@ public class TitanMainController {
         }
     }
 
-    public void saveDSM(){
+    public void saveDSM() {
         File file = view.getFileChooseView().getLastDSMFile();
 
-        if(file == null) {
+        if (file == null) {
             saveAsDSM();
         } else {
             try {
@@ -160,11 +158,11 @@ public class TitanMainController {
         if (file != null) {
             try {
                 try {
-					treeData.loadClusterData(file);
-				} catch (ParserConfigurationException | SAXException e) {
-					view.showError("Failed with parsing cluster file.");
-					e.printStackTrace();
-				}
+                    treeData.loadClusterData(file);
+                } catch (ParserConfigurationException | SAXException e) {
+                    view.showError("Failed with parsing cluster file.");
+                    e.printStackTrace();
+                }
                 setTreeRoot(treeData.getTreeRoot());
                 modifiedCluster = false;
             } catch (IOException | WrongXMLNamespaceException exception) {
@@ -174,10 +172,10 @@ public class TitanMainController {
         }
     }
 
-    public void saveCluster(){
+    public void saveCluster() {
         File file = view.getFileChooseView().getLastClusterFile();
 
-        if(file == null) {
+        if (file == null) {
             saveAsCluster();
         } else {
             try {
@@ -321,7 +319,7 @@ public class TitanMainController {
             if (row.getAllowsChildren()) {
                 if (dataView.isExpanded(new TreePath(row.getPath()))) {
                     // exclude from table but still affect coloring
-                    tempGroups.add(new int[] {currentRow, currentRow + dataView.getVisibleRows(row, true).length - 1});
+                    tempGroups.add(new int[]{currentRow, currentRow + dataView.getVisibleRows(row, true).length - 1});
                     continue;
                 } else {
                     tempGroups.add(new int[]{currentRow, currentRow});
@@ -456,9 +454,9 @@ public class TitanMainController {
                 e.printStackTrace();
                 System.err.println(root);
             } catch (ItemAlreadyExistException e) {
-				view.showError("Item with same name already exists.");
-				e.printStackTrace();
-			}
+                view.showError("Item with same name already exists.");
+                e.printStackTrace();
+            }
         }
     }
 

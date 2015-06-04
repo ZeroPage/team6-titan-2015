@@ -1,7 +1,7 @@
 package model.exception;
 
 public class WrongDSMFormatException extends Exception {
-    public WrongDSMFormatException(){
+    public WrongDSMFormatException() {
         super("Wrong DSM format");
     }
 }

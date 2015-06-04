@@ -3,21 +3,19 @@ package components.data;
 import com.sun.istack.internal.NotNull;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class TitanTable extends JTable {
-    private int[][] group;
-
     private static final Color[] colors = {
             new Color(0, 152, 207), new Color(255, 233, 0),
             new Color(255, 115, 119), new Color(239, 44, 193)
     };
+    private int[][] group;
 
     public TitanTable() {
         // Super Constructor
@@ -76,7 +74,7 @@ public class TitanTable extends JTable {
                 tempRow[j + 1] = stringData;
             }
             tableModel.addRow(tempRow);
-            
+
         }
 
         // Set first column size
@@ -87,11 +85,11 @@ public class TitanTable extends JTable {
             maxSize = Math.max(maxSize, component.getPreferredSize().width);
         }
         columnModel.getColumn(0).setMinWidth(maxSize);
-        
-    	DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-    	renderer.setHorizontalAlignment(SwingConstants.CENTER);
-        for(int i=1; i < tableSize; i++) {
-        	columnModel.getColumn(i).setCellRenderer(renderer);
+
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.CENTER);
+        for (int i = 1; i < tableSize; i++) {
+            columnModel.getColumn(i).setCellRenderer(renderer);
         }
     }
 
@@ -106,7 +104,7 @@ public class TitanTable extends JTable {
             if (row > 0 && column > 0) {
                 if (group[row - 1][column - 1] > 0) {
                     component.setBackground(colors[(group[row - 1][column - 1] - 1) % colors.length]);
-                    
+
                 }
             }
         }

@@ -14,7 +14,7 @@ public class TitanDataToolBar extends JToolBar {
     private NewButton newButton;
     private DeleteButton deleteButton;
     private PartitionButton partitionButton;
-    
+
     private ArrayList<Component> components;
 
     public TitanDataToolBar() {
@@ -32,7 +32,7 @@ public class TitanDataToolBar extends JToolBar {
         this.newButton = new NewButton();
         this.deleteButton = new DeleteButton();
         this.partitionButton = new PartitionButton();
-        
+
         this.components = new ArrayList<>();
         this.components.add(expandButton);
         this.components.add(collapseButton);

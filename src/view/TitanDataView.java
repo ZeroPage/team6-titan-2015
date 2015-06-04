@@ -3,8 +3,12 @@ package view;
 import components.data.*;
 import controller.TitanMainController;
 
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -191,12 +195,7 @@ public class TitanDataView {
 
     private void initListeners() {
         // Tree
-        tree.addTreeSelectionListener(new TreeSelectionListener() {
-            @Override
-            public void valueChanged(TreeSelectionEvent e) {
-                controller.checkSelection(tree.getSelectionPaths());
-            }
-        });
+        tree.addTreeSelectionListener(e -> controller.checkSelection(tree.getSelectionPaths()));
 
 
         tree.addMouseListener(new MouseAdapter() {
@@ -243,104 +242,34 @@ public class TitanDataView {
         });
 
         // Popup Menus
-        groupPopupMenu.getDuplicateMenuItem().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.copyTree(getSelectedRow());
-            }
-        });
+        groupPopupMenu.getDuplicateMenuItem().addActionListener(e -> controller.copyTree(getSelectedRow()));
 
-        groupPopupMenu.getForkMenuItem().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.forkTree(getSelectedRow());
-            }
-        });
+        groupPopupMenu.getForkMenuItem().addActionListener(e -> controller.forkTree(getSelectedRow()));
 
-        groupPopupMenu.getSortMenuItem().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.sortGroup(getSelectedRow());
-            }
-        });
+        groupPopupMenu.getSortMenuItem().addActionListener(e -> controller.sortGroup(getSelectedRow()));
 
-        groupPopupMenu.getRenameMenuItem().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.renameElement(getSelectedRow());
-            }
-        });
+        groupPopupMenu.getRenameMenuItem().addActionListener(e -> controller.renameElement(getSelectedRow()));
 
-        itemPopupMenu.getRenameMenuItem().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.renameElement(getSelectedRow());
-            }
-        });
+        itemPopupMenu.getRenameMenuItem().addActionListener(e -> controller.renameElement(getSelectedRow()));
 
 
         // ToolBar Buttons
-        toolBar.getExpandButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                expandAll();
-            }
-        });
+        toolBar.getExpandButton().addActionListener(e -> expandAll());
 
-        toolBar.getCollapseButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                collapseAll();
-            }
-        });
+        toolBar.getCollapseButton().addActionListener(e -> collapseAll());
 
-        toolBar.getGroupButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.groupItems(getSelectedRows());
-            }
-        });
+        toolBar.getGroupButton().addActionListener(e -> controller.groupItems(getSelectedRows()));
 
-        toolBar.getUngroupButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.ungroupItems(getSelectedRows());
-            }
-        });
+        toolBar.getUngroupButton().addActionListener(e -> controller.ungroupItems(getSelectedRows()));
 
-        toolBar.getMoveUpButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.moveUpItems(getSelectedRows());
-            }
-        });
+        toolBar.getMoveUpButton().addActionListener(e -> controller.moveUpItems(getSelectedRows()));
 
-        toolBar.getMoveDownButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.moveDownItems(getSelectedRows());
-            }
-        });
+        toolBar.getMoveDownButton().addActionListener(e -> controller.moveDownItems(getSelectedRows()));
 
-        toolBar.getNewButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.newItem();
-            }
-        });
+        toolBar.getNewButton().addActionListener(e -> controller.newItem());
 
-        toolBar.getDeleteButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.deleteItems(getSelectedRows());
-            }
-        });
+        toolBar.getDeleteButton().addActionListener(e -> controller.deleteItems(getSelectedRows()));
 
-        toolBar.getPartitionButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.partition();
-            }
-        });
+        toolBar.getPartitionButton().addActionListener(e -> controller.partition());
     }
 }

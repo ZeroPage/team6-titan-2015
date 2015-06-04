@@ -54,14 +54,14 @@ public class ClusterDataTest {
     @Test
     public void testGrouping() throws Exception {
         ClusterData cluster = new ClusterData(new DefaultMutableTreeNode());
-        ArrayList<DefaultMutableTreeNode> Array = new ArrayList<DefaultMutableTreeNode>();
+        ArrayList<DefaultMutableTreeNode> Array = new ArrayList<>();
         File file = new File("./sample/moka/moka_ACDC.clsx");
         String className = "edu.drexel.cs.rise.moka.jre16.parser.MethodParser";
 
         cluster.loadClusterData(file);
         Array.add(cluster.getTreeRoot().getNextNode());
         cluster.newGroupbyNode(Array, "newGroup");
-        assertEquals(cluster.getNode(className).getParent().toString(),"newGroup");
+        assertEquals(cluster.getNode(className).getParent().toString(), "newGroup");
         cluster.freeGroup(cluster.getTreeRoot().getNextNode());
         assertEquals(cluster.getTreeRoot().getNextNode().getUserObject().toString(), className);
     }
@@ -71,8 +71,8 @@ public class ClusterDataTest {
         File file = new File("./sample/moka/moka_ACDC.clsx");
         ClusterData cluster = new ClusterData(new DefaultMutableTreeNode());
         cluster.loadClusterData(file);
-        cluster.renameNode(cluster.getTreeRoot().getNextNode(),"MokaCoffee");
-        assertEquals(cluster.getTreeRoot().getNextNode().getUserObject().toString(),"MokaCoffee");
+        cluster.renameNode(cluster.getTreeRoot().getNextNode(), "MokaCoffee");
+        assertEquals(cluster.getTreeRoot().getNextNode().getUserObject().toString(), "MokaCoffee");
     }
 
     @Test
@@ -89,7 +89,7 @@ public class ClusterDataTest {
         String filePath = "./sample/titan/titan_ACDC.clsx";
         String className = "edu.drexel.cs.rise.titan.ui.MatrixViewer";
         ClusterData cluster = new ClusterData(new File(filePath));
-        cluster.deleteItem((DefaultMutableTreeNode)cluster.getNode(className));
+        cluster.deleteItem((DefaultMutableTreeNode) cluster.getNode(className));
         cluster.getAllowsChildren(className);
     }
 }

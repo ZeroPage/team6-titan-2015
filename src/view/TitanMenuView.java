@@ -56,79 +56,31 @@ public class TitanMenuView {
         // FileMenu
         TitanFileMenu fileMenu = menuBar.getTitanFileMenu();
 
-        fileMenu.getNewDSMMenuItem().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.newDSM();
-            }
-        });
+        fileMenu.getNewDSMMenuItem().addActionListener(e -> controller.newDSM());
 
-        fileMenu.getOpenDSMMenuItem().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.openDSM();
-            }
-        });
+        fileMenu.getOpenDSMMenuItem().addActionListener(e -> controller.openDSM());
 
-        fileMenu.getSaveDSMMenuItem().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) { controller.saveDSM(); }
-        });
+        fileMenu.getSaveDSMMenuItem().addActionListener(e -> controller.saveDSM());
 
-        fileMenu.getSaveAsDSMMenuItem().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.saveAsDSM();
-            }
-        });
+        fileMenu.getSaveAsDSMMenuItem().addActionListener(e -> controller.saveAsDSM());
 
-        fileMenu.getSaveClusterMenuItem().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) { controller.saveCluster(); }
-        });
+        fileMenu.getSaveClusterMenuItem().addActionListener(e -> controller.saveCluster());
 
-        fileMenu.getLoadClusterMenuItem().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.openCluster();
-            }
-        });
+        fileMenu.getLoadClusterMenuItem().addActionListener(e -> controller.openCluster());
 
-        fileMenu.getNewClusterMenuItem().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.newCluster();
-            }
-        });
+        fileMenu.getNewClusterMenuItem().addActionListener(e -> controller.newCluster());
 
-        fileMenu.getSaveAsClusterMenuItem().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.saveAsCluster();
-            }
-        });
+        fileMenu.getSaveAsClusterMenuItem().addActionListener(e -> controller.saveAsCluster());
 
-        fileMenu.getExitMenuItem().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.disposeDialog();
-            }
-        });
+        fileMenu.getExitMenuItem().addActionListener(e -> controller.disposeDialog());
 
         // View
-        menuBar.getTitanViewMenu().getRedrawMenuItem().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.drawTree();
-            }
-        });
+        menuBar.getTitanViewMenu().getRedrawMenuItem().addActionListener(e -> controller.drawTree());
 
         // Help
-        menuBar.getTitanHelpMenu().getAboutMenuItem().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(parent, "Team 6\n" + "20135262 안미리\n" + "20131298 원준연\n" + "20135796 조영준\n" + "20132811 박희정\n" + "20132465 안용호");
-            }
-        });
+        menuBar.getTitanHelpMenu().getAboutMenuItem().addActionListener(e ->
+                JOptionPane.showMessageDialog(parent, "Team 6\n" + "20135262 안미리\n" + "20131298 원준연\n" +
+                        "20135796 조영준\n" + "20132811 박희정\n" + "20132465 안용호")
+        );
     }
 }
