@@ -1,6 +1,7 @@
 package model;
 
 import model.exception.NotPositiveException;
+import model.exception.WrongXMLNamespaceException;
 import org.junit.Test;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -29,6 +30,13 @@ public class ClusterDataTest {
         File file = new File("./sample/moka/moka_ACDC.clsx");
         cluster.loadClusterData(file);
         assertEquals(cluster.getTreeRoot().getNextNode().getUserObject().toString(), "edu.drexel.cs.rise.moka.jre16.parser.MethodParser");
+    }
+
+    @Test(expected = WrongXMLNamespaceException.class)
+    public void testLoadClusterDataWithException() throws Exception {
+        ClusterData cluster = new ClusterData(new DefaultMutableTreeNode());
+        File file = new File("./sample/test/titan_ACDC.clsx");
+        cluster.loadClusterData(file);
     }
 
     @Test
