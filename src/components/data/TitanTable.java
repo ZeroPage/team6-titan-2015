@@ -12,8 +12,9 @@ import java.awt.event.MouseEvent;
 
 public class TitanTable extends JTable {
     private static final Color[] colors = {
-            new Color(0, 152, 207), new Color(255, 233, 0),
-            new Color(255, 115, 119), new Color(239, 44, 193)
+            new Color(0, 168, 219), new Color(137, 232, 114),
+            new Color(255, 243, 110), new Color(255, 205, 140),
+            new Color(255, 157, 167), new Color(248, 106, 218)
     };
     private int[][] group;
 
