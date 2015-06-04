@@ -15,17 +15,17 @@ import model.exception.WrongDSMFormatException;
 import model.exception.WrongXMLNamespaceException;
 
 public class TreeData {
-	private TitanDSM dsmData;
+	private DSMData dsmData;
 	private ClusterData cluster;
 
 //initializing with only DSM
 	public TreeData(File dsmFile) throws IOException, WrongDSMFormatException {
-		this.dsmData = new TitanDSM(dsmFile);
+		this.dsmData = new DSMData(dsmFile);
 		this.cluster = new ClusterData(this.dsmData);
 	}
 	
 	public TreeData(int size) throws IOException, WrongDSMFormatException, NotPositiveException {
-		this.dsmData = new TitanDSM(size);
+		this.dsmData = new DSMData(size);
 		this.cluster = new ClusterData(this.dsmData);
 	}
 

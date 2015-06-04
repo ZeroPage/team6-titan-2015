@@ -15,7 +15,7 @@ public class ClusterDataTest {
     @Test
     public void testClusterData() {
         try {
-            TitanDSM dsm = new TitanDSM(30);
+            DSMData dsm = new DSMData(30);
             ClusterData cluster = new ClusterData(dsm);
             assertNotNull(cluster);
         } catch (NotPositiveException e) {
