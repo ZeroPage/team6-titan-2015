@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
 public class ClusterData {
     private DefaultMutableTreeNode treeRoot;
 
-    public ClusterData(TitanDSM dsmData) {
+    public ClusterData(DSMData dsmData) {
         this.treeRoot = new DefaultMutableTreeNode("ROOT", true);
 
         for (int i = 0; i < dsmData.getSize(); i++) {
@@ -66,7 +66,7 @@ public class ClusterData {
     }
 
     //refactor the tree with dsmData
-    public void refresh(TitanDSM dsmData) {
+    public void refresh(DSMData dsmData) {
         DefaultMutableTreeNode leaf = this.treeRoot.getFirstLeaf();
 
         while (leaf != null) {

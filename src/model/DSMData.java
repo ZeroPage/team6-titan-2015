@@ -8,12 +8,12 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-public class TitanDSM {
+public class DSMData {
     private int sizeOfMatrix;
     private ArrayList<ArrayList<Boolean>> dataMatrix;
     private ArrayList<String> nameOfClass;
 
-    public TitanDSM(int sizeOfMatrix) throws NotPositiveException {
+    public DSMData(int sizeOfMatrix) throws NotPositiveException {
         if (sizeOfMatrix <= 0) {
             throw new NotPositiveException();
         }
@@ -24,7 +24,7 @@ public class TitanDSM {
         initNameOfClass();
     }
 
-    public TitanDSM(File file) throws IOException, WrongDSMFormatException {
+    public DSMData(File file) throws IOException, WrongDSMFormatException {
         dataMatrix = new ArrayList<>();
         nameOfClass = new ArrayList<>();
         loadFromFile(file);
