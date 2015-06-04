@@ -10,6 +10,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import model.exception.WrongXMLNamespaceException;
+import util.ClusterFileIO;
 
 public class ClusterData {
 	private DefaultMutableTreeNode treeRoot;
