@@ -5,6 +5,7 @@ import model.exception.NotPositiveException;
 import model.exception.WrongDSMFormatException;
 import model.exception.WrongXMLNamespaceException;
 import org.xml.sax.SAXException;
+import util.CircuitSearch;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.xml.parsers.ParserConfigurationException;
@@ -75,6 +76,10 @@ public class TreeData {
     }
 
     public boolean getDSMValue(DefaultMutableTreeNode rowElement, DefaultMutableTreeNode columnElement) {
+        if (rowElement == columnElement) {
+            return false;
+        }
+
         ArrayList<DefaultMutableTreeNode> rows = new ArrayList<>();
         ArrayList<DefaultMutableTreeNode> cols = new ArrayList<>();
 
@@ -165,82 +170,99 @@ public class TreeData {
 
     public void partition() {
         setClusterAsDefault();
-        partitionSubTree(getTreeRoot());
+        partitionTree();
     }
 
-    private void partitionSubTree(DefaultMutableTreeNode subRoot) {
-        List<DefaultMutableTreeNode> children = Collections.list(subRoot.children());
+    private void partitionTree() {
+        DefaultMutableTreeNode root = getTreeRoot();
+        List<DefaultMutableTreeNode> children = Collections.list(root.children());
         int top = 0;
         int bottom = children.size();
 
-        // STEP 1: move empty row items to top
-        for (int i = 0; i < bottom; i++) {
-            DefaultMutableTreeNode current = children.get(i);
-            boolean rowEmpty = true;
+        while (true) {
+            // STEP 1: move empty row items to top
+            boolean changed = true;
 
-            for (int j = 0; j < bottom; j++) {
-                rowEmpty &= !getDSMValue(current, children.get(j));
-            }
+            while (changed) {
+                changed = false;
+                children = Collections.list(root.children());
+                for (int i = top; i < bottom; i++) {
+                    DefaultMutableTreeNode current = children.get(i);
+                    boolean rowEmpty = true;
 
-            if (rowEmpty) {
-                repositionElement(current, top); // move to top
-                top++;
-                children = Collections.list(subRoot.children());
-            }
-        }
+                    for (int j = top; j < bottom; j++) {
+                        rowEmpty &= !getDSMValue(current, children.get(j));
+                    }
 
-        // STEP 2: move empty column items to bottom
-        children = Collections.list(subRoot.children());
-        for (int i = top; i < bottom; i++) {
-            DefaultMutableTreeNode current = children.get(i);
-            boolean columnEmpty = true;
-
-            for (int j = top; j < bottom; j++) {
-                columnEmpty &= !getDSMValue(children.get(j), current);
-            }
-
-            if (columnEmpty) {
-                i--;
-                bottom--;
-                repositionElement(current, bottom); // move to bottom
-                children = Collections.list(subRoot.children());
-            }
-        }
-
-        // STEP 3: find circuits and group them
-        int newGroupNumber = 0;
-        children = Collections.list(subRoot.children());
-
-        for (int i = top; i < bottom; i++) {
-            HashSet<DefaultMutableTreeNode> circuit = new HashSet<>();
-            Queue<DefaultMutableTreeNode> queue = new LinkedList<>();
-
-            circuit.add(children.get(i));
-            queue.add(children.get(i));
-
-            while (!queue.isEmpty()) {
-                DefaultMutableTreeNode current = queue.remove();
-
-                for (int j = top; j < bottom; j++) {
-                    DefaultMutableTreeNode related = children.get(j);
-                    if (getDSMValue(current, related)) {
-                        if (!circuit.contains(related)) {
-                            circuit.add(related);
-                            queue.add(related);
-                        }
+                    if (rowEmpty) {
+                        repositionElement(current, top); // move to top
+                        top++;
+                        children = Collections.list(root.children());
+                        changed = true;
                     }
                 }
             }
 
-            if (circuit.size() > 1) {
-                newGroupNumber++;
-                groupElement(new ArrayList<>(circuit), "group_" + newGroupNumber);
+            // STEP 2: move empty column items to bottom
+            changed = true;
+            while (changed) {
+                changed = false;
+                children = Collections.list(root.children());
+                for (int i = top; i < bottom; i++) {
+                    DefaultMutableTreeNode current = children.get(i);
+                    boolean columnEmpty = true;
 
-                bottom -= circuit.size() - 1;
-                children = Collections.list(subRoot.children());
+                    for (int j = top; j < bottom; j++) {
+                        columnEmpty &= !getDSMValue(children.get(j), current);
+                    }
+
+                    if (columnEmpty) {
+                        i--;
+                        bottom--;
+                        repositionElement(current, bottom); // move to bottom
+                        children = Collections.list(root.children());
+                        changed = true;
+                    }
+                }
             }
 
-            top++;
+            if (top == bottom) {
+                break;
+            }
+
+            // STEP 3: find circuit and group them
+            int left = bottom - top;
+            boolean[][] data = new boolean[left][left];
+            DefaultMutableTreeNode[] vertice = new DefaultMutableTreeNode[left];
+
+            for (int i = 0; i < left; i++) {
+                vertice[i] = children.get(i + top);
+            }
+
+            for (int i = 0; i < left; i++) {
+                for (int j = 0; j < left; j++) {
+                    data[i][j] = getDSMValue(vertice[i], vertice[j]);
+                }
+            }
+
+            List<Set<Integer>> groups = CircuitSearch.findCircuits(data);
+
+            int newGroupNumber = 0;
+            for (Set<Integer> group : groups) {
+                if (group.size() == 1) {
+                    continue;
+                }
+
+                newGroupNumber++;
+                ArrayList<DefaultMutableTreeNode> nodeGroup = new ArrayList<>();
+
+                for (Integer aGroup : group) {
+                    nodeGroup.add(vertice[aGroup]);
+                }
+
+                groupElement(nodeGroup, "group_" + newGroupNumber);
+                bottom -= group.size() - 1;
+            }
         }
     }
 }
