@@ -85,7 +85,7 @@ public class TitanToolBar extends JToolBar {
     public class NewDSMButton extends JButton {
         public NewDSMButton() {
             super();
-            setIcon(new ImageIcon("res/export.png"));
+            setIcon(new ImageIcon(getClass().getResource("/resource/export.png")));
             setToolTipText("New DSM");
         }
     }
@@ -93,7 +93,7 @@ public class TitanToolBar extends JToolBar {
     public class OpenDSMButton extends JButton {
         public OpenDSMButton() {
             super();
-            setIcon(new ImageIcon("res/open-dsm.png"));
+            setIcon(new ImageIcon(getClass().getResource("/resource/open-dsm.png")));
             setToolTipText("Open DSM");
 
         }
@@ -102,7 +102,7 @@ public class TitanToolBar extends JToolBar {
     public class RedrawButton extends JButton {
         public RedrawButton() {
             super();
-            setIcon(new ImageIcon("res/redraw.png"));
+            setIcon(new ImageIcon(getClass().getResource("/resource/redraw.png")));
             setToolTipText("Redraw");
 
         }
@@ -111,7 +111,7 @@ public class TitanToolBar extends JToolBar {
     public class NewClusterButton extends JButton {
         public NewClusterButton() {
             super();
-            setIcon(new ImageIcon("res/new-clsx.png"));
+            setIcon(new ImageIcon(getClass().getResource("/resource/new-clsx.png")));
             setToolTipText("New Clustering");
         }
     }
@@ -119,7 +119,7 @@ public class TitanToolBar extends JToolBar {
     public class OpenClusterButton extends JButton {
         public OpenClusterButton() {
             super();
-            setIcon(new ImageIcon("res/open-clsx.png"));
+            setIcon(new ImageIcon(getClass().getResource("/resource/open-clsx.png")));
             setToolTipText("Open Clustering");
         }
     }
@@ -127,7 +127,7 @@ public class TitanToolBar extends JToolBar {
     public class SaveClusterButton extends JButton {
         public SaveClusterButton() {
             super();
-            setIcon(new ImageIcon("res/save-clsx.png"));
+            setIcon(new ImageIcon(getClass().getResource("/resource/save-clsx.png")));
             setToolTipText("Save Clustering");
         }
     }
@@ -135,7 +135,7 @@ public class TitanToolBar extends JToolBar {
     public class SaveAsClusterButton extends JButton {
         public SaveAsClusterButton() {
             super();
-            setIcon(new ImageIcon("res/save-clsx-as.png"));
+            setIcon(new ImageIcon(getClass().getResource("/resource/save-clsx-as.png")));
             setToolTipText("Save Clustering As");
         }
     }

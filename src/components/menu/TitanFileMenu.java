@@ -107,7 +107,9 @@ public class TitanFileMenu extends JMenu {
 
     public class NewDSMMenuItem extends JMenuItem {
         public NewDSMMenuItem() {
-            super("New DSM", new ImageIcon("res/export.png"));
+            super("New DSM");
+            
+            setIcon(new ImageIcon(getClass().getResource("/resource/export.png")));
 
             setMnemonic(KeyEvent.VK_N);
             setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK));
@@ -116,7 +118,9 @@ public class TitanFileMenu extends JMenu {
 
     public class OpenDSMMenuItem extends JMenuItem {
         public OpenDSMMenuItem() {
-            super("Open DSM...", new ImageIcon("res/open-dsm.png"));
+            super("Open DSM...");
+            
+            setIcon(new ImageIcon(getClass().getResource("/resource/open-dsm.png")));
 
             setMnemonic(KeyEvent.VK_O);
             setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK));
@@ -138,7 +142,9 @@ public class TitanFileMenu extends JMenu {
 
     public class NewClusterMenuItem extends JMenuItem {
         public NewClusterMenuItem() {
-            super("New Clustering", new ImageIcon("res/new-clsx.png"));
+            super("New Clustering");
+            
+            setIcon(new ImageIcon(getClass().getResource("/resource/new-clsx.png")));
 
             setMnemonic(KeyEvent.VK_N);
         }
@@ -146,7 +152,9 @@ public class TitanFileMenu extends JMenu {
 
     public class LoadClusterMenuItem extends JMenuItem {
         public LoadClusterMenuItem() {
-            super("Load Clustering...", new ImageIcon("res/open-clsx.png"));
+            super("Load Clustering...");
+            
+            setIcon(new ImageIcon(getClass().getResource("/resource/open-clsx.png")));
 
             setMnemonic(KeyEvent.VK_L);
             setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
@@ -155,7 +163,9 @@ public class TitanFileMenu extends JMenu {
 
     public class SaveClusterMenuItem extends JMenuItem {
         public SaveClusterMenuItem() {
-            super("Save Clustering", new ImageIcon("res/save-clsx.png"));
+            super("Save Clustering");
+            
+            setIcon(new ImageIcon(getClass().getResource("/resource/save-clsx.png")));
 
             setMnemonic(KeyEvent.VK_S);
             setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK));
@@ -164,7 +174,9 @@ public class TitanFileMenu extends JMenu {
 
     public class SaveAsClusterMenuItem extends JMenuItem {
         public SaveAsClusterMenuItem() {
-            super("Save Clustering As...", new ImageIcon("res/save-clsx-as.png"));
+            super("Save Clustering As...");
+            
+            setIcon(new ImageIcon(getClass().getResource("/resource/save-clsx-as.png")));
 
             setMnemonic(KeyEvent.VK_A);
         }

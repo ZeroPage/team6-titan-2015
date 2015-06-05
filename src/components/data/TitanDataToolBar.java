@@ -106,7 +106,7 @@ public class TitanDataToolBar extends JToolBar {
         public ExpandButton() {
             super();
 
-            setIcon(new ImageIcon("res/expand.png"));
+            setIcon(new ImageIcon(getClass().getResource("/resource/expand.png")));
             setToolTipText("Expand All");
         }
     }
@@ -115,7 +115,7 @@ public class TitanDataToolBar extends JToolBar {
         public CollapseButton() {
             super();
 
-            setIcon(new ImageIcon("res/collapse.png"));
+            setIcon(new ImageIcon(getClass().getResource("/resource/collapse.png")));
             setToolTipText("Collapse All");
         }
     }
@@ -124,7 +124,7 @@ public class TitanDataToolBar extends JToolBar {
         public GroupButton() {
             super();
 
-            setIcon(new ImageIcon("res/group.png"));
+            setIcon(new ImageIcon(getClass().getResource("/resource/group.png")));
             setToolTipText("Group");
         }
     }
@@ -133,7 +133,7 @@ public class TitanDataToolBar extends JToolBar {
         public UngroupButton() {
             super();
 
-            setIcon(new ImageIcon("res/ungroup.png"));
+            setIcon(new ImageIcon(getClass().getResource("/resource/ungroup.png")));
             setToolTipText("Ungroup");
         }
     }
@@ -142,7 +142,7 @@ public class TitanDataToolBar extends JToolBar {
         public MoveUpButton() {
             super();
 
-            setIcon(new ImageIcon("res/up.png"));
+            setIcon(new ImageIcon(getClass().getResource("/resource/up.png")));
             setToolTipText("Move Up");
         }
     }
@@ -151,7 +151,7 @@ public class TitanDataToolBar extends JToolBar {
         public MoveDownButton() {
             super();
 
-            setIcon(new ImageIcon("res/down.png"));
+            setIcon(new ImageIcon(getClass().getResource("/resource/down.png")));
             setToolTipText("Move Down");
         }
     }
@@ -160,7 +160,7 @@ public class TitanDataToolBar extends JToolBar {
         public NewButton() {
             super();
 
-            setIcon(new ImageIcon("res/new-dsm-line.png"));
+            setIcon(new ImageIcon(getClass().getResource("/resource/new-dsm-line.png")));
             setToolTipText("New Row");
         }
     }
@@ -169,7 +169,7 @@ public class TitanDataToolBar extends JToolBar {
         public DeleteButton() {
             super();
 
-            setIcon(new ImageIcon("res/delete.png"));
+            setIcon(new ImageIcon(getClass().getResource("/resource/delete.png")));
             setToolTipText("Delete");
         }
     }
@@ -178,7 +178,7 @@ public class TitanDataToolBar extends JToolBar {
         public PartitionButton() {
             super();
 
-            setIcon(new ImageIcon("res/dsm.png"));
+            setIcon(new ImageIcon(getClass().getResource("/resource/dsm.png")));
             setToolTipText("Partition");
         }
     }
